@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+       <include file="classpath:db/changelog/v.0.1/2022-09-06-changes-create-table-user.xml"/>
+       <include file="classpath:db/changelog/v.0.2/2022-09-08-changes-create-table-city.xml"/>
+       <include file="classpath:db/changelog/v.0.2/2022-09-08-changes-filling-table-city.xml"/>
+       <include file="classpath:db/changelog/v.0.3/2022-09-11-changes-create-type-activity_type.xml"/>
+       <include file="classpath:db/changelog/v.0.3/2022-09-11-changes-create-table-offer.xml"/>
+       <include file="classpath:db/changelog/v.0.3/2022-09-11-changes-create-table-offer-city.xml"/>
+
+</databaseChangeLog>

@@ -1,0 +1,9 @@
+route:
+  - id: 1
+    point_of_route: MINSK
+  - id: 2
+    point_of_route: GRODNO
+  - id: 3
+    point_of_route: GDANSK
+  - id: 4
+    point_of_route: WROCLAW

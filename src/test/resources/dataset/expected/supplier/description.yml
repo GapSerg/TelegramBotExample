@@ -1,0 +1,8 @@
+supplier:
+  - id: 1
+    user_id: 84562
+    place_of_departure_id: 1
+    place_of_arrival_id: 2
+    first_date: "2020-09-20"
+    second_Date: "2030-09-20"
+    description: "Ya yedu i mogu vziat' tebya"

@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+#  employee-service:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile-employee-service
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - SERVER_PORT=8080
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/employee_db
+#      - CLIENT_DEPARTMENT_BASE_URL=http://department-service:8082
+#      - KAFKA_BOOTSTRAP_SERVER=broker:29092
+#      - SPRING_KAFKA_CONSUMER_BOOTSTRAP-SERVERS=broker:29092
+#    depends_on:
+#      - db
+#      - broker
+
+  db:
+    image: postgres:11.5
+    restart: always
+    container_name: postgres_container4
+    ports:
+      - "5444:5432"
+
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+
+    volumes:
+      - ./infastructure/db:/docker-entrypoint-initdb.d

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-09-11-changes-create-table-offer_city" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="offer_city"/>
+            </not>
+        </preConditions>
+        <createTable tableName="offer_city">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="offer_id" type="BIGSERIAL">
+                    <constraints foreignKeyName="fk_offer_offer_city" references="offer(id)"/>
+            </column>
+            <column name="city_id" type="SERIAL">
+                <constraints  foreignKeyName="fk_route_offer_city" references="city(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
