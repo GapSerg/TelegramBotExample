@@ -9,5 +9,6 @@
     <include file="classpath:db/changelog/v.0.3/2022-09-11-changes-create-type-activity_type.xml"/>
     <include file="classpath:db/changelog/v.0.3/2022-09-11-changes-create-table-offer.xml"/>
     <include file="classpath:db/changelog/v.0.3/2022-09-11-changes-create-table-offer-city.xml"/>
+    <include file="classpath:db/changelog/v.0.4/2022-10-03-changes-alter-table-telegram_user.xml"/>
 
 </databaseChangeLog>
