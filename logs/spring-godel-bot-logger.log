@@ -372,3 +372,128 @@ org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Requ
 2022-10-03 15:11:17,425 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-10-03 15:11:17,428 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
 2022-10-03 15:11:17,435 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-03 16:44:27,694 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 17316 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-03 16:44:27,696 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-03 16:44:28,211 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-03 16:44:28,268 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 51 ms. Found 3 JPA repository interfaces.
+2022-10-03 16:44:28,623 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-03 16:44:28,630 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-03 16:44:28,630 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-03 16:44:28,630 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-03 16:44:28,712 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-03 16:44:28,712 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 986 ms
+2022-10-03 16:44:28,823 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-03 16:44:28,879 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-03 16:44:28,953 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-03 16:44:29,016 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-03 16:44:29,289 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-03 16:44:29,359 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-03 16:44:29,425 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-03 16:44:29,451 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-03 16:44:29,532 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-03 16:44:29,598 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-03 16:44:30,035 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-03 16:44:30,040 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-03 16:44:30,502 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-03 16:44:30,710 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-03 16:44:30,727 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-03 16:44:30,735 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://6229-82-209-241-194.eu.ngrok.io
+2022-10-03 16:44:30,735 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired suppliers
+2022-10-03 16:44:30,749 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete suppliers whose second date is earlier than : 2022-10-03
+2022-10-03 16:44:31,369 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 4.011 seconds (JVM running for 4.845)
+2022-10-03 16:56:17,149 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-03 16:56:17,151 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-03 16:56:17,158 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-03 16:56:23,363 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 19404 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-03 16:56:23,367 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-03 16:56:23,914 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-03 16:56:23,983 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 63 ms. Found 3 JPA repository interfaces.
+2022-10-03 16:56:24,377 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-03 16:56:24,385 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-03 16:56:24,385 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-03 16:56:24,385 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-03 16:56:24,483 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-03 16:56:24,484 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1067 ms
+2022-10-03 16:56:24,603 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-03 16:56:24,661 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-03 16:56:24,741 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-03 16:56:24,807 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-03 16:56:25,075 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-03 16:56:25,146 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-03 16:56:25,209 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-03 16:56:25,232 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-03 16:56:25,325 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-03 16:56:25,404 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-03 16:56:25,867 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-03 16:56:25,877 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-03 16:56:26,526 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-03 16:56:26,790 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-03 16:56:26,810 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-03 16:56:26,820 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired suppliers
+2022-10-03 16:56:26,822 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://6229-82-209-241-194.eu.ngrok.io
+2022-10-03 16:56:26,840 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete suppliers whose second date is earlier than : 2022-10-03
+2022-10-03 16:56:27,552 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 4.55 seconds (JVM running for 5.218)
+2022-10-03 16:56:41,027 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-03 16:56:41,028 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-03 16:56:41,028 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 0 ms
+2022-10-03 16:56:42,840 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-2] Callback with type :MY_OFFERS and activity : DRIVER
+2022-10-03 16:56:42,841 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Check and clear if exists changeSupplierRequests by key:834450967
+2022-10-03 16:56:42,841 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:56:42,845 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-2] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:56:43,985 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-3] Check existing of user by id: 834450967
+2022-10-03 16:56:45,521 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-4] Find all routes
+2022-10-03 16:56:47,135 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.DriverRouteCallbackType [http-nio-5000-exec-5] Callback data with type: DRIVER_ROUTE and routeId: 3
+2022-10-03 16:56:47,651 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.DriverRouteCallbackType [http-nio-5000-exec-6] Callback data with type: DRIVER_ROUTE and routeId: 5
+2022-10-03 16:56:48,457 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.ChoseDateDriverCallbackType [http-nio-5000-exec-7] Callback data with type: CHOSE_DATE_DRIVER by user : Myachin97
+2022-10-03 16:56:49,851 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.FirstDateDriverCallbackType [http-nio-5000-exec-8] Got First Date Supplier Callback type with first date :2022-10-29 by user: Myachin97
+2022-10-03 16:56:50,241 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.SecondDateDriverCallbackType [http-nio-5000-exec-9] Got Second date supplier callback type with second date :2022-10-31 and by user : Myachin97
+2022-10-03 16:56:50,381 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-9] Find passengers by secondDate:2022-10-31,firstDate:2022-10-29,routes:[City(id=3, name=WROCLAW), City(id=5, name=BREST)]
+2022-10-03 16:56:54,902 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.CancelDriverRequestCallbackType [http-nio-5000-exec-10] Got callback : CANCEL_DRIVER_REQUEST by user : Myachin97
+2022-10-03 16:56:59,874 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-2] Callback with type :MY_OFFERS and activity : DRIVER
+2022-10-03 16:56:59,874 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Check and clear if exists changeSupplierRequests by key:834450967
+2022-10-03 16:56:59,874 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:56:59,877 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-2] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:57:05,199 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-4] Callback with type :MY_OFFERS and activity : DRIVER
+2022-10-03 16:57:05,200 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Check and clear if exists changeSupplierRequests by key:834450967
+2022-10-03 16:57:05,200 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:57:05,204 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-4] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:57:06,510 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-5] Check existing of user by id: 834450967
+2022-10-03 16:57:08,991 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-7] Callback data with type: PASSENGER_ROUTE and routeId: 2
+2022-10-03 16:57:10,655 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-8] Callback data with type: PASSENGER_ROUTE and routeId: 4
+2022-10-03 16:57:12,247 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CancelPassengerRouteCallbackType [http-nio-5000-exec-9] Callback data with type: PASSENGER_ROUTE and routeId: 4
+2022-10-03 16:57:13,578 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-10] Callback data with type: PASSENGER_ROUTE and routeId: 3
+2022-10-03 16:57:14,277 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-1] Callback data with type: CHOSE_DATE_PASSENGER by user : Myachin97
+2022-10-03 16:57:16,373 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-2] Got First Date Supplier Callback type with first date :2022-10-28 by user: Myachin97
+2022-10-03 16:57:16,976 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-3] Got Second date consumer callback type with second date :2022-10-30
+2022-10-03 16:57:17,102 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-3] Find drivers by secondDate:2022-10-30,firstDate:2022-10-28,routes:[City(id=2, name=BELASTOK), City(id=3, name=WROCLAW)]
+2022-10-03 16:57:19,035 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CheckPassengerCallbackType [http-nio-5000-exec-4] Got callback with type : CHECK_PASSENGER_REQUEST by user : Myachin97
+2022-10-03 16:57:28,499 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-7] Callback with type :MY_OFFERS and activity : DRIVER
+2022-10-03 16:57:28,500 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Check and clear if exists changeSupplierRequests by key:834450967
+2022-10-03 16:57:28,500 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:57:28,503 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Find offers by id:834450967 and activity :DRIVER
+2022-10-03 16:57:29,746 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Check existing of user by id: 834450967
+2022-10-03 16:57:31,458 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-10] Callback with type :MY_OFFERS and activity : PASSENGER
+2022-10-03 16:57:31,459 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Check and clear if exists changeSupplierRequests by key:834450967
+2022-10-03 16:57:31,459 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Find offers by id:834450967 and activity :PASSENGER
+2022-10-03 16:57:31,463 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Find offers by id:834450967 and activity :PASSENGER
+2022-10-03 16:57:33,585 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.ChangeRouteOfOfferCallbackType [http-nio-5000-exec-2] Callback data with type: CHANGE_ROUTE_OF_OFFER
+2022-10-03 16:57:34,809 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.CancelRouteOfOfferCallbackType [http-nio-5000-exec-3] Callback data with type: CANCEL_ROUTE_OF_OFFER and routeId: 3
+2022-10-03 16:57:35,737 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.ChangeRouteOfOfferCallbackType [http-nio-5000-exec-4] Callback data with type: CHANGE_ROUTE_OF_OFFER
+2022-10-03 16:57:36,583 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.FinishChangeRouteOfOfferCallbackType [http-nio-5000-exec-5] Got callback type :FINISH_CHANGING_ROUTE_OF_OFFER, by user :Myachin97
+2022-10-03 16:57:36,584 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-5] Update route of offer with id :19
+2022-10-03 16:57:36,612 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-5] Find drivers by secondDate:2022-10-30,firstDate:2022-10-28,routes:[City(id=2, name=BELASTOK), City(id=3, name=WROCLAW)]
+2022-10-03 16:57:44,303 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-6] Check existing of user by id: 834450967
+2022-10-03 16:57:46,405 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-8] Callback with type :MY_OFFERS and activity : PASSENGER
+2022-10-03 16:57:46,406 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Check and clear if exists changeSupplierRequests by key:834450967
+2022-10-03 16:57:46,406 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Find offers by id:834450967 and activity :PASSENGER
+2022-10-03 16:57:46,409 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-8] Find offers by id:834450967 and activity :PASSENGER
+2022-10-03 16:57:49,593 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.ChangeRouteOfOfferCallbackType [http-nio-5000-exec-10] Callback data with type: CHANGE_ROUTE_OF_OFFER
+2022-10-03 16:57:51,019 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.CancelRouteOfOfferCallbackType [http-nio-5000-exec-1] Callback data with type: CANCEL_ROUTE_OF_OFFER and routeId: 3
+2022-10-03 16:57:52,404 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.ChangeRouteOfOfferCallbackType [http-nio-5000-exec-2] Callback data with type: CHANGE_ROUTE_OF_OFFER
+2022-10-03 16:57:53,614 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.FinishChangeRouteOfOfferCallbackType [http-nio-5000-exec-3] Got callback type :FINISH_CHANGING_ROUTE_OF_OFFER, by user :Myachin97
+2022-10-03 16:57:53,615 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-3] Update route of offer with id :19
+2022-10-03 16:57:53,639 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-3] Find drivers by secondDate:2022-10-30,firstDate:2022-10-28,routes:[City(id=2, name=BELASTOK), City(id=4, name=GDANSK)]
+2022-10-03 16:57:57,574 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Check existing of user by id: 834450967
+2022-10-03 16:58:02,103 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-03 16:58:02,103 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-03 16:58:02,112 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

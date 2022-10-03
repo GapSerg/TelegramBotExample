@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -11,15 +12,14 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_SECOND_DATE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.validSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getListOfRequests;
-import static com.godeltech.springgodelbot.util.ConstantUtil.DATES_WERE_CHANGED;
-import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_SECOND_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -50,9 +50,9 @@ public class ChangeSecondDateOfOfferCallbackType implements CallbackType {
                                                               ChangeDriverRequest changeDriverRequest, LocalDate secondDate) {
         changeDriverRequest.setSecondDate(secondDate);
         requestService.updateDates(changeDriverRequest);
-        String additionalText = changeDriverRequest.getActivity() == Activity.DRIVER ?
-                getListOfRequests(requestService.findPassengersByRequestData(changeDriverRequest)) :
-                getListOfRequests(requestService.findDriversByRequestData(changeDriverRequest));
-        return getStartMenu(callbackQuery.getMessage(), text + additionalText);
+        List<? extends Request> requests = changeDriverRequest.getActivity() == Activity.DRIVER ?
+                requestService.findPassengersByRequestData(changeDriverRequest) :
+                requestService.findDriversByRequestData(changeDriverRequest);
+        return getAvailableOffersList(requests,callbackQuery, text);
     }
 }

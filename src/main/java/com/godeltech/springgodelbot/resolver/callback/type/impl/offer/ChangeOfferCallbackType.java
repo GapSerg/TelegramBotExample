@@ -23,7 +23,6 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 @Slf4j
 public class ChangeOfferCallbackType implements CallbackType {
     private final RequestService requestService;
-    private final OfferService offerService;
 
     @Override
     public String getCallbackName() {

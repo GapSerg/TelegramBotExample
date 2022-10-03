@@ -580,4 +580,20 @@ public class CallbackUtil {
                         request.getSecondDate(), request.getActivity(), request.getUserDto().getUserName());
     }
 
+    public static EditMessageText getAvailableOffersList(List<? extends Request> requests, CallbackQuery callbackQuery, String message) {
+        String requestsInf = requests.isEmpty() ? NO_SUITABLE_OFFERS :
+                String.format(SUITABLE_OFFERS, getListOfOffersForRequest(requests));
+        return EditMessageText.builder()
+                .messageId(callbackQuery.getMessage().getMessageId())
+                .chatId(callbackQuery.getMessage().getChatId().toString())
+                .text(message + requestsInf)
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(InlineKeyboardButton.builder()
+                                .text("Back to main menu")
+                                .callbackData(Callbacks.MAIN_MENU.name())
+                                .build())))
+                        .build())
+                .build();
+    }
+
 }

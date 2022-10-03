@@ -38,5 +38,6 @@ public class ConstantUtil {
     public static final String CURRENT_ROUTE = "You current route : %s\n If you pressed on reserved button we'll cancel it";
     public static final String SELECTED_ROUTE = "Selected route : %s";
     public static final String FINISH = "FINISH";
+    public static final String ROUTE_CHANGED = "You've successfully changed route of offer \n";
 
 }
