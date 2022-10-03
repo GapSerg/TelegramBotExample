@@ -31,7 +31,7 @@ public class ConstantUtil {
     public static final String OFFER_WAS_DELETED = "The offer was deleted";
     public static final String WRITE_ADDITIONAL_DESCRIPTION_FOR_CHANGE = "Please write additional description and press enter";
     public static final String DESCRIPTION_WAS_UPDATED = "The description was updated";
-    public static final String DATES_WERE_CHANGED = "The dates were changed";
+    public static final String DATES_WERE_CHANGED = "The dates were changed \n";
     public static final String CHOSEN_DATE = "Date : %s : %s";
     public static final String CHOSEN_ROLE = "Role : %s";
     public static final String CHOSE_THE_ROUTE = "Chose the route that you are interested in";
