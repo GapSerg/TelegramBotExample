@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.MAIN_MENU;
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
-import static com.godeltech.springgodelbot.util.CallbackUtil.makeSendMessageForUserWithoutUsername;
+import static com.godeltech.springgodelbot.util.CallbackUtil.makeEditMessageForUserWithoutUsername;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class MainMenuActivityCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         if (callbackQuery.getFrom().getUserName() == null)
-            return makeSendMessageForUserWithoutUsername(callbackQuery.getMessage());
+            return makeEditMessageForUserWithoutUsername(callbackQuery.getMessage());
         if (!userService.existsByIdAndUsername(callbackQuery.getFrom().getId(), callbackQuery.getFrom().getUserName()))
             userService.save(userMapper.mapToUserEntity(callbackQuery.getFrom()), callbackQuery.getMessage());
         return getStartMenu(callbackQuery);

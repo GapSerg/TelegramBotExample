@@ -33,7 +33,11 @@ public class BotHandler {
     @SneakyThrows
     public void handleUserAuthorizationException(UserAuthorizationException exception) {
         log.error(exception.getMessage());
-        tudaSudaTelegramBot.execute(CallbackUtil.makeSendMessageForUserWithoutUsername(exception.getBotMessage()));
+        if (exception.isOnText()) {
+            tudaSudaTelegramBot.execute(CallbackUtil.makeSendMessageForUserWithoutUsername(exception.getBotMessage()));
+        } else {
+            tudaSudaTelegramBot.execute(CallbackUtil.makeEditMessageForUserWithoutUsername(exception.getBotMessage()));
+        }
     }
 
     @ExceptionHandler(value = UnknownCommandException.class)

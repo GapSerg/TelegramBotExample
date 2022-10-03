@@ -37,7 +37,7 @@ public class ChangeRouteOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String[] data = callbackQuery.getData().split(SPLITTER);
         if (callbackQuery.getFrom().getUserName() == null)
-            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage());
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         log.info("Callback data with type: {}", CHANGE_ROUTE_OF_OFFER);
         List<City> reservedRoutes = changeDriverRequest.getCities();

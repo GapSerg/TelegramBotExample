@@ -15,7 +15,7 @@
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>WARN</level>
+            <level>INFO</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOGS}/archived/spring-godel-bot-%d{yyyy-MM-dd}.log</fileNamePattern>

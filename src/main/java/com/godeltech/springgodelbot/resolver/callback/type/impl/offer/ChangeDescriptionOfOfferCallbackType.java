@@ -31,7 +31,7 @@ public class ChangeDescriptionOfOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         if (callbackQuery.getFrom().getUserName() == null)
-            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage());
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(), false);
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         log.info("Change description of offer with id: {}", changeDriverRequest.getOfferId());
         requestService.clearDriverRequestsAndPassengerRequests(callbackQuery.getMessage().getChatId());

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -524,17 +525,27 @@ public class CallbackUtil {
                 .callbackData(cancelCallback.name() + SPLITTER)
                 .build();
     }
-
-    public static EditMessageText makeSendMessageForUserWithoutUsername(Message message) {
-        return EditMessageText.builder()
-                .messageId(message.getMessageId())
+    public static SendMessage makeSendMessageForUserWithoutUsername(Message message) {
+        return SendMessage.builder()
                 .text(HAVE_NO_USERNAME)
+                .chatId(message.getChatId().toString())
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboardRow(List.of(InlineKeyboardButton.builder()
                                 .text(USERNAME_IS_ADDED)
                                 .callbackData(MAIN_MENU.name() + SPLITTER + "checkUsername")
                                 .build())).build())
-                .chatId(message.toString())
+                .build();
+    }
+    public static EditMessageText makeEditMessageForUserWithoutUsername(Message message) {
+        return EditMessageText.builder()
+                .text(HAVE_NO_USERNAME)
+                .chatId(message.getChatId().toString())
+                .messageId(message.getMessageId())
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboardRow(List.of(InlineKeyboardButton.builder()
+                                .text(USERNAME_IS_ADDED)
+                                .callbackData(MAIN_MENU.name() + SPLITTER + "checkUsername")
+                                .build())).build())
                 .build();
     }
 

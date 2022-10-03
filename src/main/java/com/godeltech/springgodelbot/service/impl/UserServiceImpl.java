@@ -31,8 +31,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserEntity save(UserEntity userEntity, Message message) {
         log.info("Save a new user: {}", userEntity);
-        if (userEntity.getUserName() == null)
-            throw new UserAuthorizationException(UserEntity.class, "username", null, message);
         return userRepository.save(userEntity);
     }
 

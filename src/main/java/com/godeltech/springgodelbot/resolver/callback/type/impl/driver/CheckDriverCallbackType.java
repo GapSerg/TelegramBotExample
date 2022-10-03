@@ -5,8 +5,9 @@ import com.godeltech.springgodelbot.dto.UserDto;
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
-import lombok.RequiredArgsConstructor;
+import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -17,10 +18,16 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.createEditMessageTe
 import static com.godeltech.springgodelbot.util.ConstantUtil.WRITE_ADD_DESCRIPTION_FOR_DRIVER;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class CheckDriverCallbackType implements CallbackType {
     private final RequestService requestService;
+    private final TudaSudaTelegramBot tudaSudaTelegramBot;
+
+    public CheckDriverCallbackType(RequestService requestService,
+                                   @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
+        this.requestService = requestService;
+        this.tudaSudaTelegramBot = tudaSudaTelegramBot;
+    }
 
     @Override
     public String getCallbackName() {
@@ -31,12 +38,17 @@ public class CheckDriverCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got callback type :{} from user :{}", CHECK_DRIVER_REQUEST, callbackQuery.getFrom().getUserName());
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
-        if (driverRequest.getUserDto().getUserName() == null)
-            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage());
+        checkUsername(callbackQuery, driverRequest);
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         driverRequest.setNeedForDescription(true);
         requestService.clearChangeOfferRequestsAndPassengerRequests(callbackQuery.getMessage().getChatId());
         return createEditMessageTextAfterConfirm(callbackQuery, SAVE_DRIVER_WITHOUT_DESCRIPTION,
                 WRITE_ADD_DESCRIPTION_FOR_DRIVER);
+    }
+
+    private void checkUsername(CallbackQuery callbackQuery, DriverRequest driverRequest) {
+        if (callbackQuery.getFrom().getUserName() == null){
+            tudaSudaTelegramBot.deleteMessages(driverRequest.getChatId(), driverRequest.getMessages());
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );}
     }
 }
