@@ -1,6 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
 import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.dto.UserDto;
+import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.util.CallbackUtil;
@@ -30,6 +32,8 @@ public class CheckPassengerCallbackType implements CallbackType {
         log.info("Got callback with type : {} by user : {}",
                 CHECK_PASSENGER_REQUEST.name(),callbackQuery.getFrom().getUserName());
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
+        if (passengerRequest.getUserDto().getUserName()==null)
+            throw new UserAuthorizationException(UserDto.class,"username",null, callbackQuery.getMessage());
         passengerRequest.setNeedForDescription(true);
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         requestService.clearDriverRequestsAndChangeOfferRequests(callbackQuery.getMessage().getChatId());

@@ -1,6 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.UserDto;
+import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ public class ChangeDescriptionOfOfferCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        if (callbackQuery.getFrom().getUserName()==null)
+            throw new UserAuthorizationException(UserDto.class,"username",null, callbackQuery.getMessage());
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         log.info("Change description of offer with id: {}",changeDriverRequest.getOfferId());
         requestService.clearDriverRequestsAndPassengerRequests(callbackQuery.getMessage().getChatId());

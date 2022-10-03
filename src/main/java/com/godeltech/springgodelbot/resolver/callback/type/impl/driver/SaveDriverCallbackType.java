@@ -1,6 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
 import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.dto.UserDto;
+import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;

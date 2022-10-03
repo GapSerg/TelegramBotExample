@@ -1,6 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.UserDto;
+import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class ChangeDateOfOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        if (callbackQuery.getFrom().getUserName()==null)
+            throw new UserAuthorizationException(UserDto.class,"username",null, callbackQuery.getMessage());
         log.info("Change date of offer with id:{}, by user :{}",
                 changeDriverRequest.getOfferId(),callbackQuery.getFrom().getUserName());
         return createEditMessageForFirstDate(callbackQuery,CHANGE_FIRST_DATE_OF_OFFER.name(),
