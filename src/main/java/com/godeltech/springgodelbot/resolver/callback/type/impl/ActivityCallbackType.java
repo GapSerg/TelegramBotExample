@@ -9,6 +9,7 @@ import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.SneakyThrows;
+import lombok.var;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;

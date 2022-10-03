@@ -4,6 +4,7 @@ import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
+import lombok.var;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;

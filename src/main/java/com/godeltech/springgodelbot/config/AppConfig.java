@@ -11,6 +11,7 @@ import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.google.common.cache.CacheBuilder;
 import lombok.Data;
 import lombok.SneakyThrows;
+import lombok.var;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;

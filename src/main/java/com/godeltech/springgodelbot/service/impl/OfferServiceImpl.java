@@ -12,6 +12,7 @@ import com.godeltech.springgodelbot.model.repository.OfferRepository;
 import com.godeltech.springgodelbot.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
