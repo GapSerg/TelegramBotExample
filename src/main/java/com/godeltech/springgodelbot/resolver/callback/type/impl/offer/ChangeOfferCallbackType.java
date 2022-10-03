@@ -1,8 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.OfferService;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,8 @@ public class ChangeOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         long offerId = Long.parseLong(getCallbackValue(callbackQuery.getData()));
-        ChangeDriverRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage().getChatId());
+        log.info("Got {} callback type with route id :{}", CHANGE_OFFER,offerId);
+        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage().getChatId());
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
@@ -43,7 +43,7 @@ public class ChangeOfferCallbackType implements CallbackType {
                 .build();
     }
 
-    private List<List<InlineKeyboardButton>> getChangeOfferButtons(ChangeDriverRequest request) {
+    private List<List<InlineKeyboardButton>> getChangeOfferButtons(ChangeOfferRequest request) {
         return List.of(List.of(InlineKeyboardButton.builder()
                                 .text("Change route")
                                 .callbackData(CHANGE_ROUTE_OF_OFFER.name())

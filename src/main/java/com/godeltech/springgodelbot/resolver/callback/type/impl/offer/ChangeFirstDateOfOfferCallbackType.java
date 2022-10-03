@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +34,9 @@ public class ChangeFirstDateOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         log.info("Change the first date of offer, changed first date: {}", firstDate);
-        ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         if (validFirstDate(firstDate)) {
-            changeDriverRequest.setFirstDate(firstDate);
+            changeOfferRequest.setFirstDate(firstDate);
             return createEditMessageForSecondDate(callbackQuery, firstDate, CHOOSE_THE_SECOND_DATE
                     , CHANGE_SECOND_DATE_OF_OFFER.name());
         } else {

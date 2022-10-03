@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
@@ -36,14 +36,14 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
         log.info("Callback data with type: {} and routeId: {}", CANCEL_ROUTE_OF_OFFER, routeId);
-        ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
-        changeDriverRequest.getCities().remove(reservedRoute);
-        return createEditSendMessageForRoutes(callbackQuery, cities, changeDriverRequest.getCities(),
+        changeOfferRequest.getCities().remove(reservedRoute);
+        return createEditSendMessageForRoutes(callbackQuery, cities, changeOfferRequest.getCities(),
                 CHANGE_ROUTE_OF_OFFER, CANCEL_ROUTE_OF_OFFER);
     }
 }

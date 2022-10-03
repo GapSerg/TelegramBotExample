@@ -34,10 +34,11 @@ public class ConstantUtil {
     public static final String DATES_WERE_CHANGED = "The dates were changed \n";
     public static final String CHOSEN_DATE = "Date : %s : %s";
     public static final String CHOSEN_ROLE = "Role : %s";
-    public static final String CHOSE_THE_ROUTE = "Chose the route that you are interested in";
-    public static final String CURRENT_ROUTE = "You current route : %s\n If you pressed on reserved button we'll cancel it";
+    public static final String CHOSE_THE_ROUTE = "Chose the place of departure that you are interested in";
+    public static final String CURRENT_ROUTE = "Please select a place of arrival or a stopping point.\nYour current route : %s\nIf you pressed on reserved button we'll cancel it";
     public static final String SELECTED_ROUTE = "Selected route : %s";
     public static final String FINISH = "FINISH";
     public static final String ROUTE_CHANGED = "You've successfully changed route of offer \n";
+    public static final String SAVE = "SAVE";
 
 }

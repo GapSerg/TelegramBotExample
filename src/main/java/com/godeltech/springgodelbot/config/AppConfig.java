@@ -1,7 +1,7 @@
 package com.godeltech.springgodelbot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
@@ -106,7 +106,7 @@ public class AppConfig {
     }
 
     @Bean
-    public Map<Long, ChangeDriverRequest> changeDriverRequests() {
+    public Map<Long, ChangeOfferRequest> changeOfferRequests() {
         return new ConcurrentHashMap<>();
     }
 

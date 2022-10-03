@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_FIRST_DATE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
 @Component
@@ -23,12 +24,13 @@ public class CancelFirstDateOfOfferCallbackType implements CallbackType {
 
     @Override
     public String getCallbackName() {
-        return Callbacks.CANCEL_FIRST_DATE_OF_OFFER.name();
+        return CANCEL_FIRST_DATE_OF_OFFER.name();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
+        log.info("Got {} callback type with canceled date :{}", CANCEL_FIRST_DATE_OF_OFFER,canceledDate);
         requestService.getChangeOfferRequest(callbackQuery.getMessage());
         return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, Callbacks.CHANGE_FIRST_DATE_OF_OFFER.name(),
                 "You've canceled the first date", canceledDate);

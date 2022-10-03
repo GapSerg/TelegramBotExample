@@ -35,7 +35,7 @@ public class FirstDatePassengerCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
 
         LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got First Date Supplier Callback type with first date :{} by user: {}", firstDate
+        log.info("Got {} type with first date :{} by user: {}",FIRST_DATE_PASSENGER, firstDate
                 , callbackQuery.getFrom().getUserName());
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());

@@ -1,7 +1,6 @@
 package com.godeltech.springgodelbot.service.impl;
 
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
-import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.model.entity.UserEntity;
 import com.godeltech.springgodelbot.model.repository.UserRepository;
 import com.godeltech.springgodelbot.service.UserService;

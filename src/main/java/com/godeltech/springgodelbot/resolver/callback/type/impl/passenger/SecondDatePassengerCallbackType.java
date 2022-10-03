@@ -43,7 +43,7 @@ public class SecondDatePassengerCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         LocalDate secondDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got Second date consumer callback type with second date :{}", secondDate);
+        log.info("Got {} callback type with second date :{}", SECOND_DATE_PASSENGER,secondDate);
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         return validSecondDate(passengerRequest.getFirstDate(), secondDate) ?

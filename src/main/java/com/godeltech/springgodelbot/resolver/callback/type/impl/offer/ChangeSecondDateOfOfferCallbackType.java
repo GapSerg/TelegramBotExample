@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
@@ -15,11 +15,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_SECOND_DATE_OF_OFFER;
-import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.validSecondDate;
-import static com.godeltech.springgodelbot.util.ConstantUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getAvailableOffersList;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.DATES_WERE_CHANGED;
+import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_SECOND_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -38,21 +39,21 @@ public class ChangeSecondDateOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         LocalDate secondDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         log.info("Change date of offer with date :{} by user:{}", secondDate, callbackQuery.getFrom().getUserName());
-        ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
-        return validSecondDate(changeDriverRequest.getFirstDate(), secondDate) ?
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        return validSecondDate(changeOfferRequest.getFirstDate(), secondDate) ?
                 updateDatesOfSupplierAndGetStartMenu(callbackQuery,
-                        DATES_WERE_CHANGED, changeDriverRequest, secondDate) :
-                createEditMessageForSecondDate(callbackQuery, changeDriverRequest.getFirstDate(),
+                        DATES_WERE_CHANGED, changeOfferRequest, secondDate) :
+                createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
                         INCORRECT_SECOND_DATE, CHANGE_SECOND_DATE_OF_OFFER.name(), secondDate);
     }
 
     private BotApiMethod updateDatesOfSupplierAndGetStartMenu(CallbackQuery callbackQuery, String text,
-                                                              ChangeDriverRequest changeDriverRequest, LocalDate secondDate) {
-        changeDriverRequest.setSecondDate(secondDate);
-        requestService.updateDates(changeDriverRequest);
-        List<? extends Request> requests = changeDriverRequest.getActivity() == Activity.DRIVER ?
-                requestService.findPassengersByRequestData(changeDriverRequest) :
-                requestService.findDriversByRequestData(changeDriverRequest);
+                                                              ChangeOfferRequest changeOfferRequest, LocalDate secondDate) {
+        changeOfferRequest.setSecondDate(secondDate);
+        requestService.updateDates(changeOfferRequest);
+        List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
+                requestService.findPassengersByRequestData(changeOfferRequest) :
+                requestService.findDriversByRequestData(changeOfferRequest);
         return getAvailableOffersList(requests,callbackQuery, text);
     }
 }

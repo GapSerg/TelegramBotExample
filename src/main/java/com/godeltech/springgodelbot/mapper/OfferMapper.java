@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.mapper;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.dto.Request;
@@ -13,5 +13,5 @@ public interface OfferMapper {
 
     PassengerRequest mapToPassengerRequest(Offer offer);
 
-    ChangeDriverRequest mapToChangeOfferRequest(Offer offer);
+    ChangeOfferRequest mapToChangeOfferRequest(Offer offer);
 }

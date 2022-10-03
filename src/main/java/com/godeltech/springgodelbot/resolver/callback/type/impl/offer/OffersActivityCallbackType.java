@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_OFFER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.OFFERS_ACTIVITY;
 import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
 
 @Component
@@ -28,6 +30,7 @@ public class OffersActivityCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        log.info("Got {} callback type", OFFERS_ACTIVITY);
         List<InlineKeyboardButton> buttons = Arrays.stream(Activity.values())
                 .map(activity -> InlineKeyboardButton.builder()
                         .text(activity.name())

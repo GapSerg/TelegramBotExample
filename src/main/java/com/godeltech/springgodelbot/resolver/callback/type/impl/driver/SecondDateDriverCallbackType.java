@@ -44,7 +44,7 @@ public class SecondDateDriverCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         LocalDate secondDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got Second date supplier callback type with second date :{} and by user : {}",
+        log.info("Got {} callback type with second date :{} and by user : {}",SECOND_DATE_DRIVER,
                 secondDate, callbackQuery.getFrom().getUserName());
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         return validSecondDate(driverRequest.getFirstDate(), secondDate) ?

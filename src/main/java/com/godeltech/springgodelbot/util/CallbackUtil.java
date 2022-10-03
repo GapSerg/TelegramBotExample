@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.CallbackUtil.SaveUtil.SAVE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 public class CallbackUtil {
@@ -32,6 +30,7 @@ public class CallbackUtil {
     public static final String MENU = "MENU";
     public static final String HAVE_NO_USERNAME = "You don't have a username, please add it in your personal settings.When you deal with it,  just press the button";
     public static final String USERNAME_IS_ADDED = "I've added my username";
+    public static final String EMPTY = " ";
 
 
     public static class RouteUtil {
@@ -66,7 +65,8 @@ public class CallbackUtil {
                         .callbackData(getChoseDateCallback(callback))
                         .build()));
             return EditMessageText.builder()
-                    .text(String.format(CURRENT_ROUTE, getCurrentRoute(reservedCities)))
+                    .text(reservedCities.isEmpty() ? CHOSE_THE_ROUTE :
+                            String.format(CURRENT_ROUTE, getCurrentRoute(reservedCities)))
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
@@ -424,49 +424,6 @@ public class CallbackUtil {
         }
     }
 
-    public static class SaveUtil {
-
-        public static final String NO_DRIVERS = "There are no driver with these dates and route \nDo you want to save your request and send it for drivers who will arrive in such route: ";
-        public static final String MAIN_MENU_TEXT = "Main menu";
-        public static final String SAVE = "SAVE";
-
-//        public static SendMessage createSendMessageForSavingOffer(CallbackQuery callbackQuery,
-//                                                                  List<? extends Request> offers, Callbacks callback) {
-//            return offers.isEmpty() ? noOffersSendMessage(callbackQuery.getMessage().getChatId(), callback) :
-//                    makeSendMessagesForShowingSuppliers(callbackQuery.getMessage().getChatId(), offers, callback);
-//        }
-
-//        public static SendMessage noOffersSendMessage(Long chatId, Callbacks callback) {
-//            return SendMessage.builder()
-//                    .chatId(chatId.toString())
-//                    .text(NO_DRIVERS)
-//                    .replyMarkup(getMarkupForChoice(callback))
-//                    .build();
-//        }
-
-//        private static InlineKeyboardMarkup getMarkupForChoice(Callbacks callback) {
-//            return InlineKeyboardMarkup.builder()
-//                    .keyboard(List.of(List.of(InlineKeyboardButton.builder()
-//                                    .text(SAVE)
-//                                    .callbackData(callback.name())
-//                                    .build(),
-//                            InlineKeyboardButton.builder()
-//                                    .text(MAIN_MENU_TEXT)
-//                                    .callbackData(MAIN_MENU.name())
-//                                    .build())))
-//                    .build();
-//        }
-
-//        private static SendMessage makeSendMessagesForShowingSuppliers(Long chatId, List<? extends Request> requests, Callbacks callback) {
-//            return SendMessage.builder()
-//                    .text(getListOfRequests(requests) + " \nDo you want to save your request and send it for drivers who will arrive in such route: ")
-//                    .replyMarkup(getMarkupForChoice(callback))
-//                    .chatId(chatId.toString())
-//                    .build();
-//        }
-    }
-
-
     private static List<List<InlineKeyboardButton>> getButtonsList() {
         return new ArrayList<>();
     }
@@ -525,6 +482,7 @@ public class CallbackUtil {
                 .callbackData(cancelCallback.name() + SPLITTER)
                 .build();
     }
+
     public static SendMessage makeSendMessageForUserWithoutUsername(Message message) {
         return SendMessage.builder()
                 .text(HAVE_NO_USERNAME)
@@ -536,6 +494,7 @@ public class CallbackUtil {
                                 .build())).build())
                 .build();
     }
+
     public static EditMessageText makeEditMessageForUserWithoutUsername(Message message) {
         return EditMessageText.builder()
                 .text(HAVE_NO_USERNAME)
@@ -544,15 +503,9 @@ public class CallbackUtil {
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboardRow(List.of(InlineKeyboardButton.builder()
                                 .text(USERNAME_IS_ADDED)
-                                .callbackData(MAIN_MENU.name() + SPLITTER + "checkUsername")
+                                .callbackData(MAIN_MENU.name())
                                 .build())).build())
                 .build();
-    }
-
-    public static String getListOfRequests(List<? extends Request> requests) {
-        return requests.stream()
-                .map(CallbackUtil::getOffersView)
-                .collect(Collectors.joining("\n\n"));
     }
 
     public static String getListOfOffersForRequest(List<? extends Request> requests) {
@@ -571,13 +524,19 @@ public class CallbackUtil {
 
     public static String getOffersViewForRequest(Request request) {
         return request.getDescription() != null ?
-                String.format(OFFERS_FOR_REQUESTS_PATTERN, request.getUserDto().getFirstName(),
-                        request.getUserDto().getLastName(), getCurrentRoute(request.getCities()),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(request.getUserDto().getFirstName()),
+                        getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()),
                         request.getFirstDate(), request.getSecondDate(),
                         request.getActivity(), request.getDescription(), request.getUserDto().getUserName()) :
-                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, request.getUserDto().getFirstName(),
-                        request.getUserDto().getLastName(), getCurrentRoute(request.getCities()), request.getFirstDate(),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(request.getUserDto().getFirstName()),
+                        getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()), request.getFirstDate(),
                         request.getSecondDate(), request.getActivity(), request.getUserDto().getUserName());
+    }
+
+    private static String getCorrectName(String name) {
+        return name == null ?
+                EMPTY :
+                name;
     }
 
     public static EditMessageText getAvailableOffersList(List<? extends Request> requests, CallbackQuery callbackQuery, String message) {

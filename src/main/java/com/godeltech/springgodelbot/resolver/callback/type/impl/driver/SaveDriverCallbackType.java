@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SUCCESSFUL_REQUEST_SAVING;
 
@@ -30,12 +31,12 @@ public class SaveDriverCallbackType implements CallbackType {
 
     @Override
     public String getCallbackName() {
-        return Callbacks.SAVE_DRIVER_WITHOUT_DESCRIPTION.name();
+        return SAVE_DRIVER_WITHOUT_DESCRIPTION.name();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Got save supplier callback type without description with chatId:{}"
+        log.info("Got {} callback type without description with chatId:{}",SAVE_DRIVER_WITHOUT_DESCRIPTION
                 , callbackQuery.getMessage().getChatId());
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         driverRequest.getMessages()

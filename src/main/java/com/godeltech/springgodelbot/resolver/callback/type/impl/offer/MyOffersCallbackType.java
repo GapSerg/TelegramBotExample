@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
@@ -39,7 +39,7 @@ public class MyOffersCallbackType implements CallbackType {
         Activity activity = Activity.valueOf(getCallbackValue(callbackQuery.getData()));
         log.info("Callback with type :{} and activity : {}", MY_OFFERS, activity);
         requestService.checkAndClearChangingOfferRequests(callbackQuery.getMessage().getChatId());
-        List<ChangeDriverRequest> offerList = requestService.findByUserIdAndActivity(callbackQuery.getFrom().getId(), activity);
+        List<ChangeOfferRequest> offerList = requestService.findByUserIdAndActivity(callbackQuery.getFrom().getId(), activity);
         return !offerList.isEmpty() ?
                 makeSendMessage(offerList, callbackQuery) :
                 EditMessageText.builder()
@@ -56,7 +56,7 @@ public class MyOffersCallbackType implements CallbackType {
                         .build();
     }
 
-    private EditMessageText makeSendMessage(List<ChangeDriverRequest> requests, CallbackQuery callbackQuery) {
+    private EditMessageText makeSendMessage(List<ChangeOfferRequest> requests, CallbackQuery callbackQuery) {
         List<List<InlineKeyboardButton>> buttons = requests.stream()
                 .map(request -> List.of(InlineKeyboardButton.builder()
                         .text(String.format(OFFERS_OF_DRIVERS_PATTERN, request.getCities().stream().map(City::getName)

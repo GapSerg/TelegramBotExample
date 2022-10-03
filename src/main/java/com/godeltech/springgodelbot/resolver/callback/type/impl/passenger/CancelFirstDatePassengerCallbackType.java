@@ -12,8 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_FIRST_DATE_PASSENGER;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_PASSENGER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
 @Component
@@ -30,6 +29,7 @@ public class CancelFirstDatePassengerCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
+        log.info("Got {} callback type with canceled date :{}", CANCEL_FIRST_DATE_PASSENGER,canceledDate);
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
         passengerRequest.setFirstDate(null);
         return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_PASSENGER.name(),

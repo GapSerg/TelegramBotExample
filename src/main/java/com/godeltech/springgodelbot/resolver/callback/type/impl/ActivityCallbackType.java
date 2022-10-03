@@ -10,6 +10,7 @@ import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -27,6 +28,7 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_ROLE;
 
 @Component
+@Slf4j
 public class ActivityCallbackType implements CallbackType {
 
 
@@ -50,6 +52,7 @@ public class ActivityCallbackType implements CallbackType {
     @SneakyThrows
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         Activity activityType = Activity.valueOf(getCallbackValue(callbackQuery.getData()));
+        log.info("Got {} callback type with activity :{}",ACTIVITY,activityType);
         List<City> cities = cityService.findAll();
         User user = callbackQuery.getFrom();
         Set<Integer> messages = new HashSet<>();

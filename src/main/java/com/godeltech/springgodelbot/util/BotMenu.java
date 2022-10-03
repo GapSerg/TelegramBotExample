@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.util;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
@@ -51,11 +51,11 @@ public class BotMenu {
                 .build();
     }
 
-    public static EditMessageText getStartMenu(ChangeDriverRequest changeDriverRequest, String text) {
+    public static EditMessageText getStartMenu(ChangeOfferRequest changeOfferRequest, String text) {
         List<List<InlineKeyboardButton>> buttons = getStartMenuButtons();
         return EditMessageText.builder()
-                .chatId(changeDriverRequest.getChatId().toString())
-                .messageId(changeDriverRequest.getMessages().stream().findFirst().orElseThrow(UnknownCommandException::new))
+                .chatId(changeOfferRequest.getChatId().toString())
+                .messageId(changeOfferRequest.getMessages().stream().findFirst().orElseThrow(UnknownCommandException::new))
                 .text(text + "\nChoose the option you are interested in")
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)

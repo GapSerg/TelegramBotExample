@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.UserDto;
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.model.entity.City;
@@ -38,9 +38,9 @@ public class ChangeRouteOfOfferCallbackType implements CallbackType {
         String[] data = callbackQuery.getData().split(SPLITTER);
         if (callbackQuery.getFrom().getUserName() == null)
             throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );
-        ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         log.info("Callback data with type: {}", CHANGE_ROUTE_OF_OFFER);
-        List<City> reservedRoutes = changeDriverRequest.getCities();
+        List<City> reservedRoutes = changeOfferRequest.getCities();
         List<City> cities = cityService.findAll();
         if (data.length > 1) {
             int routeId = Integer.parseInt(data[1]);

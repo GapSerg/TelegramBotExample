@@ -41,7 +41,6 @@ public class TextAndEntityMessageType implements MessageType {
 
 
     private BotApiMethod getSendMessage(Message message) {
-        log.error("Got text message with entity :{}",message.getText());
         Optional<MessageEntity> commandEntity = message.getEntities().stream()
                 .filter(entity -> "bot_command".equals(entity.getType()))
                 .findFirst();
@@ -49,10 +48,13 @@ public class TextAndEntityMessageType implements MessageType {
             String command = message.getText().substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
             switch (command) {
                 case "/start":
+                    log.info("Got /start message");
                     return makeSendMessageForUser(message);
                 case "/help":
+                    log.info("Got /help message");
                     return makeHelpSendMessage(message);
                 default:
+                    log.error("Got /help unknown entity");
                     throw new UnknownCommandException(message);
             }
         } else {

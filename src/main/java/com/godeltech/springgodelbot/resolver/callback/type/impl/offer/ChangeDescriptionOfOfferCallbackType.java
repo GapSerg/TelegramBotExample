@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.UserDto;
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
@@ -32,11 +32,11 @@ public class ChangeDescriptionOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         if (callbackQuery.getFrom().getUserName() == null)
             throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(), false);
-        ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
-        log.info("Change description of offer with id: {}", changeDriverRequest.getOfferId());
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        log.info("Change description of offer with id: {}", changeOfferRequest.getOfferId());
         requestService.clearDriverRequestsAndPassengerRequests(callbackQuery.getMessage().getChatId());
-        changeDriverRequest.setNeedForDescription(true);
-        changeDriverRequest.setMessages(Set.of(callbackQuery.getMessage().getMessageId()));
+        changeOfferRequest.setNeedForDescription(true);
+        changeOfferRequest.setMessages(Set.of(callbackQuery.getMessage().getMessageId()));
         return EditMessageText.builder()
                 .text(WRITE_ADDITIONAL_DESCRIPTION_FOR_CHANGE)
                 .chatId(callbackQuery.getMessage().getChatId().toString())

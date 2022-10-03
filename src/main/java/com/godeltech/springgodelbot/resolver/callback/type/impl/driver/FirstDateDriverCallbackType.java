@@ -1,7 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
 import com.godeltech.springgodelbot.dto.DriverRequest;
-import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +29,14 @@ public class FirstDateDriverCallbackType implements CallbackType {
 
     @Override
     public String getCallbackName() {
-        return Callbacks.FIRST_DATE_DRIVER.name();
+        return FIRST_DATE_DRIVER.name();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
 
         LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got First Date Supplier Callback type with first date :{} by user: {}", firstDate
+        log.info("Got {} callback type with first date :{} by user: {}", FIRST_DATE_DRIVER,firstDate
                 , callbackQuery.getFrom().getUserName());
         DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         return validFirstDate(firstDate) ?

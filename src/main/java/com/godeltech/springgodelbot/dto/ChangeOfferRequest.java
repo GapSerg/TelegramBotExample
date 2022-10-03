@@ -8,15 +8,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-public class ChangeDriverRequest extends Request {
+public class ChangeOfferRequest extends Request {
     private Long offerId;
 
 
     @Builder
-    public ChangeDriverRequest(Long chatId, UserDto userDto,
-                               List<City> cities, LocalDate firstDate,
-                               LocalDate secondDate, String description, Boolean needForDescription,
-                               Set<Integer> messages, Activity activity, Long offerId) {
+    public ChangeOfferRequest(Long chatId, UserDto userDto,
+                              List<City> cities, LocalDate firstDate,
+                              LocalDate secondDate, String description, Boolean needForDescription,
+                              Set<Integer> messages, Activity activity, Long offerId) {
         super(chatId, userDto, cities, firstDate, secondDate, description, needForDescription, messages, activity);
         this.offerId = offerId;
     }

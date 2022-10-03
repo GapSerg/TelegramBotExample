@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.service.impl;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
@@ -37,8 +37,9 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<PassengerRequest> findPassengersByFirstDateBeforeAndSecondDateAfterAndRoutes
+    public List<PassengerRequest> findPassengersByFirstDateBeforeAndSecondDateAfterAndCities
             (LocalDate secondDate, LocalDate firstDate, List<City> cities) {
+        log.info("Find passengers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         List<String> routeList = cities.stream()
                 .map(City::getName)
                 .collect(Collectors.toList());
@@ -50,6 +51,7 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public List<DriverRequest> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
             (LocalDate secondDate, LocalDate firstDate, List<City> cities) {
+        log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         List<String> routeList = cities.stream()
                 .map(City::getName)
                 .collect(Collectors.toList());
@@ -60,7 +62,7 @@ public class OfferServiceImpl implements OfferService {
 
 
     @Override
-    public List<ChangeDriverRequest> findByUserEntityIdAndActivity(Long id, Activity activity) {
+    public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity) {
         log.info("Find offers by id:{} and activity :{}", id, activity);
         return offerRepository.findByUserEntityIdAndActivity(id, activity)
                 .stream().map(offerMapper::mapToChangeOfferRequest)
@@ -68,7 +70,8 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public ChangeDriverRequest getById(Long offerId, Long chatId) {
+    public ChangeOfferRequest getById(Long offerId, Long chatId) {
+        log.info("Find offer by id : {}", offerId);
         return offerRepository.findById(offerId)
                 .map(offerMapper::mapToChangeOfferRequest)
                 .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, chatId));
@@ -77,38 +80,45 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public void deleteById(Long offerId, Long chatId) {
+        log.info("Delete offer by id : {}", offerId);
         Offer offer = getOfferById(offerId, chatId);
         offerRepository.delete(offer);
     }
 
     private Offer getOfferById(Long offerId, Long chatId) {
-        Offer offer = offerRepository.findById(offerId)
+        log.info("Get offer by id: {}",offerId);
+        return offerRepository.findById(offerId)
                 .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, chatId));
-        return offer;
+
     }
 
     @Override
     @Transactional
-    public void updateRoute(ChangeDriverRequest changeDriverRequest) {
-        Offer offer = getOfferById(changeDriverRequest.getOfferId(), changeDriverRequest.getChatId());
-        offer.setCities(changeDriverRequest.getCities());
+    public void updateCities(ChangeOfferRequest changeOfferRequest) {
+        log.info("Update cities of offer with id : {} and cities : {} ",changeOfferRequest.getOfferId(),
+                changeOfferRequest.getCities());
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
+        offer.setCities(changeOfferRequest.getCities());
         offerRepository.save(offer);
     }
 
     @Override
     @Transactional
-    public void updateDatesOfOffer(ChangeDriverRequest changeDriverRequest) {
-        Offer offer = getOfferById(changeDriverRequest.getOfferId(), changeDriverRequest.getChatId());
-        offer.setFirstDate(changeDriverRequest.getFirstDate());
-        offer.setSecondDate(changeDriverRequest.getSecondDate());
+    public void updateDatesOfOffer(ChangeOfferRequest changeOfferRequest) {
+        log.info("Update date of offer with first date : {} , and second date : {} ",changeOfferRequest.getFirstDate()
+                ,changeOfferRequest.getSecondDate());
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
+        offer.setFirstDate(changeOfferRequest.getFirstDate());
+        offer.setSecondDate(changeOfferRequest.getSecondDate());
         offerRepository.save(offer);
     }
 
     @Override
     @Transactional
-    public void updateDescriptionOfOffer(ChangeDriverRequest changeDriverRequest) {
-        Offer offer = getOfferById(changeDriverRequest.getOfferId(), changeDriverRequest.getChatId());
-        offer.setDescription(changeDriverRequest.getDescription());
+    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest) {
+        log.info("Update description of offer with id : {}", changeOfferRequest.getOfferId());
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
+        offer.setDescription(changeOfferRequest.getDescription());
         offerRepository.save(offer);
     }
 
@@ -122,31 +132,8 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public Offer save(PassengerRequest passengerRequest) {
+        log.info("Save passenger request : {}", passengerRequest);
         Offer offer = offerMapper.mapToOffer(passengerRequest);
         return offerRepository.save(offer);
-    }
-
-    private boolean checkRoute(List<City> cities, Offer offer) {
-        boolean result = false;
-        int difference = cities.size() < offer.getCities().size() ?
-                cities.size() - offer.getCities().size() :
-                offer.getCities().size() - cities.size();
-        int matches = 0;
-        int previousSupplierIndex = -1;
-        for (int i = 0; i < cities.size(); i++) {
-            City route = cities.get(i);
-            int supplierIndex = offer.getCities().lastIndexOf(route);
-            if (supplierIndex != -1 &&
-                    i >= difference &&
-                    previousSupplierIndex <= supplierIndex) {
-                matches++;
-                previousSupplierIndex = supplierIndex;
-            }
-            if (matches == 2) {
-                result = true;
-                break;
-            }
-        }
-        return result;
     }
 }

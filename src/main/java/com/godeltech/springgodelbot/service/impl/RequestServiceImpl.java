@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.service.impl;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.dto.Request;
@@ -26,13 +26,13 @@ public class RequestServiceImpl implements RequestService {
 
     private final Map<Long, DriverRequest> driverRequests;
 
-    private final Map<Long, ChangeDriverRequest> changeDriverRequests;
+    private final Map<Long, ChangeOfferRequest> changeDriverRequests;
 
     private final OfferService offerService;
 
 
     public DriverRequest getDriverRequest(Message message) {
-        log.debug("Getting supplier request with chatId: {}", message.getChatId());
+        log.debug("Getting driver request with chatId: {}", message.getChatId());
         if (driverRequests.containsKey(message.getChatId()))
             return driverRequests.get(message.getChatId());
         throw new RequestNotFoundException(DriverRequest.class, "chatId", message.getChatId(), message);
@@ -40,6 +40,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void savePassengerRequest(PassengerRequest passengerRequest) {
+        log.debug("Save passenger request : {}",passengerRequest);
         passengerRequests.put(passengerRequest.getChatId(), passengerRequest);
     }
 
@@ -65,18 +66,18 @@ public class RequestServiceImpl implements RequestService {
 
 
     @Override
-    public ChangeDriverRequest getChangeOfferRequest(Message message) {
+    public ChangeOfferRequest getChangeOfferRequest(Message message) {
         log.debug("Get change offer request by chat id: {}", message.getChatId());
         if (changeDriverRequests.containsKey(message.getChatId()))
             return changeDriverRequests.get(message.getChatId());
-        throw new RequestNotFoundException(ChangeDriverRequest.class, "chatId", message.getChatId(), message);
+        throw new RequestNotFoundException(ChangeOfferRequest.class, "chatId", message.getChatId(), message);
     }
 
     @Override
-    public void updateDates(ChangeDriverRequest changeDriverRequest) {
-        log.debug("Update dates of offer with id: {}", changeDriverRequest.getOfferId());
-        offerService.updateDatesOfOffer(changeDriverRequest);
-        changeDriverRequests.remove(changeDriverRequest.getChatId());
+    public void updateDates(ChangeOfferRequest changeOfferRequest) {
+        log.debug("Update dates of offer with id: {}", changeOfferRequest.getOfferId());
+        offerService.updateDatesOfOffer(changeOfferRequest);
+        changeDriverRequests.remove(changeOfferRequest.getChatId());
     }
 
     @Override
@@ -94,10 +95,10 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void updateDescriptionOfOffer(ChangeDriverRequest changeDriverRequest) {
-        log.debug("Update description of offer with offer id: {}", changeDriverRequest.getOfferId());
-        offerService.updateDescriptionOfOffer(changeDriverRequest);
-        changeDriverRequests.remove(changeDriverRequest.getChatId());
+    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest) {
+        log.debug("Update description of offer with offer id: {}", changeOfferRequest.getOfferId());
+        offerService.updateDescriptionOfOffer(changeOfferRequest);
+        changeDriverRequests.remove(changeOfferRequest.getChatId());
     }
 
     @Override
@@ -114,12 +115,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void clearDriverRequestsAndChangeOfferRequests(Long chatId) {
+        log.debug("Clear driver and change offer requests with chat id :{}", chatId);
         driverRequests.remove(chatId);
         changeDriverRequests.remove(chatId);
     }
 
     @Override
     public void savePassenger(PassengerRequest passengerRequest) {
+        log.debug("Save passenger request : {}",passengerRequest);
         Long chatId = passengerRequest.getChatId();
         offerService.save(passengerRequest);
         passengerRequests.remove(chatId);
@@ -131,17 +134,17 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void updateRouteOfOffer(ChangeDriverRequest changeDriverRequest) {
-        log.info("Update route of offer with id :{}", changeDriverRequest.getOfferId());
-        Long chatId = changeDriverRequest.getChatId();
-        offerService.updateRoute(changeDriverRequest);
+    public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest) {
+        log.info("Update route of offer with id :{}", changeOfferRequest.getOfferId());
+        Long chatId = changeOfferRequest.getChatId();
+        offerService.updateCities(changeOfferRequest);
         changeDriverRequests.remove(chatId);
     }
 
     @Override
-    public ChangeDriverRequest deleteOffer(Message message) {
-        ChangeDriverRequest changeOfferRequest = getChangeOfferRequest(message);
-        log.info("Delete offer with id : {}", changeOfferRequest.getOfferId());
+    public ChangeOfferRequest deleteOffer(Message message) {
+        ChangeOfferRequest changeOfferRequest = getChangeOfferRequest(message);
+        log.debug("Delete offer with id : {}", changeOfferRequest.getOfferId());
         offerService.deleteById(changeOfferRequest.getOfferId(), message.getChatId());
         changeDriverRequests.remove(message.getChatId());
         return changeOfferRequest;
@@ -150,19 +153,20 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void checkAndClearChangingOfferRequests(Long chatId) {
-        log.info("Check and clear if exists changeSupplierRequests by key:{}", chatId);
+        log.debug("Check and clear if exists changeSupplierRequests by key:{}", chatId);
         changeDriverRequests.remove(chatId);
     }
 
     @Override
-    public List<ChangeDriverRequest> findByUserIdAndActivity(Long id, Activity activity) {
-        log.info("Find offers by id:{} and activity :{}", id, activity);
+    public List<ChangeOfferRequest> findByUserIdAndActivity(Long id, Activity activity) {
+        log.debug("Find offers by id:{} and activity :{}", id, activity);
         return offerService.findByUserEntityIdAndActivity(id, activity);
     }
 
     @Override
-    public ChangeDriverRequest addNewChangeOfferRequest(long offerId, Long chatId) {
-        ChangeDriverRequest request = offerService.getById(offerId, chatId);
+    public ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId) {
+        log.debug("Add new change offer request with offer id : {}",offerId);
+        ChangeOfferRequest request = offerService.getById(offerId, chatId);
         request.setChatId(chatId);
         changeDriverRequests.put(chatId, request);
         return request;
@@ -170,15 +174,15 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<PassengerRequest> findPassengersByRequestData(Request request) {
-        log.info("Find passengers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
+        log.debug("Find passengers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
-        return offerService.findPassengersByFirstDateBeforeAndSecondDateAfterAndRoutes(request.getSecondDate(),
+        return offerService.findPassengersByFirstDateBeforeAndSecondDateAfterAndCities(request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
     }
 
     @Override
     public List<DriverRequest> findDriversByRequestData(Request request) {
-        log.info("Find drivers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
+        log.debug("Find drivers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
         return offerService.findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes(request.getSecondDate(),
                 request.getFirstDate(), request.getCities());

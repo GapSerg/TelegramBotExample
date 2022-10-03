@@ -38,9 +38,9 @@ public class OfferMapperImpl implements OfferMapper {
     }
 
     @Override
-    public ChangeDriverRequest mapToChangeOfferRequest(Offer offer) {
+    public ChangeOfferRequest mapToChangeOfferRequest(Offer offer) {
         UserDto userDto = userMapper.mapToUserDto(offer.getUserEntity());
-        ChangeDriverRequest changeDriverRequest = ChangeDriverRequest.builder()
+        ChangeOfferRequest changeOfferRequest = ChangeOfferRequest.builder()
                 .offerId(offer.getId())
                 .activity(offer.getActivity())
                 .description(offer.getDescription())
@@ -48,7 +48,7 @@ public class OfferMapperImpl implements OfferMapper {
                 .secondDate(offer.getSecondDate())
                 .cities(offer.getCities())
                 .build();
-        changeDriverRequest.setUserDto(userDto);
-        return changeDriverRequest;
+        changeOfferRequest.setUserDto(userDto);
+        return changeOfferRequest;
     }
 }

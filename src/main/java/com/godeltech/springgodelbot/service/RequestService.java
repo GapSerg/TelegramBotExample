@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.service;
 
-import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.dto.Request;
@@ -21,15 +21,15 @@ public interface RequestService {
 
     PassengerRequest getPassengerRequest(Message message);
 
-    ChangeDriverRequest getChangeOfferRequest(Message message);
+    ChangeOfferRequest getChangeOfferRequest(Message message);
 
-    void updateDates(ChangeDriverRequest changeDriverRequest);
+    void updateDates(ChangeOfferRequest changeOfferRequest);
 
     void clearChangeOfferRequestsAndPassengerRequests(Long chatId);
 
     void clearDriverRequestsAndPassengerRequests(Long chatId);
 
-    void updateDescriptionOfOffer(ChangeDriverRequest changeDriverRequest);
+    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest);
 
     boolean existsDriverRequestByChatId(Long chatId);
 
@@ -41,15 +41,15 @@ public interface RequestService {
 
     boolean existsPassengerRequestByChatId(Long chatId);
 
-    void updateRouteOfOffer(ChangeDriverRequest changeDriverRequest);
+    void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest);
 
-    ChangeDriverRequest deleteOffer(Message message);
+    ChangeOfferRequest deleteOffer(Message message);
 
     void checkAndClearChangingOfferRequests(Long chatId);
 
-    List<ChangeDriverRequest> findByUserIdAndActivity(Long id, Activity activity);
+    List<ChangeOfferRequest> findByUserIdAndActivity(Long id, Activity activity);
 
-    ChangeDriverRequest addNewChangeOfferRequest(long offerId, Long chatId);
+    ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId);
 
     List<PassengerRequest> findPassengersByRequestData(Request request);
 
