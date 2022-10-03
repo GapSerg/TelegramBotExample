@@ -14,7 +14,7 @@
     <name>SpringGodelBot</name>
     <description>SpringGodelBot</description>
     <properties>
-<!--        <java.version>1.11</java.version>-->
+        <java.version>1.11</java.version>
         <telegram.version>5.6.0</telegram.version>
         <emoji.version>5.1.1</emoji.version>
         <telegram.starter.version>4.4.0.2</telegram.starter.version>
