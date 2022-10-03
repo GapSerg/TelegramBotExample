@@ -8,12 +8,12 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 @TestConfiguration
 public class Config {
     @Bean
-    public TestRestTemplate restTemplate(){
+    public TestRestTemplate restTemplate() {
         return new TestRestTemplate();
     }
 
     @Bean
-    public ObjectMapper objectMapper(){
+    public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
 

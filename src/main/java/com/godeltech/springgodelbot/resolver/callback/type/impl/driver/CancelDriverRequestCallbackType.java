@@ -32,10 +32,10 @@ public class CancelDriverRequestCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Got callback : {} by user : {}",Callbacks.CANCEL_DRIVER_REQUEST,callbackQuery.getFrom().getUserName());
+        log.info("Got callback : {} by user : {}", Callbacks.CANCEL_DRIVER_REQUEST, callbackQuery.getFrom().getUserName());
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), driverRequest.getMessages());
-        return getStartMenu(callbackQuery.getMessage().getChatId(),"You can start from the beginning");
+        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning");
     }
 }

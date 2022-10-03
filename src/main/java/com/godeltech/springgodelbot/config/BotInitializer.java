@@ -8,8 +8,6 @@ import com.godeltech.springgodelbot.util.BotMenu;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -25,18 +23,19 @@ public class BotInitializer {
     private final BotProp botProp;
     private final RestService restService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
+
     @SneakyThrows
     @EventListener({ContextRefreshedEvent.class})
-    public void init(){
-        log.info("Set web hook with path :{}",botProp.getWebHookPath());
+    public void init() {
+        log.info("Set web hook with path :{}", botProp.getWebHookPath());
         restService.setWebHook(botProp.getWebHookPath(), botProp.getToken());
 
         try {
-            tudaSudaTelegramBot.execute(new SetMyCommands(BotMenu.getCommands(),new BotCommandScopeDefault(),null));
+            tudaSudaTelegramBot.execute(new SetMyCommands(BotMenu.getCommands(), new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
             throw new UnknownCommandException();
         }
     }
-    }
+}
 
 

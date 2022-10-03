@@ -21,8 +21,8 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             " o1.id IN (SELECT o2.id FROM offer o2 JOIN offer_city oc ON o2.id=" +
             "oc.offer_id JOIN city c ON oc.city_id=c.id WHERE c.name IN :cities " +
             "GROUP BY o2.id " +
-            "HAVING COUNT(o2.id)>= 2)",nativeQuery = true)
-    Set<Offer> findByDatesAndRoutesAndActivity(LocalDate secondDate, LocalDate firstDate,String activity,
+            "HAVING COUNT(o2.id)>= 2)", nativeQuery = true)
+    Set<Offer> findByDatesAndRoutesAndActivity(LocalDate secondDate, LocalDate firstDate, String activity,
                                                List<String> cities);
 
     void deleteDriversBySecondDateBefore(LocalDate date);

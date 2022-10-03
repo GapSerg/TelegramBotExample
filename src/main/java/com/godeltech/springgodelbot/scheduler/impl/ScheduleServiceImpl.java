@@ -18,7 +18,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     @Override
-    @Scheduled(initialDelayString = "${schedule.start}",fixedDelayString = "${schedule.work}")
+    @Scheduled(initialDelayString = "${schedule.start}", fixedDelayString = "${schedule.work}")
     public void deleteExpireOffers() {
         log.info("Deleting expired suppliers");
         offerService.deleteBySecondDateAfter(LocalDate.now());

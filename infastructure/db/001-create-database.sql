@@ -1,5 +1,5 @@
 --Creation of database
 CREATE
-DATABASE bot_db;
+    DATABASE bot_db;
 
 

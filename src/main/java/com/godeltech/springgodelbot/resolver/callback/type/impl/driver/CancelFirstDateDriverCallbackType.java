@@ -19,6 +19,7 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 public class CancelFirstDateDriverCallbackType implements CallbackType {
 
     private final RequestService requestService;
+
     @Override
     public String getCallbackName() {
         return Callbacks.CANCEL_FIRST_DATE_DRIVER.name();
@@ -29,7 +30,7 @@ public class CancelFirstDateDriverCallbackType implements CallbackType {
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         driverRequest.setFirstDate(null);
-        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery,Callbacks.FIRST_DATE_DRIVER.name(),
-                "You've canceled the first date",canceledDate);
+        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, Callbacks.FIRST_DATE_DRIVER.name(),
+                "You've canceled the first date", canceledDate);
     }
 }

@@ -14,10 +14,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="offer_id" type="BIGSERIAL">
-                    <constraints foreignKeyName="fk_offer_offer_city" references="offer(id)"/>
+                <constraints foreignKeyName="fk_offer_offer_city" references="offer(id)"/>
             </column>
             <column name="city_id" type="SERIAL">
-                <constraints  foreignKeyName="fk_route_offer_city" references="city(id)"/>
+                <constraints foreignKeyName="fk_route_offer_city" references="city(id)"/>
             </column>
         </createTable>
     </changeSet>

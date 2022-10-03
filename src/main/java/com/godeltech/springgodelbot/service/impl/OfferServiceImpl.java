@@ -12,7 +12,6 @@ import com.godeltech.springgodelbot.model.repository.OfferRepository;
 import com.godeltech.springgodelbot.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,7 +134,7 @@ public class OfferServiceImpl implements OfferService {
         int matches = 0;
         int previousSupplierIndex = -1;
         for (int i = 0; i < cities.size(); i++) {
-            var route = cities.get(i);
+            City route = cities.get(i);
             int supplierIndex = offer.getCities().lastIndexOf(route);
             if (supplierIndex != -1 &&
                     i >= difference &&

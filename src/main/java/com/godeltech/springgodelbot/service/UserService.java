@@ -7,6 +7,8 @@ public interface UserService {
 
 
     UserEntity getById(Long userId, Long chatId);
+
     UserEntity save(UserEntity userEntity, Message message);
+
     boolean existsByIdAndUsername(Long id, String username);
 }

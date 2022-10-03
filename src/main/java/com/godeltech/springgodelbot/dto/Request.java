@@ -21,7 +21,7 @@ public abstract class Request {
     private final Activity activity;
 
     public Request(Activity activity) {
-        this.activity=activity;
+        this.activity = activity;
     }
 
     public Request(Long chatId, UserDto userDto, List<City> cities, LocalDate firstDate, LocalDate secondDate, String description, Boolean needForDescription, Set<Integer> messages, Activity activity) {

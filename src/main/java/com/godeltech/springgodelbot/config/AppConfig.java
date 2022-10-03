@@ -2,16 +2,14 @@ package com.godeltech.springgodelbot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
-import com.godeltech.springgodelbot.model.request.ChangePassengerRequest;
-import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
 import com.godeltech.springgodelbot.service.MessageResolverService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.google.common.cache.CacheBuilder;
 import lombok.Data;
 import lombok.SneakyThrows;
-import lombok.var;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -47,7 +45,7 @@ public class AppConfig {
 
     @Bean
     public ObjectMapper objectMapper() {
-        var mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         return mapper;
     }
@@ -56,31 +54,34 @@ public class AppConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
     @Bean
-    public SetWebhook setWebhookInstance(){
+    public SetWebhook setWebhookInstance() {
         return SetWebhook.builder()
                 .url(botProp.getWebHookPath())
                 .build();
     }
+
     @Bean
     @SneakyThrows
     public TudaSudaTelegramBot tudaSudaTelegramBot(SetWebhook setWebhookInstance, MessageResolverService messageResolverService,
                                                    CallbackResolverService callbackResolverService) {
         TudaSudaTelegramBot tudaSudaTelegramBot =
-                new TudaSudaTelegramBot(setWebhookInstance,messageResolverService, callbackResolverService);
+                new TudaSudaTelegramBot(setWebhookInstance, messageResolverService, callbackResolverService);
         tudaSudaTelegramBot.setBotUsername(botProp.getName());
         tudaSudaTelegramBot.setBotToken(botProp.getToken());
         tudaSudaTelegramBot.setBotPath(botProp.getWebHookPath());
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        telegramBotsApi.registerBot(tudaSudaTelegramBot,setWebhookInstance);
+        telegramBotsApi.registerBot(tudaSudaTelegramBot, setWebhookInstance);
         return tudaSudaTelegramBot;
 
     }
 
     @Bean
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager() {
@@ -95,20 +96,19 @@ public class AppConfig {
     }
 
     @Bean
-    public Map<Long, PassengerRequest> passengerRequests(){
+    public Map<Long, PassengerRequest> passengerRequests() {
         return new ConcurrentHashMap<>();
     }
 
     @Bean
-    public Map<Long, DriverRequest> driverRequests(){
+    public Map<Long, DriverRequest> driverRequests() {
         return new ConcurrentHashMap<>();
     }
 
     @Bean
-    public Map<Long, ChangeDriverRequest> changeDriverRequests(){
+    public Map<Long, ChangeDriverRequest> changeDriverRequests() {
         return new ConcurrentHashMap<>();
     }
-
 
 
 }

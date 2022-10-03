@@ -3,7 +3,6 @@ package com.godeltech.springgodelbot.service.impl;
 import com.godeltech.springgodelbot.service.RestService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

@@ -30,14 +30,14 @@ public class CheckPassengerCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got callback with type : {} by user : {}",
-                CHECK_PASSENGER_REQUEST.name(),callbackQuery.getFrom().getUserName());
+                CHECK_PASSENGER_REQUEST.name(), callbackQuery.getFrom().getUserName());
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
-        if (passengerRequest.getUserDto().getUserName()==null)
-            throw new UserAuthorizationException(UserDto.class,"username",null, callbackQuery.getMessage());
+        if (passengerRequest.getUserDto().getUserName() == null)
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage());
         passengerRequest.setNeedForDescription(true);
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         requestService.clearDriverRequestsAndChangeOfferRequests(callbackQuery.getMessage().getChatId());
-        return CallbackUtil.createEditMessageTextAfterConfirm(callbackQuery,SAVE_PASSENGER_WITHOUT_DESCRIPTION,
+        return CallbackUtil.createEditMessageTextAfterConfirm(callbackQuery, SAVE_PASSENGER_WITHOUT_DESCRIPTION,
                 WRITE_ADD_DESCRIPTION_FOR_PASSENGER);
     }
 }

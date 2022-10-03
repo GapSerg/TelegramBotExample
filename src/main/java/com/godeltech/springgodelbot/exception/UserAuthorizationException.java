@@ -8,8 +8,9 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.AUTHORIZATION_PATTE
 @Getter
 public class UserAuthorizationException extends RuntimeException {
     private Message botMessage;
-    public UserAuthorizationException(Class<?> resourceType, String fieldName, Object fieldValue, Message botMessage){
-        super(String.format(AUTHORIZATION_PATTERN,resourceType,fieldName,fieldValue));
+
+    public UserAuthorizationException(Class<?> resourceType, String fieldName, Object fieldValue, Message botMessage) {
+        super(String.format(AUTHORIZATION_PATTERN, resourceType, fieldName, fieldValue));
         this.botMessage = botMessage;
     }
 }

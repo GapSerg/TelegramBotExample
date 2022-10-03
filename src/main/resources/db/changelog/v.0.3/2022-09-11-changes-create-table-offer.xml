@@ -14,7 +14,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="user_id" type="BIGSERIAL">
-                    <constraints nullable="false" foreignKeyName="fk_driver_user" references="telegram_user(id)"/>
+                <constraints nullable="false" foreignKeyName="fk_driver_user" references="telegram_user(id)"/>
             </column>
             <column name="first_date" type="date">
                 <constraints nullable="false"/>

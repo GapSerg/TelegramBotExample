@@ -1,11 +1,9 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
 import com.godeltech.springgodelbot.dto.DriverRequest;
-import com.godeltech.springgodelbot.dto.UserDto;
-import com.godeltech.springgodelbot.exception.UserAuthorizationException;
-import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
+import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -38,7 +36,7 @@ public class SaveDriverCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got save supplier callback type without description with chatId:{}"
-                ,callbackQuery.getMessage().getChatId());
+                , callbackQuery.getMessage().getChatId());
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         driverRequest.getMessages()
                 .add(callbackQuery.getMessage().getMessageId());

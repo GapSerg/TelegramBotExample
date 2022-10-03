@@ -6,7 +6,6 @@ import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -15,8 +14,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 import java.time.LocalDate;
 
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createCalendar;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_DATE;
 
@@ -25,6 +24,7 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_D
 @RequiredArgsConstructor
 public class PreviousMonthCallbackType implements CallbackType {
     private final RequestService requestService;
+
     @Override
     public String getCallbackName() {
         return Callbacks.PREVIOUS_MONTH.name();
@@ -36,19 +36,20 @@ public class PreviousMonthCallbackType implements CallbackType {
                 callbackQuery.getFrom().getUserName());
         Callbacks callback = Callbacks.valueOf(getCallbackValue(callbackQuery.getData()));
         LocalDate localDate = LocalDate.parse(callbackQuery.getData().split(SPLITTER)[2]).minusMonths(1);
-        var chosenDate = returnChosenDate(callbackQuery,callback);
+        LocalDate chosenDate = returnChosenDate(callbackQuery, callback);
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
-                .text(returnText(callback,localDate,chosenDate))
+                .text(returnText(callback, localDate, chosenDate))
                 .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboard(chosenDate==null?
-                                createCalendar(localDate, callback.name()):
-                                createCalendar(localDate,callback.name(),chosenDate,YES))
+                        .keyboard(chosenDate == null ?
+                                createCalendar(localDate, callback.name()) :
+                                createCalendar(localDate, callback.name(), chosenDate, YES))
                         .build())
                 .build();
 
     }
+
     private LocalDate returnChosenDate(CallbackQuery callbackQuery, Callbacks callback) {
         switch (callback) {
             case SECOND_DATE_DRIVER:
@@ -61,6 +62,7 @@ public class PreviousMonthCallbackType implements CallbackType {
                 return null;
         }
     }
+
     private String returnText(Callbacks callback, LocalDate localDate, LocalDate chosenDate) {
         switch (callback) {
             case SECOND_DATE_DRIVER:

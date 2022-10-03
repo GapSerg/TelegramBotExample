@@ -1,16 +1,15 @@
 package com.godeltech.springgodelbot.service.impl;
 
-import com.godeltech.springgodelbot.dto.Request;
-import com.godeltech.springgodelbot.exception.RequestNotFoundException;
 import com.godeltech.springgodelbot.dto.ChangeDriverRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.dto.Request;
+import com.godeltech.springgodelbot.exception.RequestNotFoundException;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.service.OfferService;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -90,8 +89,8 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void clearDriverRequestsAndPassengerRequests(Long chatId) {
         log.debug("Clear driver and passenger requests with chat id :{}", chatId);
-            driverRequests.remove(chatId);
-            passengerRequests.remove(chatId);
+        driverRequests.remove(chatId);
+        passengerRequests.remove(chatId);
     }
 
     @Override
@@ -115,13 +114,13 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void clearDriverRequestsAndChangeOfferRequests(Long chatId) {
-            driverRequests.remove(chatId);
-            changeDriverRequests.remove(chatId);
+        driverRequests.remove(chatId);
+        changeDriverRequests.remove(chatId);
     }
 
     @Override
     public void savePassenger(PassengerRequest passengerRequest) {
-        var chatId = passengerRequest.getChatId();
+        Long chatId = passengerRequest.getChatId();
         offerService.save(passengerRequest);
         passengerRequests.remove(chatId);
     }
@@ -134,7 +133,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void updateRouteOfOffer(ChangeDriverRequest changeDriverRequest) {
         log.info("Update route of offer with id :{}", changeDriverRequest.getOfferId());
-        var chatId = changeDriverRequest.getChatId();
+        Long chatId = changeDriverRequest.getChatId();
         offerService.updateRoute(changeDriverRequest);
         changeDriverRequests.remove(chatId);
     }
@@ -152,7 +151,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void checkAndClearChangingOfferRequests(Long chatId) {
         log.info("Check and clear if exists changeSupplierRequests by key:{}", chatId);
-            changeDriverRequests.remove(chatId);
+        changeDriverRequests.remove(chatId);
     }
 
     @Override

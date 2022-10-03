@@ -1,11 +1,10 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
 import com.godeltech.springgodelbot.dto.PassengerRequest;
-import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
+import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -13,10 +12,12 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_PASSENGER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_PASSENGER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
-import static com.godeltech.springgodelbot.util.ConstantUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_FIRST_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class FirstDatePassengerCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
 
-        var firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
+        LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         log.info("Got First Date Supplier Callback type with first date :{} by user: {}", firstDate
                 , callbackQuery.getFrom().getUserName());
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());

@@ -4,7 +4,6 @@ import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
-import lombok.var;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -40,7 +39,7 @@ public class CallbackUtil {
 
 
         public static SendMessage createRouteSendMessage(List<City> cities, Callbacks callback, Long chatId) {
-            var buttons = getButtonsList();
+            List<List<InlineKeyboardButton>> buttons = getButtonsList();
             cities.forEach(route -> buttons.add(List.of(
                     InlineKeyboardButton.builder()
                             .text(route.getName())
@@ -114,7 +113,7 @@ public class CallbackUtil {
     public static class DateUtil {
         public static EditMessageText createEditMessageForSecondDate(CallbackQuery callbackQuery, LocalDate firstDate,
                                                                      String text, String callback) {
-            var buttons = createCalendar(firstDate, callback, firstDate, YES);
+            List<List<InlineKeyboardButton>> buttons = createCalendar(firstDate, callback, firstDate, YES);
             return EditMessageText.builder()
                     .text(String.format(text, firstDate, firstDate.getMonth(), firstDate.getYear()))
                     .messageId(callbackQuery.getMessage().getMessageId())
@@ -127,8 +126,8 @@ public class CallbackUtil {
 
         public static EditMessageText createEditMessageForSecondDate(CallbackQuery callbackQuery, LocalDate firstDate,
                                                                      String text, String callback, LocalDate invalidDate) {
-            var date = LocalDate.now();
-            var buttons = createCalendar(date, callback, firstDate, YES, invalidDate, KRESTIK);
+            LocalDate date = LocalDate.now();
+            List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, firstDate, YES, invalidDate, KRESTIK);
             return EditMessageText.builder()
                     .text(String.format(text, firstDate, date.getMonth(), date.getYear()))
                     .messageId(callbackQuery.getMessage().getMessageId())
@@ -140,7 +139,7 @@ public class CallbackUtil {
         }
 
         public static SendMessage createSendMessageForFirstDate(Long chatId, String callback, String text) {
-            var date = LocalDate.now();
+            LocalDate date = LocalDate.now();
             return SendMessage.builder()
                     .text(String.format(text, date.getMonth(), date.getYear()))
                     .chatId(chatId.toString())
@@ -151,7 +150,7 @@ public class CallbackUtil {
         }
 
         public static EditMessageText createEditMessageForFirstDate(CallbackQuery callbackQuery, String callback, String text) {
-            var date = LocalDate.now();
+            LocalDate date = LocalDate.now();
             return EditMessageText.builder()
                     .text(String.format(text, date.getMonth(), date.getYear()))
                     .chatId(callbackQuery.getMessage().getChatId().toString())
@@ -178,7 +177,7 @@ public class CallbackUtil {
         public static EditMessageText createEditMessageTextForFirstDateWithIncorrectDate(CallbackQuery callbackQuery,
                                                                                          String callback, String text,
                                                                                          LocalDate incorrectDate) {
-            var date = LocalDate.now();
+            LocalDate date = LocalDate.now();
             return EditMessageText.builder()
                     .text(String.format(text, date.getMonth(), date.getYear()))
                     .messageId(callbackQuery.getMessage().getMessageId())
@@ -190,8 +189,8 @@ public class CallbackUtil {
         }
 
         public static List<List<InlineKeyboardButton>> createCalendar(LocalDate localDate, String callback) {
-            var numberDayInMonth = localDate.getMonth().length(localDate.isLeapYear());
-            var buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
+            int numberDayInMonth = localDate.getMonth().length(localDate.isLeapYear());
+            List<List<InlineKeyboardButton>> buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
                     .map(date -> addRowOfButtons(callback, numberDayInMonth, date))
                     .collect(Collectors.toList());
             addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons);
@@ -200,8 +199,8 @@ public class CallbackUtil {
 
         public static List<List<InlineKeyboardButton>> createCalendar(LocalDate localDate, String callback,
                                                                       LocalDate chosenDate, String mark) {
-            var numberDayInMonth = localDate.getMonth().length(localDate.isLeapYear());
-            var buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
+            int numberDayInMonth = localDate.getMonth().length(localDate.isLeapYear());
+            List<List<InlineKeyboardButton>> buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
                     .map(date -> addRowOfButtonsWithReservedDate(callback, numberDayInMonth, date, chosenDate, mark))
                     .collect(Collectors.toList());
             addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons);
@@ -211,8 +210,8 @@ public class CallbackUtil {
         public static List<List<InlineKeyboardButton>> createCalendar(LocalDate localDate, String callback,
                                                                       LocalDate chosenDate, String mark,
                                                                       LocalDate invalidDate, String invalidMark) {
-            var numberDayInMonth = localDate.getMonth().length(localDate.isLeapYear());
-            var buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
+            int numberDayInMonth = localDate.getMonth().length(localDate.isLeapYear());
+            List<List<InlineKeyboardButton>> buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
                     .map(date -> addRowOfButtonsWithReservedDate(callback, numberDayInMonth, date, chosenDate, mark,
                             invalidDate, invalidMark))
                     .collect(Collectors.toList());
@@ -506,7 +505,7 @@ public class CallbackUtil {
                                                                     List<? extends Request> requests,
                                                                     Callbacks checkCallback,
                                                                     Callbacks cancelCallback) {
-        var requestsInf = requests.isEmpty() ? NO_SUITABLE_OFFERS :
+        String requestsInf = requests.isEmpty() ? NO_SUITABLE_OFFERS :
                 String.format(SUITABLE_OFFERS, getListOfOffersForRequest(requests));
         List<List<InlineKeyboardButton>> buttons = List.of(List.of(
                 InlineKeyboardButton.builder()
@@ -544,6 +543,7 @@ public class CallbackUtil {
                 .map(CallbackUtil::getOffersView)
                 .collect(Collectors.joining("\n\n"));
     }
+
     public static String getListOfOffersForRequest(List<? extends Request> requests) {
         return requests.stream()
                 .map(CallbackUtil::getOffersViewForRequest)
@@ -557,15 +557,16 @@ public class CallbackUtil {
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, getCurrentRoute(request.getCities()), request.getFirstDate(), request.getSecondDate(),
                         request.getActivity());
     }
+
     public static String getOffersViewForRequest(Request request) {
         return request.getDescription() != null ?
-                String.format(OFFERS_FOR_REQUESTS_PATTERN,request.getUserDto().getFirstName(),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN, request.getUserDto().getFirstName(),
                         request.getUserDto().getLastName(), getCurrentRoute(request.getCities()),
                         request.getFirstDate(), request.getSecondDate(),
-                        request.getActivity(), request.getDescription(),request.getUserDto().getUserName()) :
-                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC,request.getUserDto().getFirstName(),
+                        request.getActivity(), request.getDescription(), request.getUserDto().getUserName()) :
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, request.getUserDto().getFirstName(),
                         request.getUserDto().getLastName(), getCurrentRoute(request.getCities()), request.getFirstDate(),
-                        request.getSecondDate(), request.getActivity(),request.getUserDto().getUserName());
+                        request.getSecondDate(), request.getActivity(), request.getUserDto().getUserName());
     }
 
 }

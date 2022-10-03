@@ -6,14 +6,13 @@ import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 
-import java.io.Serializable;
+import java.util.Optional;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.CallbackUtil.makeSendMessageForUserWithoutUsername;
@@ -37,11 +36,11 @@ public class TextAndEntityMessageType implements MessageType {
 
 
     private BotApiMethod getSendMessage(Message message) {
-        var commandEntity = message.getEntities().stream()
+        Optional<MessageEntity> commandEntity = message.getEntities().stream()
                 .filter(entity -> "bot_command".equals(entity.getType()))
                 .findFirst();
         if (commandEntity.isPresent()) {
-            var command = message.getText().substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
+            String command = message.getText().substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
             switch (command) {
                 case "/start":
                     return makeSendMessageForUser(message);

@@ -45,9 +45,9 @@ public class BotHandler {
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
     @SneakyThrows
-    public void handleResourceNotFoundException(ResourceNotFoundException exception){
+    public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
-        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(),"There is no such type of request, please try again"));
+        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again"));
     }
 
 }

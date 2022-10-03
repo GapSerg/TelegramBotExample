@@ -9,7 +9,7 @@ public class ConstantUtil {
 
     public final static String NO_FOUND_PATTERN = "%s wasn't found by %s=%s";
     public final static String AUTHORIZATION_PATTERN = "%s wasn't authorize cause %s=%s";
-    public final static String UNKNOWN_COMMAND ="Sorry but the command is incorrect";
+    public final static String UNKNOWN_COMMAND = "Sorry but the command is incorrect";
     public final static String OFFERS_FOR_REQUESTS_PATTERN = "User : %s %s \nRoute: %s \uD83D\uDE82 \nDate: %s ➖ %s ⏰ \nRole: %s \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";
     public final static String OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC = "User : %s %s \nRoute: %s \uD83D\uDE82 \nDate: %s ➖ %s ⏰ \nRole: %s \uD83D\uDCC4 \nhttps://t.me/%s";
     public final static String OFFER_OF_CHANGING_OFFER_PATTERN = "Route: %s \uD83D\uDE82 \nDate: %s ➖ %s ⏰ \nRole: %s \nDescription: %s \uD83D\uDCC4";

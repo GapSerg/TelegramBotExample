@@ -15,7 +15,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHOSE_DAT
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_PASSENGER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createSendMessageForFirstDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.ConstantUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SELECTED_ROUTE;
 
 @Component

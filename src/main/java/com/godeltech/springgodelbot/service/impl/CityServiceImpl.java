@@ -30,18 +30,19 @@ public class CityServiceImpl implements CityService {
     @Override
     @Cacheable(value = "routes", key = "#routeId")
     public City getById(Integer routeId, Long chatId) {
-        log.info("Get route by id:{}",routeId);
+        log.info("Get route by id:{}", routeId);
         return cityRepository.findById(routeId)
-                .orElseThrow(()->new ResourceNotFoundException(City.class,"routeId",routeId,chatId));
+                .orElseThrow(() -> new ResourceNotFoundException(City.class, "routeId", routeId, chatId));
     }
 
     @Override
     @Transactional
     public void deleteById(Integer routeId) {
-        log.info("Delete route by id:{}",routeId);
-        if (cityRepository.existsById(routeId) ){
+        log.info("Delete route by id:{}", routeId);
+        if (cityRepository.existsById(routeId)) {
             cityRepository.deleteById(routeId);
-        };
+        }
+        ;
     }
 
     @Override

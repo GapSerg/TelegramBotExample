@@ -15,6 +15,7 @@ public abstract class DatabaseContainerInitializer {
             .withPassword("postgres")
             .withDatabaseName("bot_test")
             .withReuse(true);
+
     static {
         if (!postgreSQLContainer.isRunning())
             postgreSQLContainer.start();

@@ -20,5 +20,4 @@ public class BotProp {
     private int proxyPort;
 
 
-
 }

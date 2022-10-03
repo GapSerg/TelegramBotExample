@@ -1,8 +1,8 @@
 package com.godeltech.springgodelbot.service.impl;
 
-import com.godeltech.springgodelbot.service.MessageResolverService;
 import com.godeltech.springgodelbot.resolver.message.MessageResolver;
 import com.godeltech.springgodelbot.resolver.message.Messages;
+import com.godeltech.springgodelbot.service.MessageResolverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;

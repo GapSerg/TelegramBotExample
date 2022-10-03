@@ -15,7 +15,7 @@ public class TestUtil {
     public static final long CHAT_ID = 848575L;
     public static final long USER_ID = 84562L;
 
-    public static User getUser(){
+    public static User getUser() {
         User user = new User();
         user.setId(USER_ID);
         user.setIsBot(false);
@@ -25,9 +25,10 @@ public class TestUtil {
         user.setLanguageCode("en");
         return user;
     }
-    public static Chat getChat(){
-        Chat chat  =new Chat();
-        var user = getUser();
+
+    public static Chat getChat() {
+        Chat chat = new Chat();
+        User user = getUser();
         chat.setFirstName(user.getFirstName());
         chat.setLastName(user.getLastName());
         chat.setUserName(user.getUserName());
@@ -35,15 +36,17 @@ public class TestUtil {
         chat.setId(CHAT_ID);
         return chat;
     }
-    public static List<MessageEntity> getEntities(){
-       return List.of(MessageEntity.builder()
+
+    public static List<MessageEntity> getEntities() {
+        return List.of(MessageEntity.builder()
                 .type("bot_command")
                 .text("/start")
                 .offset(0)
                 .length("/start".length())
                 .build());
     }
-    public static Message getMessageWithEntities(){
+
+    public static Message getMessageWithEntities() {
         Message message = new Message();
         message.setChat(getChat());
         message.setFrom(getUser());
@@ -52,7 +55,8 @@ public class TestUtil {
         message.setText("/start");
         return message;
     }
-    public static Message getMessageWithoutEntities(String text){
+
+    public static Message getMessageWithoutEntities(String text) {
         Message message = new Message();
         message.setChat(getChat());
         message.setFrom(getUser());
@@ -60,26 +64,30 @@ public class TestUtil {
         message.setText(text);
         return message;
     }
-    public static Message getMessageForCallback(){
+
+    public static Message getMessageForCallback() {
         Message message = new Message();
         message.setChat(getChat());
         message.setFrom(getUser());
         message.setMessageId(1084);
         return message;
     }
-    public static Update getUpdateForMessageWithEntities(){
+
+    public static Update getUpdateForMessageWithEntities() {
         Update update = new Update();
         update.setMessage(getMessageWithEntities());
         update.setUpdateId(816546);
         return update;
     }
-    public static Update getUpdateForMessageWithoutEntities(String message){
+
+    public static Update getUpdateForMessageWithoutEntities(String message) {
         Update update = new Update();
         update.setMessage(getMessageWithoutEntities(message));
         update.setUpdateId(816546);
         return update;
     }
-    public static CallbackQuery getCallbackQuery(String data){
+
+    public static CallbackQuery getCallbackQuery(String data) {
         CallbackQuery callbackQuery = new CallbackQuery();
         callbackQuery.setId("19283120312");
         callbackQuery.setFrom(getUser());
@@ -87,19 +95,22 @@ public class TestUtil {
         callbackQuery.setData(data);
         return callbackQuery;
     }
-    public static CallbackQuery getCallbackQuery(){
+
+    public static CallbackQuery getCallbackQuery() {
         CallbackQuery callbackQuery = new CallbackQuery();
         callbackQuery.setId("19283120312");
         callbackQuery.setFrom(getUser());
         callbackQuery.setMessage(getMessageForCallback());
         return callbackQuery;
     }
-    public static Update getUpdateForCallback(String data){
+
+    public static Update getUpdateForCallback(String data) {
         Update update = new Update();
         update.setCallbackQuery(getCallbackQuery(data));
         update.setUpdateId(816546);
         return update;
     }
+
     public static List<City> getRoutes() {
         return List.of(City.builder()
                         .id(1)
@@ -118,6 +129,7 @@ public class TestUtil {
                         .name("WROCLAW")
                         .build());
     }
+
     @SneakyThrows
     public static RequestEntity<String> makePostRequestEntity(Update update, int port, ObjectMapper objectMapper) {
         return RequestEntity

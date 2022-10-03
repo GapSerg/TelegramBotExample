@@ -25,14 +25,14 @@ public class OfferMapperImpl implements OfferMapper {
 
     @Override
     public DriverRequest mapToDriverRequest(Offer offer) {
-        var request = modelMapper.map(offer, DriverRequest.class);
+        DriverRequest request = modelMapper.map(offer, DriverRequest.class);
         request.setUserDto(userMapper.mapToUserDto(offer.getUserEntity()));
         return request;
     }
 
     @Override
     public PassengerRequest mapToPassengerRequest(Offer offer) {
-        var request = modelMapper.map(offer, PassengerRequest.class);
+        PassengerRequest request = modelMapper.map(offer, PassengerRequest.class);
         request.setUserDto(userMapper.mapToUserDto(offer.getUserEntity()));
         return request;
     }

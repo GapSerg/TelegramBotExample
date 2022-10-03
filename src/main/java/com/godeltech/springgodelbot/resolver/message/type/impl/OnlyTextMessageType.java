@@ -38,7 +38,7 @@ public class OnlyTextMessageType implements MessageType {
     @Override
     public BotApiMethod createSendMessage(Message message) {
 
-        if (requestService.existsDriverRequestByChatId(message.getChatId())&& requestService.getDriverRequest(message).getNeedForDescription()) {
+        if (requestService.existsDriverRequestByChatId(message.getChatId()) && requestService.getDriverRequest(message).getNeedForDescription()) {
             DriverRequest driverRequest = requestService.getDriverRequest(message);
 
             return driverRequest.getNeedForDescription() ?
@@ -52,7 +52,7 @@ public class OnlyTextMessageType implements MessageType {
                     savePassengerRequestWithDescription(message, passengerRequest, "Request was successfully saved") :
                     getUnknownMessage(message);
         }
-        if (requestService.existsChangeOfferRequestByChatId(message.getChatId())&& requestService.getChangeOfferRequest(message).getNeedForDescription()) {
+        if (requestService.existsChangeOfferRequestByChatId(message.getChatId()) && requestService.getChangeOfferRequest(message).getNeedForDescription()) {
             ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(message);
             return changeDriverRequest.getNeedForDescription() ?
                     updateDescriptionOfOfferAndGetStartMenu(message, changeDriverRequest,

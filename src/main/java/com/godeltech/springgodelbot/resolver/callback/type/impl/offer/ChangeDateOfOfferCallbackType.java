@@ -30,11 +30,11 @@ public class ChangeDateOfOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
-        if (callbackQuery.getFrom().getUserName()==null)
-            throw new UserAuthorizationException(UserDto.class,"username",null, callbackQuery.getMessage());
+        if (callbackQuery.getFrom().getUserName() == null)
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage());
         log.info("Change date of offer with id:{}, by user :{}",
-                changeDriverRequest.getOfferId(),callbackQuery.getFrom().getUserName());
-        return createEditMessageForFirstDate(callbackQuery,CHANGE_FIRST_DATE_OF_OFFER.name(),
-                "You previous date is "+ changeDriverRequest.getFirstDate() +" - "+ changeDriverRequest.getSecondDate());
+                changeDriverRequest.getOfferId(), callbackQuery.getFrom().getUserName());
+        return createEditMessageForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.name(),
+                "You previous date is " + changeDriverRequest.getFirstDate() + " - " + changeDriverRequest.getSecondDate());
     }
 }

@@ -6,7 +6,6 @@ import com.godeltech.springgodelbot.service.OfferService;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -33,7 +32,7 @@ public class ChangeOfferCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        var offerId = Long.parseLong(getCallbackValue(callbackQuery.getData()));
+        long offerId = Long.parseLong(getCallbackValue(callbackQuery.getData()));
         ChangeDriverRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage().getChatId());
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
@@ -44,6 +43,7 @@ public class ChangeOfferCallbackType implements CallbackType {
                         .build())
                 .build();
     }
+
     private List<List<InlineKeyboardButton>> getChangeOfferButtons(ChangeDriverRequest request) {
         return List.of(List.of(InlineKeyboardButton.builder()
                                 .text("Change route")

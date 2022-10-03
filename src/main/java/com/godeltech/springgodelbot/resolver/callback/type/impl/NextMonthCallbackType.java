@@ -6,7 +6,6 @@ import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -38,7 +37,7 @@ public class NextMonthCallbackType implements CallbackType {
                 callbackQuery.getFrom().getUserName());
         Callbacks callback = Callbacks.valueOf(getCallbackValue(callbackQuery.getData()));
         LocalDate localDate = LocalDate.parse(callbackQuery.getData().split(SPLITTER)[2]).plusMonths(1);
-        var chosenDate = returnChosenDate(callbackQuery, callback);
+        LocalDate chosenDate = returnChosenDate(callbackQuery, callback);
         return EditMessageText.builder()
                 .text(returnText(callback, localDate, chosenDate))
                 .chatId(callbackQuery.getMessage().getChatId().toString())

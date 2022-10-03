@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FINISH_CHANGING_ROUTE_OF_OFFER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getListOfRequests;
 
 @Component
 @RequiredArgsConstructor

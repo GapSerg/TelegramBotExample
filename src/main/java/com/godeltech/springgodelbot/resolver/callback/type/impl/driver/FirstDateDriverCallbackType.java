@@ -15,9 +15,10 @@ import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_DRIVER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_DRIVER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
-import static com.godeltech.springgodelbot.util.ConstantUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_FIRST_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class FirstDateDriverCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
 
-        var firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
+        LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         log.info("Got First Date Supplier Callback type with first date :{} by user: {}", firstDate
                 , callbackQuery.getFrom().getUserName());
         DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage());

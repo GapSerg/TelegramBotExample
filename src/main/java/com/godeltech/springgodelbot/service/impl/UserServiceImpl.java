@@ -20,24 +20,25 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserEntity getById(Long userId, Long chatId) {;
+    public UserEntity getById(Long userId, Long chatId) {
+        ;
         log.info("find user by id = {}", userId);
         return userRepository.findById(userId)
-                .orElseThrow(()-> new ResourceNotFoundException(UserEntity.class,"id", userId,chatId));
+                .orElseThrow(() -> new ResourceNotFoundException(UserEntity.class, "id", userId, chatId));
     }
 
     @Override
     @Transactional
     public UserEntity save(UserEntity userEntity, Message message) {
         log.info("Save a new user: {}", userEntity);
-        if (userEntity.getUserName()==null)
-            throw new UserAuthorizationException(UserEntity.class,"username",null, message);
+        if (userEntity.getUserName() == null)
+            throw new UserAuthorizationException(UserEntity.class, "username", null, message);
         return userRepository.save(userEntity);
     }
 
     @Override
     public boolean existsByIdAndUsername(Long id, String username) {
-        log.info("Check existing of user by id: {}",id);
-        return userRepository.existsByIdAndUserName(id,username);
+        log.info("Check existing of user by id: {}", id);
+        return userRepository.existsByIdAndUserName(id, username);
     }
 }

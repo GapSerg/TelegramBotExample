@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.DELETE_OFFER;
 import static com.godeltech.springgodelbot.util.ConstantUtil.OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC;
 import static com.godeltech.springgodelbot.util.ConstantUtil.OFFER_OF_CHANGING_OFFER_PATTERN;
 
@@ -141,7 +140,7 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
 
     public void deleteMessages(Long chatId, Set<Integer> messages) {
         messages.forEach(message ->
-                    deleteMessage(chatId, message)
+                deleteMessage(chatId, message)
         );
         messages.clear();
     }

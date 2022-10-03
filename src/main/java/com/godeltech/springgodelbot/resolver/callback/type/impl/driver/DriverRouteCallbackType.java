@@ -1,13 +1,12 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
-import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.CityService;
+import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -35,16 +34,16 @@ public class DriverRouteCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        var routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {}", DRIVER_ROUTE,routeId);
+        int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
+        log.info("Callback data with type: {} and routeId: {}", DRIVER_ROUTE, routeId);
         List<City> cities = cityService.findAll();
-        var reservedRoute = cities.stream()
-                .filter(route->route.getId().equals(routeId))
+        City reservedRoute = cities.stream()
+                .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
         DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage());
         supplerRequest.getCities().add(reservedRoute);
-        return createEditSendMessageForRoutes(callbackQuery, cities,supplerRequest.getCities(),
+        return createEditSendMessageForRoutes(callbackQuery, cities, supplerRequest.getCities(),
                 DRIVER_ROUTE, CANCEL_DRIVER_ROUTE);
 
     }

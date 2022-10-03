@@ -21,7 +21,8 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.WRITE_ADDITIONAL_DE
 @RequiredArgsConstructor
 @Slf4j
 public class ChangeDescriptionOfOfferCallbackType implements CallbackType {
-     private final RequestService requestService;
+    private final RequestService requestService;
+
     @Override
     public String getCallbackName() {
         return CHANGE_DESCRIPTION_OF_OFFER.name();
@@ -29,10 +30,10 @@ public class ChangeDescriptionOfOfferCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        if (callbackQuery.getFrom().getUserName()==null)
-            throw new UserAuthorizationException(UserDto.class,"username",null, callbackQuery.getMessage());
+        if (callbackQuery.getFrom().getUserName() == null)
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage());
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
-        log.info("Change description of offer with id: {}",changeDriverRequest.getOfferId());
+        log.info("Change description of offer with id: {}", changeDriverRequest.getOfferId());
         requestService.clearDriverRequestsAndPassengerRequests(callbackQuery.getMessage().getChatId());
         changeDriverRequest.setNeedForDescription(true);
         changeDriverRequest.setMessages(Set.of(callbackQuery.getMessage().getMessageId()));

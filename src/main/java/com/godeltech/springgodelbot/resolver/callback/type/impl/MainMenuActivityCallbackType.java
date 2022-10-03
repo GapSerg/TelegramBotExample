@@ -26,9 +26,9 @@ public class MainMenuActivityCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        if (callbackQuery.getFrom().getUserName()==null)
+        if (callbackQuery.getFrom().getUserName() == null)
             return makeSendMessageForUserWithoutUsername(callbackQuery.getMessage());
-        if (!userService.existsByIdAndUsername(callbackQuery.getFrom().getId(),callbackQuery.getFrom().getUserName()))
+        if (!userService.existsByIdAndUsername(callbackQuery.getFrom().getId(), callbackQuery.getFrom().getUserName()))
             userService.save(userMapper.mapToUserEntity(callbackQuery.getFrom()), callbackQuery.getMessage());
         return getStartMenu(callbackQuery);
     }

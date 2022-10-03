@@ -16,21 +16,21 @@ public class UserMapperImpl implements UserMapper {
 
     @Override
     public User mapToUser(UserEntity userEntity) {
-        return modelMapper.map(userEntity,User.class);
+        return modelMapper.map(userEntity, User.class);
     }
 
     @Override
     public UserEntity mapToUserEntity(User user) {
-        return modelMapper.map(user,UserEntity.class);
+        return modelMapper.map(user, UserEntity.class);
     }
 
     @Override
     public UserEntity mapToUserEntity(UserDto userDto) {
-        return modelMapper.map(userDto,UserEntity.class);
+        return modelMapper.map(userDto, UserEntity.class);
     }
 
     @Override
     public UserDto mapToUserDto(UserEntity userEntity) {
-        return modelMapper.map(userEntity,UserDto.class);
+        return modelMapper.map(userEntity, UserDto.class);
     }
 }

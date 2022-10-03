@@ -35,10 +35,10 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got callback with type : {} by user : {}",
-                SAVE_PASSENGER_WITHOUT_DESCRIPTION,callbackQuery.getFrom().getUserName());
+                SAVE_PASSENGER_WITHOUT_DESCRIPTION, callbackQuery.getFrom().getUserName());
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), passengerRequest.getMessages());
         requestService.savePassenger(passengerRequest);
-        return BotMenu.getStartMenu(callbackQuery.getMessage(),"We've successfully save your request");
+        return BotMenu.getStartMenu(callbackQuery.getMessage(), "We've successfully save your request");
     }
 }

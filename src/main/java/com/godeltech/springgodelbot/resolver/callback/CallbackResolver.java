@@ -22,8 +22,8 @@ public class CallbackResolver {
                 .collect(Collectors.toMap(CallbackType::getCallbackName, Function.identity()));
     }
 
-    public BotApiMethod getSendMessage(CallbackQuery callbackQuery){
-       return callbackTypeContext.get(callbackQuery.getData().split("&")[0])
+    public BotApiMethod getSendMessage(CallbackQuery callbackQuery) {
+        return callbackTypeContext.get(callbackQuery.getData().split("&")[0])
                 .createSendMessage(callbackQuery);
     }
 }

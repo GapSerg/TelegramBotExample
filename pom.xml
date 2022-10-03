@@ -14,9 +14,7 @@
     <name>SpringGodelBot</name>
     <description>SpringGodelBot</description>
     <properties>
-        <java.version>1.11</java.version>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.source>11</maven.compiler.source>
+        <java.version>11</java.version>
         <telegram.version>5.6.0</telegram.version>
         <emoji.version>5.1.1</emoji.version>
         <telegram.starter.version>4.4.0.2</telegram.starter.version>
@@ -67,11 +65,11 @@
             <artifactId>telegrambots-spring-boot-starter</artifactId>
             <version>6.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.projectlombok</groupId>-->
+        <!--            <artifactId>lombok</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

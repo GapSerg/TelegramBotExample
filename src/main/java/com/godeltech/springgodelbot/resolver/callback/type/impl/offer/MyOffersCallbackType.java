@@ -8,7 +8,6 @@ import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -37,10 +36,10 @@ public class MyOffersCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        Activity activity= Activity.valueOf(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback with type :{} and activity : {}",MY_OFFERS,activity);
+        Activity activity = Activity.valueOf(getCallbackValue(callbackQuery.getData()));
+        log.info("Callback with type :{} and activity : {}", MY_OFFERS, activity);
         requestService.checkAndClearChangingOfferRequests(callbackQuery.getMessage().getChatId());
-        var offerList = requestService.findByUserIdAndActivity(callbackQuery.getFrom().getId(),activity);
+        List<ChangeDriverRequest> offerList = requestService.findByUserIdAndActivity(callbackQuery.getFrom().getId(), activity);
         return !offerList.isEmpty() ?
                 makeSendMessage(offerList, callbackQuery) :
                 EditMessageText.builder()
@@ -58,11 +57,11 @@ public class MyOffersCallbackType implements CallbackType {
     }
 
     private EditMessageText makeSendMessage(List<ChangeDriverRequest> requests, CallbackQuery callbackQuery) {
-        var buttons = requests.stream()
+        List<List<InlineKeyboardButton>> buttons = requests.stream()
                 .map(request -> List.of(InlineKeyboardButton.builder()
                         .text(String.format(OFFERS_OF_DRIVERS_PATTERN, request.getCities().stream().map(City::getName)
                                 .collect(Collectors.joining("➖"))))
-                        .callbackData(CHANGE_OFFER.name() + SPLITTER +request.getOfferId())
+                        .callbackData(CHANGE_OFFER.name() + SPLITTER + request.getOfferId())
                         .build()))
                 .collect(Collectors.toList());
         buttons.add(List.of(InlineKeyboardButton
