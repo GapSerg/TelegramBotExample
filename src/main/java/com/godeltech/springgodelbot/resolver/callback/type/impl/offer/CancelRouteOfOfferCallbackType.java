@@ -38,7 +38,7 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
         log.info("Callback data with type: {} and routeId: {}", CANCEL_ROUTE_OF_OFFER, routeId);
         ChangeDriverRequest changeDriverRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
         List<City> cities = cityService.findAll();
-        var reservedRoute = cities.stream()
+        City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
