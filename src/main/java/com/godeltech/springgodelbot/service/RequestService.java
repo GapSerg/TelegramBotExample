@@ -32,9 +32,9 @@ public interface RequestService {
 
     void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token);
 
-    boolean existsDriverRequestByChatId(String token);
-
-    boolean existsChangeOfferRequestByChatId(String token);
+    void deleteChangeOfferRequest(String token);
+    void deleteDriverRequest(String token);
+    void deletePassengerRequest(String token);
 
     void clearDriverRequestsAndChangeOfferRequests(String token);
 

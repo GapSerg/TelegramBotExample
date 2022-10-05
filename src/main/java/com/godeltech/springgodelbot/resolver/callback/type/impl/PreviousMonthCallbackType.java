@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 import java.time.LocalDate;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createCalendar;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
@@ -38,14 +39,15 @@ public class PreviousMonthCallbackType implements CallbackType {
         Callbacks callback = Callbacks.values()[Integer.parseInt(getCallbackValue(callbackQuery.getData()))];
         LocalDate localDate = LocalDate.parse(callbackQuery.getData().split(SPLITTER)[3]).minusMonths(1);
         LocalDate chosenDate = returnChosenDate(callbackQuery, callback, token);
+        Callbacks cancelCallback = getCancelCallback(callback);
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .text(returnText(callback, localDate, chosenDate))
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(chosenDate == null ?
-                                createCalendar(localDate, callback.ordinal(), token) :
-                                createCalendar(localDate, callback.ordinal(), chosenDate, YES, token))
+                                createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), token) :
+                                createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), chosenDate, YES, token))
                         .build())
                 .build();
 
@@ -77,5 +79,20 @@ public class PreviousMonthCallbackType implements CallbackType {
             default:
                 throw new UnknownCommandException();
         }
+    }
+
+    private Callbacks getCancelCallback(Callbacks callback) {
+        switch (callback) {
+            case FIRST_DATE_DRIVER:
+            case SECOND_DATE_DRIVER:
+                return CANCEL_DRIVER_REQUEST;
+            case FIRST_DATE_PASSENGER:
+            case SECOND_DATE_PASSENGER:
+                return CANCEL_PASSENGER_REQUEST;
+            case CHANGE_FIRST_DATE_OF_OFFER:
+            case CHANGE_SECOND_DATE_OF_OFFER:
+                return RETURN_TO_CHANGE_OF_OFFER;
+        }
+        throw new UnknownCommandException();
     }
 }

@@ -42,6 +42,7 @@ public class CancelPassengerRequestCallbackType implements CallbackType {
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), passengerRequest.getMessages());
         messageService.deleteToken(token);
+        requestService.deletePassengerRequest(token);
         return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning");
     }
 }

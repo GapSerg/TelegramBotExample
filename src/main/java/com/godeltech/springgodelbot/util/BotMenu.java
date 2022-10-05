@@ -102,23 +102,23 @@ public class BotMenu {
 
     private static List<List<InlineKeyboardButton>> getStartMenuButtons() {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        String uuid = createUUIDToken();
+        String token = createUUIDToken();
         Arrays.stream(Activity.values())
                 .map(activity -> List.of(
                         InlineKeyboardButton.builder()
                                 .text(activity.name())
-                                .callbackData(Callbacks.ACTIVITY.ordinal()+SPLITTER+uuid + SPLITTER + activity)
+                                .callbackData(Callbacks.ACTIVITY.ordinal()+SPLITTER+token + SPLITTER + activity)
                                 .build()))
                 .forEach(buttons::add);
         buttons.add(List.of(
                 InlineKeyboardButton.builder()
                         .text("List of my offers")
-                        .callbackData(Callbacks.OFFERS_ACTIVITY.ordinal()+SPLITTER+uuid)
+                        .callbackData(Callbacks.OFFERS_ACTIVITY.ordinal()+SPLITTER+token)
                         .build()));
         return buttons;
     }
     private static String createUUIDToken(){
-        String token = UUID.randomUUID().toString().replaceAll("-","").substring(6);
+        String token = UUID.randomUUID().toString().replaceAll("-","").substring(10);
         return token;
     }
 }

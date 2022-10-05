@@ -1,7 +1,6 @@
-package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
+package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.DriverRequest;
-import com.godeltech.springgodelbot.resolver.callback.Callbacks;
+import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.MessageService;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -12,38 +11,35 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 
 @Component
 @Slf4j
-public class CancelDriverRequestCallbackType implements CallbackType {
+public class CancelChangeOfferRequest implements CallbackType {
     private final RequestService requestService;
-    private final TudaSudaTelegramBot tudaSudaTelegramBot;
     private final MessageService messageService;
+    private final TudaSudaTelegramBot tudaSudaTelegramBot;
 
-    public CancelDriverRequestCallbackType(RequestService requestService,
-                                           @Lazy TudaSudaTelegramBot tudaSudaTelegramBot,
-                                           MessageService messageService) {
+    public CancelChangeOfferRequest(RequestService requestService, MessageService messageService,
+                                    @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
         this.requestService = requestService;
-        this.tudaSudaTelegramBot = tudaSudaTelegramBot;
         this.messageService = messageService;
+        this.tudaSudaTelegramBot = tudaSudaTelegramBot;
     }
 
     @Override
     public Integer getCallbackName() {
-        return Callbacks.CANCEL_DRIVER_REQUEST.ordinal();
+        return CANCEL_CHANGE_OFFER_REQUEST.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got callback : {} with token : {}", Callbacks.CANCEL_DRIVER_REQUEST,token);
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
-        driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
+        log.info("Got callback : {} with token : {}", CANCEL_CHANGE_OFFER_REQUEST,token);
         messageService.deleteToken(token);
-        requestService.deleteDriverRequest(token);
-        tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), driverRequest.getMessages());
+        tudaSudaTelegramBot.deleteMessage(callbackQuery.getMessage().getChatId(), callbackQuery.getMessage().getMessageId());
         return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning");
     }
 }

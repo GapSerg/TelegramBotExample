@@ -75,7 +75,7 @@ public class ActivityCallbackType implements CallbackType {
                         .messages(messages)
                         .build(),token );
                 tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
-                return createRouteSendMessage(cities, DRIVER_ROUTE.ordinal(), callbackQuery.getMessage().getChatId(),token);
+                return createRouteSendMessage(cities, DRIVER_ROUTE.ordinal(),CANCEL_DRIVER_REQUEST.ordinal() ,callbackQuery.getMessage().getChatId(),token);
             case PASSENGER:
                 requestService.savePassengerRequest(PassengerRequest.builder()
                         .chatId(callbackQuery.getMessage().getChatId())
@@ -89,7 +89,7 @@ public class ActivityCallbackType implements CallbackType {
                         .messages(messages)
                         .build(), token);
                 tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
-                return createRouteSendMessage(cities, PASSENGER_ROUTE.ordinal(), callbackQuery.getMessage().getChatId(), token);
+                return createRouteSendMessage(cities, PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(), callbackQuery.getMessage().getChatId(), token);
             default:
                 throw new RuntimeException("There is no such activity");
         }

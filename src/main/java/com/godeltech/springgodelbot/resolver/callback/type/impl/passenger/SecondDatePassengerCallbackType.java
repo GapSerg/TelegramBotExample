@@ -49,7 +49,7 @@ public class SecondDatePassengerCallbackType implements CallbackType {
         return validSecondDate(passengerRequest.getFirstDate(), secondDate) ?
                 createSendMessageWithValidSecondDate(callbackQuery, secondDate, passengerRequest,token) :
                 createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(),
-                        INCORRECT_SECOND_DATE, SECOND_DATE_PASSENGER.ordinal(), secondDate,token );
+                        INCORRECT_SECOND_DATE, SECOND_DATE_PASSENGER.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(), secondDate,token );
     }
 
     private SendMessage createSendMessageWithValidSecondDate(CallbackQuery callbackQuery,

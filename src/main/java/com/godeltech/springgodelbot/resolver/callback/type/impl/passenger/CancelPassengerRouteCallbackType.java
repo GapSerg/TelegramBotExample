@@ -14,8 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_PASSENGER_ROUTE;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.PASSENGER_ROUTE;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
@@ -45,6 +44,6 @@ public class CancelPassengerRouteCallbackType implements CallbackType {
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         passengerRequest.getCities().remove(reservedRoute);
         return createEditSendMessageForRoutes(callbackQuery, cities, passengerRequest.getCities(),
-                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),token );
+                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(),token );
     }
 }

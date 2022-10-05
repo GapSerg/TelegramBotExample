@@ -10,8 +10,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_DATE_OF_OFFER;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_FIRST_DATE_OF_OFFER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForFirstDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 
@@ -39,7 +38,7 @@ public class ChangeDateOfOfferCallbackType implements CallbackType {
             throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );
         log.info("Change date of offer with id:{}, with token :{}",
                 changeOfferRequest.getOfferId(), token);
-        return createEditMessageForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
+        return createEditMessageForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                 "You previous date is " + changeOfferRequest.getFirstDate() + " - " + changeOfferRequest.getSecondDate(),token );
     }
 }

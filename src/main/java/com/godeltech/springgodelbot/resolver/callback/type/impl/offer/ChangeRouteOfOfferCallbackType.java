@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.UserDto;
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
+import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
@@ -15,8 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_ROUTE_OF_OFFER;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_ROUTE_OF_OFFER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
@@ -39,18 +39,22 @@ public class ChangeRouteOfOfferCallbackType implements CallbackType {
         String[] data = callbackQuery.getData().split(SPLITTER);
         String token = getCallbackToken(callbackQuery.getData());
         if (callbackQuery.getFrom().getUserName() == null)
-            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
-        log.info("Callback data with type: {} with token: {}", CHANGE_ROUTE_OF_OFFER,token);
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(), false);
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
+        log.info("Callback data with type: {} with token: {}", CHANGE_ROUTE_OF_OFFER, token);
         List<City> reservedRoutes = changeOfferRequest.getCities();
         List<City> cities = cityService.findAll();
         if (data.length > 2) {
             int routeId = Integer.parseInt(data[2]);
             cities.stream()
                     .filter(route -> route.getId().equals(routeId))
-                    .forEach(reservedRoutes::add);
+                    .forEach(route -> {
+                        if (changeOfferRequest.getActivity() == Activity.PASSENGER && reservedRoutes.size() > 1)
+                            reservedRoutes.remove(1);
+                        reservedRoutes.add(route);
+                    });
         }
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedRoutes,
-                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(),token );
+                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
     }
 }

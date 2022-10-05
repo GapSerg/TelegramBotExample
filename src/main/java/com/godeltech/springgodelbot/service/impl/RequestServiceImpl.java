@@ -48,7 +48,7 @@ public class RequestServiceImpl implements RequestService {
     public void saveDriver(DriverRequest driverRequest, String token) {
         log.debug("Saving driver request with token: {}", token);
             offerService.save(driverRequest);
-            driverRequests.remove(token);
+            deleteDriverRequest(token);
 
     }
 
@@ -73,54 +73,60 @@ public class RequestServiceImpl implements RequestService {
     public void updateDates(ChangeOfferRequest changeOfferRequest, String token) {
         log.debug("Update dates of offer with id: {} and token: {}", changeOfferRequest.getOfferId(), token);
         offerService.updateDatesOfOffer(changeOfferRequest);
-        changeDriverRequests.remove(token);
+        deleteChangeOfferRequest(token);
     }
 
     @Override
     public void clearChangeOfferRequestsAndPassengerRequests(String token) {
         log.debug("Clear maps changeOfferRequests and passengerRequests with chat id: {}", token);
-        changeDriverRequests.remove(token);
-        passengerRequests.remove(token);
+        deleteChangeOfferRequest(token);
+        deletePassengerRequest(token);
     }
 
     @Override
     public void clearDriverRequestsAndPassengerRequests(String token) {
         log.debug("Clear driver and passenger requests with chat id :{}", token);
-        driverRequests.remove(token);
-        passengerRequests.remove(token);
+        deleteDriverRequest(token);
+        deletePassengerRequest(token);
     }
 
     @Override
     public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token) {
         log.debug("Update description of offer with offer id: {} and token: {}", changeOfferRequest.getOfferId(), token);
         offerService.updateDescriptionOfOffer(changeOfferRequest);
+        deleteChangeOfferRequest(token);
+    }
+
+    @Override
+    public void deleteChangeOfferRequest(String token) {
+        log.debug("Remove change offer request with token : {}",token);
         changeDriverRequests.remove(token);
     }
 
     @Override
-    public boolean existsDriverRequestByChatId(String token) {
-        log.debug("Check containing driverRequests by token: {}", token);
-        return driverRequests.containsKey(token);
+    public void deleteDriverRequest(String token) {
+        log.debug("Remove driver request with token : {}",token);
+        driverRequests.remove(token);
     }
 
     @Override
-    public boolean existsChangeOfferRequestByChatId(String token) {
-        log.debug("Check containing changeDriverRequests by token: {}", token);
-        return changeDriverRequests.containsKey(token);
+    public void deletePassengerRequest(String token) {
+        log.debug("Remove passenger request with token : {}",token);
+        passengerRequests.remove(token);
     }
 
     @Override
     public void clearDriverRequestsAndChangeOfferRequests(String token) {
         log.debug("Clear driver and change offer requests with chat id :{}", token);
-        driverRequests.remove(token);
-        changeDriverRequests.remove(token);
+        deleteDriverRequest(token);
+        deleteChangeOfferRequest(token);
     }
 
     @Override
     public void savePassenger(PassengerRequest passengerRequest, String token) {
         log.debug("Save passenger request : {} and token: {}", passengerRequest, token);
         offerService.save(passengerRequest);
-        passengerRequests.remove(token);
+        deletePassengerRequest(token);
     }
 
     @Override
@@ -132,7 +138,7 @@ public class RequestServiceImpl implements RequestService {
     public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token) {
         log.info("Update route of offer with id :{}", changeOfferRequest.getOfferId());
         offerService.updateCities(changeOfferRequest);
-        changeDriverRequests.remove(token);
+        deleteChangeOfferRequest(token);
     }
 
     @Override
@@ -140,9 +146,8 @@ public class RequestServiceImpl implements RequestService {
         ChangeOfferRequest changeOfferRequest = getChangeOfferRequest(message, token);
         log.debug("Delete offer with id : {} and token: {}", changeOfferRequest.getOfferId(), token);
         offerService.deleteById(changeOfferRequest.getOfferId(), message.getChatId());
-        changeDriverRequests.remove(token);
+        deleteChangeOfferRequest(token);
         return changeOfferRequest;
-
     }
 
     @Override

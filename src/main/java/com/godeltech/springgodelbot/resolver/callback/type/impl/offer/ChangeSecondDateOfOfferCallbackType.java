@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_SECOND_DATE_OF_OFFER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.RETURN_TO_CHANGE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.validSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
@@ -41,22 +42,23 @@ public class ChangeSecondDateOfOfferCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         LocalDate secondDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         log.info("Change date of offer with date :{} with token: {}", secondDate, token);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
         return validSecondDate(changeOfferRequest.getFirstDate(), secondDate) ?
                 updateDatesOfSupplierAndGetStartMenu(callbackQuery,
-                        DATES_WERE_CHANGED, changeOfferRequest, secondDate,token) :
+                        DATES_WERE_CHANGED, changeOfferRequest, secondDate, token) :
                 createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                        INCORRECT_SECOND_DATE, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), secondDate,token );
+                        INCORRECT_SECOND_DATE, CHANGE_SECOND_DATE_OF_OFFER.ordinal(),
+                        RETURN_TO_CHANGE_OF_OFFER.ordinal(), secondDate, token);
     }
 
     private BotApiMethod updateDatesOfSupplierAndGetStartMenu(CallbackQuery callbackQuery, String text,
                                                               ChangeOfferRequest changeOfferRequest, LocalDate secondDate, String token) {
         changeOfferRequest.setSecondDate(secondDate);
-        requestService.updateDates(changeOfferRequest,token );
+        requestService.updateDates(changeOfferRequest, token);
         List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                 requestService.findPassengersByRequestData(changeOfferRequest) :
                 requestService.findDriversByRequestData(changeOfferRequest);
         messageService.deleteToken(token);
-        return getAvailableOffersList(requests,callbackQuery, text,token);
+        return getAvailableOffersList(requests, callbackQuery, text, token);
     }
 }

@@ -11,8 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_FIRST_DATE_OF_OFFER;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_SECOND_DATE_OF_OFFER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
@@ -35,16 +34,16 @@ public class ChangeFirstDateOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Change the first date of offer, changed first date: {} and token : {}", firstDate,token);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
+        log.info("Change the first date of offer, changed first date: {} and token : {}", firstDate, token);
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
         if (validFirstDate(firstDate)) {
             changeOfferRequest.setFirstDate(firstDate);
             return createEditMessageForSecondDate(callbackQuery, firstDate, CHOOSE_THE_SECOND_DATE
-                    , CHANGE_SECOND_DATE_OF_OFFER.ordinal(),token );
+                    , CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
         } else {
             log.info("Incorrect first date, return to the first date");
             return createEditMessageTextForFirstDateWithIncorrectDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
-                    INCORRECT_FIRST_DATE, firstDate,token );
+                    RETURN_TO_CHANGE_OF_OFFER.ordinal(), INCORRECT_FIRST_DATE, firstDate, token);
         }
     }
 }

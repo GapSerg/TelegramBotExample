@@ -11,8 +11,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHOSE_DATE_PASSENGER;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_PASSENGER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createSendMessageForFirstDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
@@ -45,6 +44,6 @@ public class ChoseDatePassengerCallbackType implements CallbackType {
         String selectedRoute = getCurrentRoute(passengerRequest.getCities());
         tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
         return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_PASSENGER.ordinal(),
-                CHOOSE_THE_FIRST_DATE, token);
+                CANCEL_PASSENGER_REQUEST.ordinal(),CHOOSE_THE_FIRST_DATE, token);
     }
 }

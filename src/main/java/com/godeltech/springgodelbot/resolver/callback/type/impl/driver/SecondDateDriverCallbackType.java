@@ -50,7 +50,7 @@ public class SecondDateDriverCallbackType implements CallbackType {
         return validSecondDate(driverRequest.getFirstDate(), secondDate) ?
                 getSendMessageWithValidSecondDate(callbackQuery, secondDate, driverRequest,token) :
                 createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(), INCORRECT_SECOND_DATE,
-                        SECOND_DATE_DRIVER.ordinal(), secondDate, token);
+                        SECOND_DATE_DRIVER.ordinal(),CANCEL_DRIVER_REQUEST.ordinal(), secondDate, token);
     }
 
     private SendMessage getSendMessageWithValidSecondDate(CallbackQuery callbackQuery, LocalDate secondDate, DriverRequest driverRequest, String token) {

@@ -69,7 +69,7 @@ public class MyOffersCallbackType implements CallbackType {
         buttons.add(List.of(InlineKeyboardButton
                 .builder()
                 .text("Back to menu")
-                .callbackData(Callbacks.MAIN_MENU.ordinal()+SPLITTER+token)
+                .callbackData(CANCEL_CHANGE_OFFER_REQUEST.ordinal()+SPLITTER+token)
                 .build()));
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())

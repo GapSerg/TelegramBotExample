@@ -35,6 +35,6 @@ public class CancelFirstDateOfOfferCallbackType implements CallbackType {
         log.info("Got {} callback type with canceled date :{} and token: {}", CANCEL_FIRST_DATE_OF_OFFER,canceledDate,token);
         requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
         return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
-                "You've canceled the first date", canceledDate,token );
+                RETURN_TO_CHANGE_OF_OFFER.ordinal(),"You've canceled the first date", canceledDate,token );
     }
 }

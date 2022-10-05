@@ -31,10 +31,10 @@ public class CancelFirstDatePassengerCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with canceled date :{} and with token: {}", CANCEL_FIRST_DATE_PASSENGER,canceledDate,token);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
+        log.info("Got {} callback type with canceled date :{} and with token: {}", CANCEL_FIRST_DATE_PASSENGER, canceledDate, token);
+        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         passengerRequest.setFirstDate(null);
         return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_PASSENGER.ordinal(),
-                "You've canceled the first date", canceledDate, token);
+                CANCEL_PASSENGER_REQUEST.ordinal(),"You've canceled the first date", canceledDate, token);
     }
 }

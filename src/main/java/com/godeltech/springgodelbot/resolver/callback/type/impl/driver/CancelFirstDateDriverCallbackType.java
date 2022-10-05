@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
@@ -25,17 +26,17 @@ public class CancelFirstDateDriverCallbackType implements CallbackType {
 
     @Override
     public Integer getCallbackName() {
-        return Callbacks.CANCEL_FIRST_DATE_DRIVER.ordinal();
+        return CANCEL_FIRST_DATE_DRIVER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got {} type with token : {}",Callbacks.CANCEL_FIRST_DATE_DRIVER,token);
+        log.info("Got {} type with token : {}", CANCEL_FIRST_DATE_DRIVER,token);
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
         driverRequest.setFirstDate(null);
-        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, Callbacks.FIRST_DATE_DRIVER.ordinal(),
-                "You've canceled the first date", canceledDate,token );
+        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_DRIVER.ordinal(),
+                CANCEL_DRIVER_REQUEST.ordinal(),"You've canceled the first date", canceledDate,token );
     }
 }

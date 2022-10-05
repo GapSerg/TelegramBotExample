@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 import java.time.LocalDate;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createCalendar;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
@@ -28,14 +29,15 @@ public class NextMonthCallbackType implements CallbackType {
 
     @Override
     public Integer getCallbackName() {
-        return Callbacks.NEXT_MONTH.ordinal();
+        return NEXT_MONTH.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got Next Month Callback type with callback :{} by user: {}", callbackQuery.getData(),
                 callbackQuery.getFrom().getUserName());
-        Callbacks callback = Callbacks.values()[Integer.parseInt(getCallbackValue(callbackQuery.getData()))];
+        Callbacks callback = values()[Integer.parseInt(getCallbackValue(callbackQuery.getData()))];
+        Callbacks cancelCallback = getCancelCallback(callback);
         String token = getCallbackToken(callbackQuery.getData());
         LocalDate localDate = LocalDate.parse(callbackQuery.getData().split(SPLITTER)[3]).plusMonths(1);
         LocalDate chosenDate = returnChosenDate(callbackQuery, callback, token);
@@ -45,10 +47,25 @@ public class NextMonthCallbackType implements CallbackType {
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(chosenDate == null ?
-                                createCalendar(localDate, callback.ordinal(),token) :
-                                createCalendar(localDate, callback.ordinal(), chosenDate, YES,token))
+                                createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), token) :
+                                createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), chosenDate, YES, token))
                         .build())
                 .build();
+    }
+
+    private Callbacks getCancelCallback(Callbacks callback) {
+        switch (callback) {
+            case FIRST_DATE_DRIVER:
+            case SECOND_DATE_DRIVER:
+                return CANCEL_DRIVER_REQUEST;
+            case FIRST_DATE_PASSENGER:
+            case SECOND_DATE_PASSENGER:
+                return CANCEL_PASSENGER_REQUEST;
+            case CHANGE_FIRST_DATE_OF_OFFER:
+            case CHANGE_SECOND_DATE_OF_OFFER:
+                return RETURN_TO_CHANGE_OF_OFFER;
+        }
+        throw new UnknownCommandException();
     }
 
     private String returnText(Callbacks callback, LocalDate localDate, LocalDate chosenDate) {

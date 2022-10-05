@@ -13,8 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_DRIVER_ROUTE;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.DRIVER_ROUTE;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
@@ -46,7 +45,7 @@ public class DriverRouteCallbackType implements CallbackType {
         DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage(),token );
         supplerRequest.getCities().add(reservedRoute);
         return createEditSendMessageForRoutes(callbackQuery, cities, supplerRequest.getCities(),
-                DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(),token );
+                DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(),CANCEL_DRIVER_REQUEST.ordinal(),token );
 
     }
 }

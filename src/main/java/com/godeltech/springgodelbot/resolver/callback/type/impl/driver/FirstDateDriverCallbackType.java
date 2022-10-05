@@ -12,8 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_DRIVER;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_DRIVER;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
@@ -43,6 +42,7 @@ public class FirstDateDriverCallbackType implements CallbackType {
         return validFirstDate(firstDate) ?
                 getEditMessageTextWithValidFirstDate(callbackQuery, firstDate, supplerRequest, token) :
                 createEditMessageTextForFirstDateWithIncorrectDate(callbackQuery, FIRST_DATE_DRIVER.ordinal(),
+                        CANCEL_DRIVER_REQUEST.ordinal(),
                         INCORRECT_FIRST_DATE, firstDate, token);
     }
 
@@ -51,6 +51,6 @@ public class FirstDateDriverCallbackType implements CallbackType {
         driverRequest.setFirstDate(firstDate);
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         return createEditMessageForSecondDate(callbackQuery, firstDate,
-                CHOOSE_THE_SECOND_DATE, SECOND_DATE_DRIVER.ordinal(), token);
+                CHOOSE_THE_SECOND_DATE, SECOND_DATE_DRIVER.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(), token);
     }
 }

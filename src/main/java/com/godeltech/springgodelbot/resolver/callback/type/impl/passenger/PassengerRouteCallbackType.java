@@ -13,8 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_PASSENGER_ROUTE;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.PASSENGER_ROUTE;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
@@ -36,17 +35,20 @@ public class PassengerRouteCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {} and with token: {}", PASSENGER_ROUTE, routeId,token);
+        log.info("Callback data with type: {} and routeId: {} and with token: {}", PASSENGER_ROUTE, routeId, token);
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
+        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
-        passengerRequest.getCities().add(reservedRoute);
-        return createEditSendMessageForRoutes(callbackQuery, cities, passengerRequest.getCities(),
-                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),token);
+        List<City> chosenCities = passengerRequest.getCities();
+        if (chosenCities.size() > 1)
+            chosenCities.remove(1);
+        chosenCities.add(reservedRoute);
+        return createEditSendMessageForRoutes(callbackQuery, cities, chosenCities,
+                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(), token);
     }
 
 }
