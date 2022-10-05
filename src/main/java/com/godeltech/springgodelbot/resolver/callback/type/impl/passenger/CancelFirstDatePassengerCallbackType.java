@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
 @Component
@@ -22,17 +23,18 @@ public class CancelFirstDatePassengerCallbackType implements CallbackType {
     private final RequestService requestService;
 
     @Override
-    public String getCallbackName() {
-        return CANCEL_FIRST_DATE_PASSENGER.name();
+    public Integer getCallbackName() {
+        return CANCEL_FIRST_DATE_PASSENGER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        String token = getCallbackToken(callbackQuery.getData());
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with canceled date :{}", CANCEL_FIRST_DATE_PASSENGER,canceledDate);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
+        log.info("Got {} callback type with canceled date :{} and with token: {}", CANCEL_FIRST_DATE_PASSENGER,canceledDate,token);
+        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
         passengerRequest.setFirstDate(null);
-        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_PASSENGER.name(),
-                "You've canceled the first date", canceledDate);
+        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_PASSENGER.ordinal(),
+                "You've canceled the first date", canceledDate, token);
     }
 }

@@ -11,10 +11,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
+
 @Component
 public class CallbackResolver {
 
-    private final Map<String, CallbackType> callbackTypeContext;
+    private final Map<Integer, CallbackType> callbackTypeContext;
 
     @Autowired
     public CallbackResolver(List<CallbackType> callbackTypes) {
@@ -23,7 +25,7 @@ public class CallbackResolver {
     }
 
     public BotApiMethod getSendMessage(CallbackQuery callbackQuery) {
-        return callbackTypeContext.get(callbackQuery.getData().split("&")[0])
+        return callbackTypeContext.get(Integer.parseInt(callbackQuery.getData().split(SPLITTER)[0]))
                 .createSendMessage(callbackQuery);
     }
 }

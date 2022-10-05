@@ -8,50 +8,53 @@ import com.godeltech.springgodelbot.model.entity.Activity;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RequestService {
 
-    void saveDriverRequest(DriverRequest driverRequest);
+    void saveDriverRequest(DriverRequest driverRequest, String token);
 
-    DriverRequest getDriverRequest(Message message);
+    DriverRequest getDriverRequest(Message message, String token);
 
-    void savePassengerRequest(PassengerRequest passengerRequest);
+    void savePassengerRequest(PassengerRequest passengerRequest, String token);
 
-    void saveDriver(Message message);
+    void saveDriver(DriverRequest driverRequest, String token);
 
-    PassengerRequest getPassengerRequest(Message message);
+    PassengerRequest getPassengerRequest(Message message, String token);
 
-    ChangeOfferRequest getChangeOfferRequest(Message message);
+    ChangeOfferRequest getChangeOfferRequest(Message message, String token);
 
-    void updateDates(ChangeOfferRequest changeOfferRequest);
+    void updateDates(ChangeOfferRequest changeOfferRequest, String token);
 
-    void clearChangeOfferRequestsAndPassengerRequests(Long chatId);
+    void clearChangeOfferRequestsAndPassengerRequests(String token);
 
-    void clearDriverRequestsAndPassengerRequests(Long chatId);
+    void clearDriverRequestsAndPassengerRequests(String token);
 
-    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest);
+    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token);
 
-    boolean existsDriverRequestByChatId(Long chatId);
+    boolean existsDriverRequestByChatId(String token);
 
-    boolean existsChangeOfferRequestByChatId(Long chatId);
+    boolean existsChangeOfferRequestByChatId(String token);
 
-    void clearDriverRequestsAndChangeOfferRequests(Long chatId);
+    void clearDriverRequestsAndChangeOfferRequests(String token);
 
-    void savePassenger(PassengerRequest passengerRequest);
+    void savePassenger(PassengerRequest passengerRequest, String token);
 
-    boolean existsPassengerRequestByChatId(Long chatId);
+    boolean existsPassengerRequestByToken(String token);
 
-    void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest);
+    void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token);
 
-    ChangeOfferRequest deleteOffer(Message message);
+    ChangeOfferRequest deleteOffer(Message message, String token);
 
-    void checkAndClearChangingOfferRequests(Long chatId);
+    void checkAndClearChangingOfferRequests(String token);
 
     List<ChangeOfferRequest> findByUserIdAndActivity(Long id, Activity activity);
 
-    ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId);
+    ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId, String token);
 
     List<PassengerRequest> findPassengersByRequestData(Request request);
 
     List<DriverRequest> findDriversByRequestData(Request request);
+
+    Map.Entry<String, ? extends Request> findRequest(List<String> tokens, String text);
 }

@@ -2,6 +2,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
+import com.godeltech.springgodelbot.service.MessageService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.godeltech.springgodelbot.util.BotMenu;
@@ -12,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SAVE_PASSENGER_WITHOUT_DESCRIPTION;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 
 @Component
 @Slf4j
@@ -19,26 +21,30 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
 
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
+    private final MessageService messageService;
 
 
     public SavePassengerWithoutDescriptionCallbackType(RequestService requestService,
-                                                       @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
+                                                       @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, MessageService messageService) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
+        this.messageService = messageService;
     }
 
     @Override
-    public String getCallbackName() {
-        return SAVE_PASSENGER_WITHOUT_DESCRIPTION.name();
+    public Integer getCallbackName() {
+        return SAVE_PASSENGER_WITHOUT_DESCRIPTION.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Got callback with type : {} by user : {}",
-                SAVE_PASSENGER_WITHOUT_DESCRIPTION, callbackQuery.getFrom().getUserName());
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
+        String token = getCallbackToken(callbackQuery.getData());
+        log.info("Got callback with type : {} with token : {}",
+                SAVE_PASSENGER_WITHOUT_DESCRIPTION, token);
+        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), passengerRequest.getMessages());
-        requestService.savePassenger(passengerRequest);
+        requestService.savePassenger(passengerRequest, token);
+        messageService.deleteToken(token);
         return BotMenu.getStartMenu(callbackQuery.getMessage(), "We've successfully save your request");
     }
 }

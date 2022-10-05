@@ -16,10 +16,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.validSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.createSendMessageWithDoubleCheckOffer;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_DATE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_SECOND_DATE;
 
@@ -37,30 +36,31 @@ public class SecondDateDriverCallbackType implements CallbackType {
     }
 
     @Override
-    public String getCallbackName() {
-        return SECOND_DATE_DRIVER.name();
+    public Integer getCallbackName() {
+        return SECOND_DATE_DRIVER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        String token = getCallbackToken(callbackQuery.getData());
         LocalDate secondDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with second date :{} and by user : {}",SECOND_DATE_DRIVER,
-                secondDate, callbackQuery.getFrom().getUserName());
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
+        log.info("Got {} callback type with second date :{} and token : {}",SECOND_DATE_DRIVER,
+                secondDate, token);
+        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(),token );
         return validSecondDate(driverRequest.getFirstDate(), secondDate) ?
-                getSendMessageWithValidSecondDate(callbackQuery, secondDate, driverRequest) :
+                getSendMessageWithValidSecondDate(callbackQuery, secondDate, driverRequest,token) :
                 createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(), INCORRECT_SECOND_DATE,
-                        SECOND_DATE_DRIVER.name(), secondDate);
+                        SECOND_DATE_DRIVER.ordinal(), secondDate, token);
     }
 
-    private SendMessage getSendMessageWithValidSecondDate(CallbackQuery callbackQuery, LocalDate secondDate, DriverRequest driverRequest) {
+    private SendMessage getSendMessageWithValidSecondDate(CallbackQuery callbackQuery, LocalDate secondDate, DriverRequest driverRequest, String token) {
         driverRequest.setSecondDate(secondDate);
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_DATE, driverRequest.getFirstDate(),
                 driverRequest.getSecondDate()));
         List<PassengerRequest> passengers = requestService.findPassengersByRequestData(driverRequest);
 
-        return createSendMessageWithDoubleCheckOffer(callbackQuery, passengers, CHECK_DRIVER_REQUEST, CANCEL_DRIVER_REQUEST);
+        return createSendMessageWithDoubleCheckOffer(callbackQuery, passengers, CHECK_DRIVER_REQUEST.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),token);
     }
 
 

@@ -1,9 +1,6 @@
 package com.godeltech.springgodelbot.handler;
 
-import com.godeltech.springgodelbot.exception.RequestNotFoundException;
-import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
-import com.godeltech.springgodelbot.exception.UnknownCommandException;
-import com.godeltech.springgodelbot.exception.UserAuthorizationException;
+import com.godeltech.springgodelbot.exception.*;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.godeltech.springgodelbot.util.CallbackUtil;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +49,16 @@ public class BotHandler {
     public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again"));
+    }
+
+    @ExceptionHandler(value = RepeatedTokenMessageException.class)
+    public void handleRepeatedTokenMessageException(RepeatedTokenMessageException exception){
+        log.error(exception.getMessage());
+    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    public void handleRuntimeException(RuntimeException exception){
+        log.error(exception.getMessage()+exception.getLocalizedMessage());
     }
 
 }

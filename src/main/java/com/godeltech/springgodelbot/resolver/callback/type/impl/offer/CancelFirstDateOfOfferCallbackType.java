@@ -1,6 +1,5 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.util.CallbackUtil;
@@ -12,7 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_FIRST_DATE_OF_OFFER;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
 @Component
@@ -23,16 +24,17 @@ public class CancelFirstDateOfOfferCallbackType implements CallbackType {
     private final RequestService requestService;
 
     @Override
-    public String getCallbackName() {
-        return CANCEL_FIRST_DATE_OF_OFFER.name();
+    public Integer getCallbackName() {
+        return CANCEL_FIRST_DATE_OF_OFFER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        String token = getCallbackToken(callbackQuery.getData());
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with canceled date :{}", CANCEL_FIRST_DATE_OF_OFFER,canceledDate);
-        requestService.getChangeOfferRequest(callbackQuery.getMessage());
-        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, Callbacks.CHANGE_FIRST_DATE_OF_OFFER.name(),
-                "You've canceled the first date", canceledDate);
+        log.info("Got {} callback type with canceled date :{} and token: {}", CANCEL_FIRST_DATE_OF_OFFER,canceledDate,token);
+        requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
+        return CallbackUtil.DateUtil.createEditMessageTextForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
+                "You've canceled the first date", canceledDate,token );
     }
 }

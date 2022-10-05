@@ -18,8 +18,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.util.Optional;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
-import static com.godeltech.springgodelbot.util.CallbackUtil.makeEditMessageForUserWithoutUsername;
-import static com.godeltech.springgodelbot.util.CallbackUtil.makeSendMessageForUserWithoutUsername;
 import static com.godeltech.springgodelbot.util.ConstantUtil.START_MESSAGE;
 
 @Component

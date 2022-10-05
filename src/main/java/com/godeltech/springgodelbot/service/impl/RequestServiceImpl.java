@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -22,139 +22,133 @@ import java.util.Map;
 public class RequestServiceImpl implements RequestService {
 
 
-    private final Map<Long, PassengerRequest> passengerRequests;
+    private final Map<String, PassengerRequest> passengerRequests;
 
-    private final Map<Long, DriverRequest> driverRequests;
+    private final Map<String, DriverRequest> driverRequests;
 
-    private final Map<Long, ChangeOfferRequest> changeDriverRequests;
+    private final Map<String, ChangeOfferRequest> changeDriverRequests;
 
     private final OfferService offerService;
 
 
-    public DriverRequest getDriverRequest(Message message) {
-        log.debug("Getting driver request with chatId: {}", message.getChatId());
-        if (driverRequests.containsKey(message.getChatId()))
-            return driverRequests.get(message.getChatId());
-        throw new RequestNotFoundException(DriverRequest.class, "chatId", message.getChatId(), message);
+    public DriverRequest getDriverRequest(Message message, String token) {
+        log.debug("Getting driver request with token {}", token);
+        if (driverRequests.containsKey(token))
+            return driverRequests.get(token);
+        throw new RequestNotFoundException(DriverRequest.class, "token", token, message);
     }
 
     @Override
-    public void savePassengerRequest(PassengerRequest passengerRequest) {
-        log.debug("Save passenger request : {}",passengerRequest);
-        passengerRequests.put(passengerRequest.getChatId(), passengerRequest);
+    public void savePassengerRequest(PassengerRequest passengerRequest, String token) {
+        log.debug("Save passenger request : {}", passengerRequest);
+        passengerRequests.put(token, passengerRequest);
     }
 
     @Override
-    public void saveDriver(Message message) {
-        log.debug("Saving driver request with chat id: {}", message.getChatId());
-        if (driverRequests.containsKey(message.getChatId())) {
-            offerService.save(driverRequests.get(message.getChatId()));
-            driverRequests.remove(message.getChatId());
-        } else {
-            throw new RequestNotFoundException(DriverRequest.class, "chatId", message.getChatId(),
-                    message);
-        }
+    public void saveDriver(DriverRequest driverRequest, String token) {
+        log.debug("Saving driver request with token: {}", token);
+            offerService.save(driverRequest);
+            driverRequests.remove(token);
+
     }
 
     @Override
-    public PassengerRequest getPassengerRequest(Message message) {
-        log.debug("Get passenger request with chat id: {}", message.getChatId());
-        if (passengerRequests.containsKey(message.getChatId()))
-            return passengerRequests.get(message.getChatId());
-        throw new RequestNotFoundException(PassengerRequest.class, "chatId", message.getChatId(), message);
+    public PassengerRequest getPassengerRequest(Message message, String token) {
+        log.debug("Get passenger request with chat token: {}", token);
+        if (passengerRequests.containsKey(token))
+            return passengerRequests.get(token);
+        throw new RequestNotFoundException(PassengerRequest.class, "token", token, message);
     }
 
 
     @Override
-    public ChangeOfferRequest getChangeOfferRequest(Message message) {
-        log.debug("Get change offer request by chat id: {}", message.getChatId());
-        if (changeDriverRequests.containsKey(message.getChatId()))
-            return changeDriverRequests.get(message.getChatId());
-        throw new RequestNotFoundException(ChangeOfferRequest.class, "chatId", message.getChatId(), message);
+    public ChangeOfferRequest getChangeOfferRequest(Message message, String token) {
+        log.debug("Get change offer request by token: {}", token);
+        if (changeDriverRequests.containsKey(token))
+            return changeDriverRequests.get(token);
+        throw new RequestNotFoundException(ChangeOfferRequest.class, "token", token, message);
     }
 
     @Override
-    public void updateDates(ChangeOfferRequest changeOfferRequest) {
-        log.debug("Update dates of offer with id: {}", changeOfferRequest.getOfferId());
+    public void updateDates(ChangeOfferRequest changeOfferRequest, String token) {
+        log.debug("Update dates of offer with id: {} and token: {}", changeOfferRequest.getOfferId(), token);
         offerService.updateDatesOfOffer(changeOfferRequest);
-        changeDriverRequests.remove(changeOfferRequest.getChatId());
+        changeDriverRequests.remove(token);
     }
 
     @Override
-    public void clearChangeOfferRequestsAndPassengerRequests(Long chatId) {
-        log.debug("Clear maps changeOfferRequests and passengerRequests with chat id: {}", chatId);
-        changeDriverRequests.remove(chatId);
-        passengerRequests.remove(chatId);
+    public void clearChangeOfferRequestsAndPassengerRequests(String token) {
+        log.debug("Clear maps changeOfferRequests and passengerRequests with chat id: {}", token);
+        changeDriverRequests.remove(token);
+        passengerRequests.remove(token);
     }
 
     @Override
-    public void clearDriverRequestsAndPassengerRequests(Long chatId) {
-        log.debug("Clear driver and passenger requests with chat id :{}", chatId);
-        driverRequests.remove(chatId);
-        passengerRequests.remove(chatId);
+    public void clearDriverRequestsAndPassengerRequests(String token) {
+        log.debug("Clear driver and passenger requests with chat id :{}", token);
+        driverRequests.remove(token);
+        passengerRequests.remove(token);
     }
 
     @Override
-    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest) {
-        log.debug("Update description of offer with offer id: {}", changeOfferRequest.getOfferId());
+    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token) {
+        log.debug("Update description of offer with offer id: {} and token: {}", changeOfferRequest.getOfferId(), token);
         offerService.updateDescriptionOfOffer(changeOfferRequest);
-        changeDriverRequests.remove(changeOfferRequest.getChatId());
+        changeDriverRequests.remove(token);
     }
 
     @Override
-    public boolean existsDriverRequestByChatId(Long chatId) {
-        log.debug("Check containing driverRequests by id: {}", chatId);
-        return driverRequests.containsKey(chatId);
+    public boolean existsDriverRequestByChatId(String token) {
+        log.debug("Check containing driverRequests by token: {}", token);
+        return driverRequests.containsKey(token);
     }
 
     @Override
-    public boolean existsChangeOfferRequestByChatId(Long chatId) {
-        log.debug("Check containing changeDriverRequests by id: {}", chatId);
-        return changeDriverRequests.containsKey(chatId);
+    public boolean existsChangeOfferRequestByChatId(String token) {
+        log.debug("Check containing changeDriverRequests by token: {}", token);
+        return changeDriverRequests.containsKey(token);
     }
 
     @Override
-    public void clearDriverRequestsAndChangeOfferRequests(Long chatId) {
-        log.debug("Clear driver and change offer requests with chat id :{}", chatId);
-        driverRequests.remove(chatId);
-        changeDriverRequests.remove(chatId);
+    public void clearDriverRequestsAndChangeOfferRequests(String token) {
+        log.debug("Clear driver and change offer requests with chat id :{}", token);
+        driverRequests.remove(token);
+        changeDriverRequests.remove(token);
     }
 
     @Override
-    public void savePassenger(PassengerRequest passengerRequest) {
-        log.debug("Save passenger request : {}",passengerRequest);
-        Long chatId = passengerRequest.getChatId();
+    public void savePassenger(PassengerRequest passengerRequest, String token) {
+        log.debug("Save passenger request : {} and token: {}", passengerRequest, token);
         offerService.save(passengerRequest);
-        passengerRequests.remove(chatId);
+        passengerRequests.remove(token);
     }
 
     @Override
-    public boolean existsPassengerRequestByChatId(Long chatId) {
-        return passengerRequests.containsKey(chatId);
+    public boolean existsPassengerRequestByToken(String token) {
+        return passengerRequests.containsKey(token);
     }
 
     @Override
-    public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest) {
+    public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token) {
         log.info("Update route of offer with id :{}", changeOfferRequest.getOfferId());
-        Long chatId = changeOfferRequest.getChatId();
         offerService.updateCities(changeOfferRequest);
-        changeDriverRequests.remove(chatId);
+        changeDriverRequests.remove(token);
     }
 
     @Override
-    public ChangeOfferRequest deleteOffer(Message message) {
-        ChangeOfferRequest changeOfferRequest = getChangeOfferRequest(message);
-        log.debug("Delete offer with id : {}", changeOfferRequest.getOfferId());
+    public ChangeOfferRequest deleteOffer(Message message, String token) {
+        ChangeOfferRequest changeOfferRequest = getChangeOfferRequest(message, token);
+        log.debug("Delete offer with id : {} and token: {}", changeOfferRequest.getOfferId(), token);
         offerService.deleteById(changeOfferRequest.getOfferId(), message.getChatId());
-        changeDriverRequests.remove(message.getChatId());
+        changeDriverRequests.remove(token);
         return changeOfferRequest;
 
     }
 
     @Override
-    public void checkAndClearChangingOfferRequests(Long chatId) {
-        log.debug("Check and clear if exists changeSupplierRequests by key:{}", chatId);
-        changeDriverRequests.remove(chatId);
+    public void checkAndClearChangingOfferRequests(String token) {
+        log.debug("Check and clear if exists changeSupplierRequests by token:{}", token);
+        changeDriverRequests.remove(token);
     }
 
     @Override
@@ -164,11 +158,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId) {
-        log.debug("Add new change offer request with offer id : {}",offerId);
+    public ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId, String token) {
+        log.debug("Add new change offer request with offer id : {} and token: {}", offerId, token);
         ChangeOfferRequest request = offerService.getById(offerId, chatId);
         request.setChatId(chatId);
-        changeDriverRequests.put(chatId, request);
+        changeDriverRequests.put(token, request);
         return request;
     }
 
@@ -188,10 +182,20 @@ public class RequestServiceImpl implements RequestService {
                 request.getFirstDate(), request.getCities());
     }
 
+    @Override
+    public Map.Entry<String, ? extends Request> findRequest(List<String> tokens, String text) {
+        return Stream.of(driverRequests.entrySet(), passengerRequests.entrySet(), changeDriverRequests.entrySet())
+                .flatMap(Set::stream)
+                .filter(request -> tokens.contains(request.getKey()))
+                .filter(request -> request.getValue().getNeedForDescription())
+                .findAny()
+                .orElse(null);
+    }
 
-    public void saveDriverRequest(DriverRequest driverRequest) {
-        log.debug("Save supplier request: {}", driverRequest);
-        driverRequests.put(driverRequest.getChatId(), driverRequest);
+
+    public void saveDriverRequest(DriverRequest driverRequest, String token) {
+        log.debug("Save supplier request: {} with token : {}", driverRequest, token);
+        driverRequests.put(token, driverRequest);
 
     }
 }

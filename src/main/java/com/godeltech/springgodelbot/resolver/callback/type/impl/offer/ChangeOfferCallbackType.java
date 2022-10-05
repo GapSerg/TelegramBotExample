@@ -24,45 +24,46 @@ public class ChangeOfferCallbackType implements CallbackType {
     private final RequestService requestService;
 
     @Override
-    public String getCallbackName() {
-        return CHANGE_OFFER.name();
+    public Integer getCallbackName() {
+        return CHANGE_OFFER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        String token = getCallbackToken(callbackQuery.getData());
         long offerId = Long.parseLong(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with route id :{}", CHANGE_OFFER,offerId);
-        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage().getChatId());
+        log.info("Got {} callback type with route id :{} and token: {}", CHANGE_OFFER,offerId,token);
+        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage().getChatId(),token );
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .text(getOffersView(request))
                 .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboard(getChangeOfferButtons(request))
+                        .keyboard(getChangeOfferButtons(request, token))
                         .build())
                 .build();
     }
 
-    private List<List<InlineKeyboardButton>> getChangeOfferButtons(ChangeOfferRequest request) {
+    private List<List<InlineKeyboardButton>> getChangeOfferButtons(ChangeOfferRequest request, String token) {
         return List.of(List.of(InlineKeyboardButton.builder()
                                 .text("Change route")
-                                .callbackData(CHANGE_ROUTE_OF_OFFER.name())
+                                .callbackData(CHANGE_ROUTE_OF_OFFER.ordinal()+SPLITTER+token)
                                 .build(),
                         InlineKeyboardButton.builder()
                                 .text("Change date")
-                                .callbackData(CHANGE_DATE_OF_OFFER.name())
+                                .callbackData(CHANGE_DATE_OF_OFFER.ordinal()+SPLITTER+token)
                                 .build()
                 ),
                 List.of(InlineKeyboardButton.builder()
                         .text("Change description")
-                        .callbackData(CHANGE_DESCRIPTION_OF_OFFER.name())
+                        .callbackData(CHANGE_DESCRIPTION_OF_OFFER.ordinal()+SPLITTER+token)
                         .build(), InlineKeyboardButton.builder()
                         .text("Delete offer")
-                        .callbackData(DELETE_OFFER.name() + SPLITTER + request.getOfferId())
+                        .callbackData(DELETE_OFFER.ordinal() +SPLITTER+token+ SPLITTER + request.getOfferId())
                         .build()),
                 List.of(InlineKeyboardButton.builder()
                         .text("Back to offer list")
-                        .callbackData(MY_OFFERS.name() + SPLITTER + request.getActivity())
+                        .callbackData(MY_OFFERS.ordinal() +SPLITTER+token  + SPLITTER + request.getActivity())
                         .build()));
     }
 }

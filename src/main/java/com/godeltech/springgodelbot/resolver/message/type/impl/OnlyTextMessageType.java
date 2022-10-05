@@ -3,9 +3,11 @@ package com.godeltech.springgodelbot.resolver.message.type.impl;
 import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
+import com.godeltech.springgodelbot.service.MessageService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.ConstantUtil.DESCRIPTION_WAS_UPDATED;
@@ -25,11 +31,13 @@ public class OnlyTextMessageType implements MessageType {
 
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
+    private final MessageService messageService;
 
     public OnlyTextMessageType(RequestService requestService,
-                               @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
+                               @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, MessageService messageService) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
+        this.messageService = messageService;
     }
 
     @Override
@@ -39,57 +47,44 @@ public class OnlyTextMessageType implements MessageType {
 
     @Override
     public BotApiMethod createSendMessage(Message message) {
-
-        if (requestService.existsDriverRequestByChatId(message.getChatId()) && requestService.getDriverRequest(message).getNeedForDescription()) {
-
-            DriverRequest driverRequest = requestService.getDriverRequest(message);
-            log.info("Got message for saving description of driver with chat id :{} ",driverRequest.getChatId());
-            return driverRequest.getNeedForDescription() ?
-                    saveDriverRequestWithDescription(message, driverRequest, message.getText(),
-                            SUCCESSFUL_REQUEST_SAVING) :
-                    getUnknownMessage(message);
+        List<String> tokens = messageService.findByUserId(message.getFrom().getId());
+        Map.Entry<String, ? extends Request> entry = requestService.findRequest(tokens, message.getText());
+        if (entry == null) {
+            return getUnknownMessage(message);
         }
-        if (requestService.existsPassengerRequestByChatId(message.getChatId()) && requestService.getPassengerRequest(message).getNeedForDescription()) {
-            PassengerRequest passengerRequest = requestService.getPassengerRequest(message);
-            log.info("Got message for saving description of passenger with chat id :{} ",passengerRequest.getChatId());
-            return passengerRequest.getNeedForDescription() ?
-                    savePassengerRequestWithDescription(message, passengerRequest, "Request was successfully saved") :
-                    getUnknownMessage(message);
+        if (entry.getValue() instanceof DriverRequest) {
+            log.info("Got message for saving description of driver with token :{} ", entry.getKey());
+            return saveDriverRequest(message, entry);
+        }else  if (entry.getValue() instanceof PassengerRequest) {
+            log.info("Got message for saving description of passenger with token :{} ", entry.getKey());
+            return savePassengerRequest(message, entry);
+        }else {
+            log.info("Got message for changing description of offer with token ", entry.getKey());
+            return updateDescriptionOfRequest(message, entry);
         }
-        if (requestService.existsChangeOfferRequestByChatId(message.getChatId()) && requestService.getChangeOfferRequest(message).getNeedForDescription()) {
-            ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(message);
-            log.info("Got message for changing description of offer with id :{} ", changeOfferRequest.getOfferId());
-            return changeOfferRequest.getNeedForDescription() ?
-                    updateDescriptionOfOfferAndGetStartMenu(message, changeOfferRequest,
-                            DESCRIPTION_WAS_UPDATED) :
-                    getUnknownMessage(message);
-        }
-
-        return getUnknownMessage(message);
     }
 
-    private BotApiMethod savePassengerRequestWithDescription(Message message, PassengerRequest passengerRequest,
-                                                             String text) {
-        passengerRequest.setDescription(message.getText());
-        requestService.savePassenger(passengerRequest);
-
-        tudaSudaTelegramBot.deleteMessages(message.getChatId(), passengerRequest.getMessages());
-        return getStartMenu(message.getChatId(), text);
-
+    private SendMessage updateDescriptionOfRequest(Message message, Map.Entry<String, ? extends Request> entry) {
+        entry.getValue().setDescription(message.getText());
+        requestService.updateDescriptionOfOffer((ChangeOfferRequest) entry.getValue(), entry.getKey() );
+        tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
+        return getStartMenu(message.getChatId(), DESCRIPTION_WAS_UPDATED);
     }
 
-    private BotApiMethod saveDriverRequestWithDescription(Message message, DriverRequest driverRequest, String description, String text) {
-        tudaSudaTelegramBot.deleteMessages(message.getChatId(), driverRequest.getMessages());
-        driverRequest.setDescription(description);
-        requestService.saveDriver(message);
-        return getStartMenu(message.getChatId(), text);
+    private SendMessage savePassengerRequest(Message message, Map.Entry<String, ? extends Request> entry) {
+        entry.getValue().setDescription(message.getText());
+        requestService.savePassenger((PassengerRequest) entry.getValue(), entry.getKey());
+        tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
+        messageService.deleteToken(entry.getKey());
+        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING);
     }
 
-    private BotApiMethod updateDescriptionOfOfferAndGetStartMenu(Message message, ChangeOfferRequest changeOfferRequest, String text) {
-        tudaSudaTelegramBot.deleteMessages(message.getChatId(), changeOfferRequest.getMessages());
-        changeOfferRequest.setDescription(message.getText());
-        requestService.updateDescriptionOfOffer(changeOfferRequest);
-        return getStartMenu(changeOfferRequest.getChatId(), text);
+    private SendMessage saveDriverRequest(Message message, Map.Entry<String, ? extends Request> entry) {
+        tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
+        entry.getValue().setDescription(message.getText());
+        requestService.saveDriver((DriverRequest) entry.getValue(), entry.getKey());
+        messageService.deleteToken(entry.getKey());
+        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING);
     }
 
 

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_DRIVER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_DRIVER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_DATE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_FIRST_DATE;
@@ -28,28 +29,28 @@ public class FirstDateDriverCallbackType implements CallbackType {
     private final RequestService requestService;
 
     @Override
-    public String getCallbackName() {
-        return FIRST_DATE_DRIVER.name();
+    public Integer getCallbackName() {
+        return FIRST_DATE_DRIVER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-
+        String token = getCallbackToken(callbackQuery.getData());
         LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with first date :{} by user: {}", FIRST_DATE_DRIVER,firstDate
-                , callbackQuery.getFrom().getUserName());
-        DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage());
+        log.info("Got {} callback type with first date :{} with token: {}", FIRST_DATE_DRIVER, firstDate
+                , token);
+        DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
         return validFirstDate(firstDate) ?
-                getEditMessageTextWithValidFirstDate(callbackQuery, firstDate, supplerRequest) :
-                createEditMessageTextForFirstDateWithIncorrectDate(callbackQuery, FIRST_DATE_DRIVER.name(),
-                        INCORRECT_FIRST_DATE, firstDate);
+                getEditMessageTextWithValidFirstDate(callbackQuery, firstDate, supplerRequest, token) :
+                createEditMessageTextForFirstDateWithIncorrectDate(callbackQuery, FIRST_DATE_DRIVER.ordinal(),
+                        INCORRECT_FIRST_DATE, firstDate, token);
     }
 
     private EditMessageText getEditMessageTextWithValidFirstDate(CallbackQuery callbackQuery,
-                                                                 LocalDate firstDate, DriverRequest driverRequest) {
+                                                                 LocalDate firstDate, DriverRequest driverRequest, String token) {
         driverRequest.setFirstDate(firstDate);
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         return createEditMessageForSecondDate(callbackQuery, firstDate,
-                CHOOSE_THE_SECOND_DATE, SECOND_DATE_DRIVER.name());
+                CHOOSE_THE_SECOND_DATE, SECOND_DATE_DRIVER.ordinal(), token);
     }
 }

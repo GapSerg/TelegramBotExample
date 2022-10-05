@@ -96,17 +96,17 @@ public class AppConfig {
     }
 
     @Bean
-    public Map<Long, PassengerRequest> passengerRequests() {
+    public Map<String, PassengerRequest> passengerRequests() {
         return new ConcurrentHashMap<>();
     }
 
     @Bean
-    public Map<Long, DriverRequest> driverRequests() {
+    public Map<String, DriverRequest> driverRequests() {
         return new ConcurrentHashMap<>();
     }
 
     @Bean
-    public Map<Long, ChangeOfferRequest> changeOfferRequests() {
+    public Map<String, ChangeOfferRequest> changeOfferRequests() {
         return new ConcurrentHashMap<>();
     }
 

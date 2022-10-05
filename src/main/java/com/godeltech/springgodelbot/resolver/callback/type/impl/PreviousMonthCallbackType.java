@@ -26,37 +26,38 @@ public class PreviousMonthCallbackType implements CallbackType {
     private final RequestService requestService;
 
     @Override
-    public String getCallbackName() {
-        return Callbacks.PREVIOUS_MONTH.name();
+    public Integer getCallbackName() {
+        return Callbacks.PREVIOUS_MONTH.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got Next Month Callback type with callback :{} by user: {}", callbackQuery.getData(),
                 callbackQuery.getFrom().getUserName());
-        Callbacks callback = Callbacks.valueOf(getCallbackValue(callbackQuery.getData()));
-        LocalDate localDate = LocalDate.parse(callbackQuery.getData().split(SPLITTER)[2]).minusMonths(1);
-        LocalDate chosenDate = returnChosenDate(callbackQuery, callback);
+        String token = getCallbackToken(callbackQuery.getData());
+        Callbacks callback = Callbacks.values()[Integer.parseInt(getCallbackValue(callbackQuery.getData()))];
+        LocalDate localDate = LocalDate.parse(callbackQuery.getData().split(SPLITTER)[3]).minusMonths(1);
+        LocalDate chosenDate = returnChosenDate(callbackQuery, callback, token);
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .text(returnText(callback, localDate, chosenDate))
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(chosenDate == null ?
-                                createCalendar(localDate, callback.name()) :
-                                createCalendar(localDate, callback.name(), chosenDate, YES))
+                                createCalendar(localDate, callback.ordinal(), token) :
+                                createCalendar(localDate, callback.ordinal(), chosenDate, YES, token))
                         .build())
                 .build();
 
     }
 
-    private LocalDate returnChosenDate(CallbackQuery callbackQuery, Callbacks callback) {
+    private LocalDate returnChosenDate(CallbackQuery callbackQuery, Callbacks callback, String token) {
         switch (callback) {
             case SECOND_DATE_DRIVER:
-                return requestService.getDriverRequest(callbackQuery.getMessage())
+                return requestService.getDriverRequest(callbackQuery.getMessage(), token)
                         .getFirstDate();
             case SECOND_DATE_PASSENGER:
-                return requestService.getPassengerRequest(callbackQuery.getMessage())
+                return requestService.getPassengerRequest(callbackQuery.getMessage(), token)
                         .getFirstDate();
             default:
                 return null;

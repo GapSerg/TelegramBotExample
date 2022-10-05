@@ -15,6 +15,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHOSE_DAT
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_PASSENGER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createSendMessageForFirstDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SELECTED_ROUTE;
 
@@ -32,17 +33,18 @@ public class ChoseDatePassengerCallbackType implements CallbackType {
     }
 
     @Override
-    public String getCallbackName() {
-        return Callbacks.CHOSE_DATE_PASSENGER.name();
+    public Integer getCallbackName() {
+        return Callbacks.CHOSE_DATE_PASSENGER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Callback data with type: {} by user : {}", CHOSE_DATE_PASSENGER, callbackQuery.getFrom().getUserName());
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
+        String token = getCallbackToken(callbackQuery.getData());
+        log.info("Callback data with type: {} with token : {}", CHOSE_DATE_PASSENGER, token);
+        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
         String selectedRoute = getCurrentRoute(passengerRequest.getCities());
         tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
-        return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_PASSENGER.name(),
-                CHOOSE_THE_FIRST_DATE);
+        return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_PASSENGER.ordinal(),
+                CHOOSE_THE_FIRST_DATE, token);
     }
 }

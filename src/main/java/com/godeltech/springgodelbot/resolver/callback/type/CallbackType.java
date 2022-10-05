@@ -5,7 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 public interface CallbackType {
 
-    String getCallbackName();
+    Integer getCallbackName();
 
     BotApiMethod createSendMessage(CallbackQuery callbackQuery);
 }

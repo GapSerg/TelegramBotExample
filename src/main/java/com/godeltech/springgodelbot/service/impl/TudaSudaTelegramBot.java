@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
@@ -30,7 +31,6 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
     private String botUsername;
     private String botToken;
     private String botPath;
-
     public TudaSudaTelegramBot(SetWebhook setWebhookInstance, MessageResolverService messageResolverService, CallbackResolverService callbackResolverService) {
         super(setWebhookInstance);
         this.messageResolverService = messageResolverService;
@@ -57,9 +57,10 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
         }
         return botApiMethod;
     }
+
     public void editPreviousMessage(CallbackQuery callbackQuery, String answer) {
         try {
-            log.info("Edit previous message with message Id : {}",callbackQuery.getMessage().getMessageId());
+            log.info("Edit previous message with message Id : {}", callbackQuery.getMessage().getMessageId());
             execute(EditMessageText.builder()
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .messageId(callbackQuery.getMessage().getMessageId())
@@ -72,11 +73,10 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
     }
 
     public void deleteMessages(Long chatId, Set<Integer> messages) {
-        log.info("Delete messages with chat id : {}",chatId);
-        messages.forEach(message ->
-                deleteMessage(chatId, message)
+        log.info("Delete messages with chat id : {} and messages : {}", chatId, messages);
+        messages.forEach(message -> {
+                    deleteMessage(chatId, message);}
         );
-        messages.clear();
     }
 
     public void deleteMessage(Long chatId, Integer message) {

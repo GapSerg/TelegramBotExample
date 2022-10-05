@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
+import com.godeltech.springgodelbot.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -15,26 +16,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_OFFER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.OFFERS_ACTIVITY;
 import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 
 @Component
 @Slf4j
 public class OffersActivityCallbackType implements CallbackType {
+    private final MessageService messageService;
+
+    public OffersActivityCallbackType(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @Override
-    public String getCallbackName() {
-        return Callbacks.OFFERS_ACTIVITY.name();
+    public Integer getCallbackName() {
+        return Callbacks.OFFERS_ACTIVITY.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got {} callback type", OFFERS_ACTIVITY);
+        String token = getCallbackToken(callbackQuery.getData());
+        messageService.checkIncomeToken(token,callbackQuery.getFrom().getId() );
         List<InlineKeyboardButton> buttons = Arrays.stream(Activity.values())
                 .map(activity -> InlineKeyboardButton.builder()
                         .text(activity.name())
-                        .callbackData(Callbacks.MY_OFFERS.name() + SPLITTER + activity)
+                        .callbackData(Callbacks.MY_OFFERS.ordinal()+ SPLITTER + token + SPLITTER + activity )
                         .build())
                 .collect(Collectors.toList());
         return EditMessageText.builder()

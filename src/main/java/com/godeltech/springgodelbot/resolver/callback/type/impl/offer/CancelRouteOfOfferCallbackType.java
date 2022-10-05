@@ -17,6 +17,7 @@ import java.util.List;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_ROUTE_OF_OFFER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_ROUTE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
 @Component
@@ -28,15 +29,16 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
     private final CityService cityService;
 
     @Override
-    public String getCallbackName() {
-        return Callbacks.CANCEL_ROUTE_OF_OFFER.name();
+    public Integer getCallbackName() {
+        return Callbacks.CANCEL_ROUTE_OF_OFFER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        String token = getCallbackToken(callbackQuery.getData());
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {}", CANCEL_ROUTE_OF_OFFER, routeId);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage());
+        log.info("Callback data with type: {} and routeId: {} and token : {}", CANCEL_ROUTE_OF_OFFER, routeId,token);
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
@@ -44,6 +46,6 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
                 .orElseThrow(RuntimeException::new);
         changeOfferRequest.getCities().remove(reservedRoute);
         return createEditSendMessageForRoutes(callbackQuery, cities, changeOfferRequest.getCities(),
-                CHANGE_ROUTE_OF_OFFER, CANCEL_ROUTE_OF_OFFER);
+                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(), token);
     }
 }

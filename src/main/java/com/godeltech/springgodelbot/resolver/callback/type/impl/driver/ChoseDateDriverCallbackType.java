@@ -14,6 +14,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHOSE_DAT
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FIRST_DATE_DRIVER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createSendMessageForFirstDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SELECTED_ROUTE;
 
@@ -31,18 +32,19 @@ public class ChoseDateDriverCallbackType implements CallbackType {
     }
 
     @Override
-    public String getCallbackName() {
-        return CHOSE_DATE_DRIVER.name();
+    public Integer getCallbackName() {
+        return CHOSE_DATE_DRIVER.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Callback data with type: {} by user : {}", CHOSE_DATE_DRIVER, callbackQuery.getFrom().getUserName());
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage());
+        String token = getCallbackToken(callbackQuery.getData());
+        log.info("Callback data with type: {} with token : {}", CHOSE_DATE_DRIVER, token);
+        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(),token );
         String selectedRoute = getCurrentRoute(driverRequest.getCities());
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
-        return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_DRIVER.name(),
-                CHOOSE_THE_FIRST_DATE);
+        return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_DRIVER.ordinal(),
+                CHOOSE_THE_FIRST_DATE, token);
     }
 }

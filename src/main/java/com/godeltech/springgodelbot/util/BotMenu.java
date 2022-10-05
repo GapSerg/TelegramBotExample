@@ -4,6 +4,8 @@ import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
+import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
+import liquibase.repackaged.org.apache.commons.text.RandomStringGenerator;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -15,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
 
@@ -99,18 +102,23 @@ public class BotMenu {
 
     private static List<List<InlineKeyboardButton>> getStartMenuButtons() {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        String uuid = createUUIDToken();
         Arrays.stream(Activity.values())
                 .map(activity -> List.of(
                         InlineKeyboardButton.builder()
                                 .text(activity.name())
-                                .callbackData(Callbacks.ACTIVITY + SPLITTER + activity)
+                                .callbackData(Callbacks.ACTIVITY.ordinal()+SPLITTER+uuid + SPLITTER + activity)
                                 .build()))
                 .forEach(buttons::add);
         buttons.add(List.of(
                 InlineKeyboardButton.builder()
                         .text("List of my offers")
-                        .callbackData(Callbacks.OFFERS_ACTIVITY.name())
+                        .callbackData(Callbacks.OFFERS_ACTIVITY.ordinal()+SPLITTER+uuid)
                         .build()));
         return buttons;
+    }
+    private static String createUUIDToken(){
+        String token = UUID.randomUUID().toString().replaceAll("-","").substring(6);
+        return token;
     }
 }

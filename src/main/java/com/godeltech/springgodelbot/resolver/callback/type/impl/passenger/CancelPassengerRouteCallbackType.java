@@ -17,6 +17,7 @@ import java.util.List;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_PASSENGER_ROUTE;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.PASSENGER_ROUTE;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 
 @Component
@@ -27,22 +28,23 @@ public class CancelPassengerRouteCallbackType implements CallbackType {
     private final RequestService requestService;
 
     @Override
-    public String getCallbackName() {
-        return Callbacks.CANCEL_PASSENGER_ROUTE.name();
+    public Integer getCallbackName() {
+        return Callbacks.CANCEL_PASSENGER_ROUTE.ordinal();
     }
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
+        String token = getCallbackToken(callbackQuery.getData());
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {}", PASSENGER_ROUTE, routeId);
+        log.info("Callback data with type: {} and routeId: {} and token: {} ", PASSENGER_ROUTE, routeId,token);
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage());
+        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         passengerRequest.getCities().remove(reservedRoute);
         return createEditSendMessageForRoutes(callbackQuery, cities, passengerRequest.getCities(),
-                PASSENGER_ROUTE, CANCEL_PASSENGER_ROUTE);
+                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),token );
     }
 }
