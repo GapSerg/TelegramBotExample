@@ -408,20 +408,20 @@ public class CallbackUtil {
                             .build();
         }
 
-        private static Callbacks getCancelCallback(Integer callback) {
+        private static Integer getCancelCallback(Integer callback) {
             switch (Callbacks.values()[callback]) {
                 case SECOND_DATE_DRIVER:
-                    return CANCEL_FIRST_DATE_DRIVER;
+                    return CANCEL_FIRST_DATE_DRIVER.ordinal();
                 case SECOND_DATE_PASSENGER:
-                    return CANCEL_FIRST_DATE_PASSENGER;
+                    return CANCEL_FIRST_DATE_PASSENGER.ordinal();
                 case FIRST_DATE_DRIVER:
-                    return FIRST_DATE_DRIVER;
+                    return FIRST_DATE_DRIVER.ordinal();
                 case FIRST_DATE_PASSENGER:
-                    return FIRST_DATE_PASSENGER;
+                    return FIRST_DATE_PASSENGER.ordinal();
                 case CHANGE_FIRST_DATE_OF_OFFER:
-                    return CHANGE_FIRST_DATE_OF_OFFER;
+                    return CHANGE_FIRST_DATE_OF_OFFER.ordinal();
                 case CHANGE_SECOND_DATE_OF_OFFER:
-                    return CANCEL_FIRST_DATE_OF_OFFER;
+                    return CANCEL_FIRST_DATE_OF_OFFER.ordinal();
                 default:
                     throw new UnknownCommandException();
             }
@@ -433,7 +433,7 @@ public class CallbackUtil {
             if (chosenDate.equals(localDate)) {
                 return InlineKeyboardButton.builder()
                         .text(localDate.getDayOfMonth() + mark)
-                        .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
+                        .callbackData(getCancelCallback(callback)+ SPLITTER + token + SPLITTER + localDate)
                         .build();
             } else if (invalidDate.equals(localDate)) {
                 return InlineKeyboardButton.builder()
