@@ -15,8 +15,10 @@ import java.time.LocalDate;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageTextForFirstDate;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -46,8 +48,9 @@ public class CancelDateOfOfferCallbackType implements CallbackType {
     private BotApiMethod getEditMessageWithCanceledSecondDate(CallbackQuery callbackQuery, ChangeOfferRequest changeOfferRequest,
                                                               String token) {
         changeOfferRequest.setSecondDate(null);
+        String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER,changeOfferRequest.getFirstDate());
         return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                ConstantUtil.CHOSEN_FIRST_DATE, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
+                textMessage, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
     }
 
     private BotApiMethod getEditMessageWithCanceledFirstDate(CallbackQuery callbackQuery, ChangeOfferRequest changeOfferRequest,
@@ -55,11 +58,13 @@ public class CancelDateOfOfferCallbackType implements CallbackType {
         if (changeOfferRequest.getSecondDate() != null) {
             changeOfferRequest.setFirstDate(changeOfferRequest.getSecondDate());
             changeOfferRequest.setSecondDate(null);
+            String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER, changeOfferRequest.getFirstDate());
             return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                    ConstantUtil.CHOSEN_FIRST_DATE, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
+                    textMessage, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
         }
         changeOfferRequest.setFirstDate(null);
+        String textMessage = "Chose the date";
         return createEditMessageTextForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
-                RETURN_TO_CHANGE_OF_OFFER.ordinal(), "You've canceled the date", canceledDate, token);
+                RETURN_TO_CHANGE_OF_OFFER.ordinal(), textMessage, canceledDate, token);
     }
 }

@@ -14,9 +14,10 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.util.CallbackUtil.getAvailableOffersList;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.ConstantUtil.DATES_WERE_CHANGED;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -34,18 +35,20 @@ public class FinishChangeDateOfferCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got {} callback type with token : {}", Callbacks.FINISH_DATE_OFFER, token);
         ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
-
-        return updateDatesOfSupplierAndGetStartMenu(callbackQuery,
-                DATES_WERE_CHANGED, changeOfferRequest, token);
-
-    }
-
-    private BotApiMethod updateDatesOfSupplierAndGetStartMenu(CallbackQuery callbackQuery, String text,
-                                                              ChangeOfferRequest changeOfferRequest, String token) {
         requestService.updateDates(changeOfferRequest, token);
         List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                 requestService.findPassengersByRequestData(changeOfferRequest) :
                 requestService.findDriversByRequestData(changeOfferRequest);
-        return getAvailableOffersList(requests, callbackQuery, text, token);
+        return updateDatesOfSupplierAndGetStartMenu(callbackQuery,
+                requests, changeOfferRequest, token);
+
     }
+
+    private BotApiMethod updateDatesOfSupplierAndGetStartMenu(CallbackQuery callbackQuery, List<? extends Request> requests,
+                                                              ChangeOfferRequest changeOfferRequest, String token) {
+        String textMessage = getCompletedMessageAnswer(requests, changeOfferRequest,DATES_WERE_CHANGED);
+        return getAvailableOffersList(requests, callbackQuery, textMessage, token);
+    }
+
+
 }

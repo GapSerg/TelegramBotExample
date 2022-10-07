@@ -3,7 +3,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -23,10 +23,10 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 @Component
 @Slf4j
 public class OffersActivityCallbackType implements CallbackType {
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
-    public OffersActivityCallbackType(MessageService messageService) {
-        this.messageService = messageService;
+    public OffersActivityCallbackType(TokenService tokenService) {
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class OffersActivityCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got {} callback type", OFFERS_ACTIVITY);
         String token = getCallbackToken(callbackQuery.getData());
-        messageService.checkIncomeToken(token,callbackQuery.getFrom().getId() );
+        tokenService.checkIncomeToken(token,callbackQuery.getFrom().getId() );
         List<InlineKeyboardButton> buttons = Arrays.stream(Activity.values())
                 .map(activity -> InlineKeyboardButton.builder()
                         .text(activity.name())

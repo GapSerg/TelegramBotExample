@@ -1,8 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +18,13 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 @Slf4j
 public class CancelChangeOfferRequest implements CallbackType {
     private final RequestService requestService;
-    private final MessageService messageService;
+    private final TokenService tokenService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
 
-    public CancelChangeOfferRequest(RequestService requestService, MessageService messageService,
+    public CancelChangeOfferRequest(RequestService requestService, TokenService tokenService,
                                     @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
         this.requestService = requestService;
-        this.messageService = messageService;
+        this.tokenService = tokenService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
     }
 
@@ -38,8 +37,8 @@ public class CancelChangeOfferRequest implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got callback : {} with token : {}", CANCEL_CHANGE_OFFER_REQUEST,token);
-        messageService.deleteToken(token);
+        tokenService.deleteToken(token);
         tudaSudaTelegramBot.deleteMessage(callbackQuery.getMessage().getChatId(), callbackQuery.getMessage().getMessageId());
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning");
+        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",tokenService.createToken());
     }
 }

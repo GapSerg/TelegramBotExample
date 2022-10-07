@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,9 +45,11 @@ public class OfferServiceImpl implements OfferService {
                 .collect(Collectors.toList());
         return secondDate == null ?
                 offerRepository.findByFirstDateAndRoutesAndActivity(firstDate, Activity.PASSENGER.name(), routeList).stream()
+                        .filter(offer -> checkRoute(cities,offer))
                         .map(offerMapper::mapToPassengerRequest)
                         .collect(Collectors.toList()) :
                 offerRepository.findByDatesAndRoutesAndActivity(secondDate, firstDate, Activity.PASSENGER.name(), routeList).stream()
+                        .filter(offer -> checkRoute(cities,offer))
                         .map(offerMapper::mapToPassengerRequest)
                         .collect(Collectors.toList());
     }
@@ -62,9 +63,11 @@ public class OfferServiceImpl implements OfferService {
                 .collect(Collectors.toList());
         return secondDate == null ?
                 offerRepository.findByFirstDateAndRoutesAndActivity(firstDate, Activity.DRIVER.name(), routeList).stream()
+                        .filter(offer -> checkRoute(cities,offer))
                         .map(offerMapper::mapToDriverRequest)
                         .collect(Collectors.toList()) :
                 offerRepository.findByDatesAndRoutesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), routeList).stream()
+                        .filter(offer -> checkRoute(cities,offer))
                         .map(offerMapper::mapToDriverRequest)
                         .collect(Collectors.toList());
     }
@@ -118,7 +121,9 @@ public class OfferServiceImpl implements OfferService {
                 , changeOfferRequest.getSecondDate());
         Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
         offer.setFirstDate(changeOfferRequest.getFirstDate());
-        offer.setSecondDate(changeOfferRequest.getSecondDate());
+        offer.setSecondDate(changeOfferRequest.getSecondDate()==null ?
+                null :
+                changeOfferRequest.getSecondDate());
         offerRepository.save(offer);
     }
 
@@ -142,7 +147,7 @@ public class OfferServiceImpl implements OfferService {
     @Transactional
     public void deleteByFirstDateAfterWhereSecondDateIsNull(LocalDate date) {
         log.info("Delete offers whose first date is earlier than :{} and second date is null",date);
-        offerRepository.deleteOffersByFirstDateAfterAndSecondDateIsNull(date);
+        offerRepository.deleteOffersByFirstDateBeforeAndSecondDateIsNull(date);
     }
 
     @Override
@@ -151,5 +156,29 @@ public class OfferServiceImpl implements OfferService {
         log.info("Save passenger request : {}", passengerRequest);
         Offer offer = offerMapper.mapToOffer(passengerRequest);
         return offerRepository.save(offer);
+    }
+
+    private boolean checkRoute(List<City> cities, Offer offer) {
+        boolean result = false;
+        int difference = cities.size() < offer.getCities().size() ?
+                cities.size() - offer.getCities().size() :
+                offer.getCities().size() - cities.size();
+        int matches = 0;
+        int previousSupplierIndex = -1;
+        for (int i = 0; i < cities.size(); i++) {
+            var route = cities.get(i);
+            int supplierIndex = offer.getCities().lastIndexOf(route);
+            if (supplierIndex != -1 &&
+                    i >= difference &&
+                    previousSupplierIndex <= supplierIndex) {
+                matches++;
+                previousSupplierIndex = supplierIndex;
+            }
+            if (matches == 2) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 }

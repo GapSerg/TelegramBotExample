@@ -18,8 +18,10 @@ import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE_OF_OFFER;
 
 @Component
 @RequiredArgsConstructor
@@ -55,6 +57,7 @@ public class ChangeRouteOfOfferCallbackType implements CallbackType {
                     });
         }
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedRoutes,
-                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token);
+                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), token,
+                String.format(CURRENT_ROUTE_OF_OFFER,getCurrentRoute(reservedRoutes)));
     }
 }

@@ -14,10 +14,12 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.createSendMessageWithDoubleCheckOffer;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_DATE;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_PASSENGER_REQUEST;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHECK_PASSENGER_REQUEST;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @Slf4j
@@ -40,10 +42,12 @@ public class FinishDatePassengerCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
-        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_DATE, passengerRequest.getFirstDate(),
-                passengerRequest.getSecondDate()));
-        List<PassengerRequest> passengers = requestService.findPassengersByRequestData(passengerRequest);
-        return createSendMessageWithDoubleCheckOffer(callbackQuery, passengers, CHECK_PASSENGER_REQUEST.ordinal(),
+//        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_DATE, passengerRequest.getFirstDate(),
+//                passengerRequest.getSecondDate()));
+        List<DriverRequest> drivers = requestService.findDriversByRequestData(passengerRequest);
+
+        String textMessage = getCompletedMessageAnswer(drivers, passengerRequest, CREATED_REQUEST);
+        return createSendMessageWithDoubleCheckOffer(callbackQuery, textMessage, CHECK_PASSENGER_REQUEST.ordinal(),
                 CANCEL_PASSENGER_REQUEST.ordinal(), token);
     }
 }

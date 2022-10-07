@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
@@ -37,7 +38,8 @@ public class CallbackUtil {
 
     public static class RouteUtil {
 
-        public static SendMessage createRouteSendMessage(List<City> cities, Integer callback, Integer cancelRequestCallback, Long chatId, String token) {
+        public static EditMessageText createRouteSendMessage(List<City> cities, Integer callback, Integer cancelRequestCallback,
+                                                             Message message, String token, String messageText) {
             List<List<InlineKeyboardButton>> buttons = getButtonsList();
 
             cities.forEach(route -> buttons.add(List.of(
@@ -47,18 +49,18 @@ public class CallbackUtil {
                             .build()
             )));
             buttons.add(List.of(getCancelButton(cancelRequestCallback, token, "Back to menu")));
-            return getSendMessage(chatId, buttons, CHOSE_THE_ROUTE);
+            return getEditTextMessageForRoute(message, buttons, messageText);
         }
 
 
         public static BotApiMethod createEditSendMessageForRoutes(CallbackQuery callbackQuery,
                                                                   List<City> cities,
                                                                   List<City> reservedCities,
-                                                                  Integer callback, Integer cancelRouteCallback, Integer cancelRequestCallback, String token) {
+                                                                  Integer callback, Integer cancelRouteCallback,
+                                                                  Integer cancelRequestCallback, String token, String textMessage) {
             List<List<InlineKeyboardButton>> buttons = getRouteButtons(cities, reservedCities, callback, cancelRouteCallback, cancelRequestCallback, token);
             return EditMessageText.builder()
-                    .text(reservedCities.isEmpty() ? CHOSE_THE_ROUTE :
-                            String.format(CURRENT_ROUTE, getCurrentRoute(reservedCities)))
+                    .text(textMessage)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
@@ -132,7 +134,7 @@ public class CallbackUtil {
                                                                      String text, Integer callback, Integer cancelRequestCallback, String token) {
             List<List<InlineKeyboardButton>> buttons = createCalendar(firstDate, callback, cancelRequestCallback, firstDate, YES, token);
             return EditMessageText.builder()
-                    .text(String.format(text, firstDate))
+                    .text(text)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -142,12 +144,12 @@ public class CallbackUtil {
         }
 
         public static EditMessageText createEditMessageForSecondDate(CallbackQuery callbackQuery, LocalDate firstDate,
-                                                                     String text, Integer callback, Integer cancelRequestCallback,
+                                                                     String textMessage, Integer callback, Integer cancelRequestCallback,
                                                                      LocalDate secondDate, String token) {
             LocalDate date = LocalDate.now();
             List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback, firstDate, YES, secondDate, YES, token);
             return EditMessageText.builder()
-                    .text(String.format(text, firstDate, secondDate))
+                    .text(textMessage)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -156,13 +158,14 @@ public class CallbackUtil {
                     .build();
         }
 
-        public static SendMessage createSendMessageForFirstDate(Long chatId, Integer callback, Integer cancelRequestCallback,
-                                                                String text, String token) {
+        public static EditMessageText createSendMessageForFirstDate(Message message, Integer callback, Integer cancelRequestCallback,
+                                                                    String textMessage, String token) {
             LocalDate date = LocalDate.now();
             List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback, token);
-            return SendMessage.builder()
-                    .text(String.format(text, date.getMonth(), date.getYear()))
-                    .chatId(chatId.toString())
+            return EditMessageText.builder()
+                    .text(textMessage)
+                    .chatId(message.getChatId().toString())
+                    .messageId(message.getMessageId())
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
                             .build())
@@ -170,10 +173,10 @@ public class CallbackUtil {
         }
 
         public static EditMessageText createEditMessageForFirstDate(CallbackQuery callbackQuery, Integer callback,
-                                                                    Integer cancelRequestCallback, String text, String token) {
+                                                                    Integer cancelRequestCallback, String textMessage, String token) {
             LocalDate date = LocalDate.now();
             return EditMessageText.builder()
-                    .text(String.format(text, date.getMonth(), date.getYear()))
+                    .text(textMessage)
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -184,10 +187,10 @@ public class CallbackUtil {
 
         public static EditMessageText createEditMessageTextForFirstDate(CallbackQuery callbackQuery, Integer callback,
                                                                         Integer cancelRequestCallback,
-                                                                        String text, LocalDate changedDate, String token) {
+                                                                        String textMessage, LocalDate changedDate, String token) {
 
             return EditMessageText.builder()
-                    .text(String.format(text, changedDate.getMonth(), changedDate.getYear()))
+                    .text(textMessage)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -479,6 +482,12 @@ public class CallbackUtil {
                 }
             }
         }
+
+        public static String getDatesInf(LocalDate firstDate, LocalDate secondDate) {
+            return secondDate == null ?
+                    String.format(CHOSEN_DATE, firstDate) :
+                    String.format(CHOSEN_DATES, firstDate, secondDate);
+        }
     }
 
     private static List<List<InlineKeyboardButton>> getButtonsList() {
@@ -493,14 +502,15 @@ public class CallbackUtil {
         return dataCallback.split(SPLITTER)[1];
     }
 
-    private static SendMessage getSendMessage(Long chatId, List<List<InlineKeyboardButton>> buttons, String text) {
-        return SendMessage.builder()
-                .text(text)
+    private static EditMessageText getEditTextMessageForRoute(Message message, List<List<InlineKeyboardButton>> buttons, String messageText) {
+        return EditMessageText.builder()
+                .text(messageText)
+                .chatId(message.getChatId().toString())
+                .messageId(message.getMessageId())
                 .replyMarkup(InlineKeyboardMarkup
                         .builder()
                         .keyboard(buttons)
                         .build())
-                .chatId(chatId.toString())
                 .build();
     }
 
@@ -517,18 +527,17 @@ public class CallbackUtil {
                 .build();
     }
 
-    public static SendMessage createSendMessageWithDoubleCheckOffer(CallbackQuery callbackQuery,
-                                                                    List<? extends Request> requests,
-                                                                    Integer checkCallback,
-                                                                    Integer cancelCallback, String token) {
-        String requestsInf = requests.isEmpty() ? NO_SUITABLE_OFFERS :
-                String.format(SUITABLE_OFFERS, getListOfOffersForRequest(requests));
+    public static EditMessageText createSendMessageWithDoubleCheckOffer(CallbackQuery callbackQuery,
+                                                                        String textMessage,
+                                                                        Integer checkCallback,
+                                                                        Integer cancelCallback, String token) {
+
         List<List<InlineKeyboardButton>> buttons = List.of(List.of(
                 getCancelButton(checkCallback, token, SAVE),
                 cancelRequest(cancelCallback, token)));
 
-        return getSendMessage(callbackQuery.getMessage().getChatId(), buttons,
-                String.format(ASK_FOR_DESIRE_TO_SAVE, requestsInf));
+        return getEditTextMessageForRoute(callbackQuery.getMessage(), buttons,
+                String.format(ASK_FOR_DESIRE_TO_SAVE, textMessage));
     }
 
     private static InlineKeyboardButton cancelRequest(Integer cancelCallback, String token) {
@@ -568,9 +577,9 @@ public class CallbackUtil {
 
     public static String getOffersView(Request request) {
         return request.getDescription() != null ?
-                String.format(OFFER_OF_CHANGING_OFFER_PATTERN, getCurrentRoute(request.getCities()), request.getFirstDate(), request.getSecondDate(),
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN, getCurrentRoute(request.getCities()), getDatesInf(request.getFirstDate(),request.getSecondDate()),
                         request.getActivity(), request.getDescription()) :
-                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, getCurrentRoute(request.getCities()), request.getFirstDate(), request.getSecondDate(),
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, getCurrentRoute(request.getCities()),getDatesInf(request.getFirstDate(),request.getSecondDate()),
                         request.getActivity());
     }
 
@@ -578,11 +587,11 @@ public class CallbackUtil {
         return request.getDescription() != null ?
                 String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(request.getUserDto().getFirstName()),
                         getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()),
-                        request.getFirstDate(), request.getSecondDate(),
+                       getDatesInf(request.getFirstDate(),request.getSecondDate()),
                         request.getActivity(), request.getDescription(), request.getUserDto().getUserName()) :
                 String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(request.getUserDto().getFirstName()),
-                        getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()), request.getFirstDate(),
-                        request.getSecondDate(), request.getActivity(), request.getUserDto().getUserName());
+                        getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()),
+                        getDatesInf(request.getFirstDate(),request.getSecondDate()), request.getActivity(), request.getUserDto().getUserName());
     }
 
     private static String getCorrectName(String name) {
@@ -592,23 +601,21 @@ public class CallbackUtil {
     }
 
     public static EditMessageText getAvailableOffersList(List<? extends Request> requests, CallbackQuery callbackQuery, String message, String token) {
-        String requestsInf = requests.isEmpty() ? NO_SUITABLE_OFFERS :
-                String.format(SUITABLE_OFFERS, getListOfOffersForRequest(requests));
         return EditMessageText.builder()
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .chatId(callbackQuery.getMessage().getChatId().toString())
-                .text(message + requestsInf)
+                .text(message)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(getCancelButton(MAIN_MENU.ordinal(), token, "Back to main menu"))))
                         .build())
                 .build();
     }
 
-    public static EditMessageText getEditTextMessageForOffer(CallbackQuery callbackQuery, String token, ChangeOfferRequest request) {
+    public static EditMessageText getEditTextMessageForOffer(CallbackQuery callbackQuery, String token, ChangeOfferRequest request,String messageText) {
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
-                .text(getOffersView(request))
+                .text(messageText)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(getChangeOfferButtons(request, token))
                         .build())
@@ -638,6 +645,16 @@ public class CallbackUtil {
                         .build()));
     }
 
+    public static String getCompletedMessageAnswer(List<? extends Request> requests, Request request, String completedMessage) {
+        return requests.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
+                request.getActivity(),
+                getCurrentRoute(request.getCities()),
+                getDatesInf(request.getFirstDate(), request.getSecondDate())) :
+                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
+                        getCurrentRoute(request.getCities()),
+                        getDatesInf(request.getFirstDate(), request.getSecondDate()),
+                        getListOfOffersForRequest(requests));
+    }
 
     private static String getCancelText(Integer cancelRequestCallback) {
         return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?

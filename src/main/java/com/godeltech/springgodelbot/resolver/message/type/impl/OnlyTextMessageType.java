@@ -7,7 +7,7 @@ import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.ConstantUtil.DESCRIPTION_WAS_UPDATED;
@@ -31,13 +30,13 @@ public class OnlyTextMessageType implements MessageType {
 
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
     public OnlyTextMessageType(RequestService requestService,
-                               @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, MessageService messageService) {
+                               @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, TokenService tokenService) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
-        this.messageService = messageService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class OnlyTextMessageType implements MessageType {
 
     @Override
     public BotApiMethod createSendMessage(Message message) {
-        List<String> tokens = messageService.findByUserId(message.getFrom().getId());
+        List<String> tokens = tokenService.findByUserId(message.getFrom().getId());
         Map.Entry<String, ? extends Request> entry = requestService.findRequest(tokens, message.getText());
         if (entry == null) {
             return getUnknownMessage(message);
@@ -68,23 +67,23 @@ public class OnlyTextMessageType implements MessageType {
         entry.getValue().setDescription(message.getText());
         requestService.updateDescriptionOfOffer((ChangeOfferRequest) entry.getValue(), entry.getKey() );
         tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
-        return getStartMenu(message.getChatId(), DESCRIPTION_WAS_UPDATED);
+        return getStartMenu(message.getChatId(), DESCRIPTION_WAS_UPDATED,tokenService.createToken());
     }
 
     private SendMessage savePassengerRequest(Message message, Map.Entry<String, ? extends Request> entry) {
         entry.getValue().setDescription(message.getText());
         requestService.savePassenger((PassengerRequest) entry.getValue(), entry.getKey());
         tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
-        messageService.deleteToken(entry.getKey());
-        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING);
+        tokenService.deleteToken(entry.getKey());
+        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING,tokenService.createToken());
     }
 
     private SendMessage saveDriverRequest(Message message, Map.Entry<String, ? extends Request> entry) {
         tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
         entry.getValue().setDescription(message.getText());
         requestService.saveDriver((DriverRequest) entry.getValue(), entry.getKey());
-        messageService.deleteToken(entry.getKey());
-        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING);
+        tokenService.deleteToken(entry.getKey());
+        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING,tokenService.createToken());
     }
 
 

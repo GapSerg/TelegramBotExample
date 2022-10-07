@@ -16,8 +16,10 @@ import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -43,8 +45,13 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
-        changeOfferRequest.getCities().remove(reservedRoute);
-        return createEditSendMessageForRoutes(callbackQuery, cities, changeOfferRequest.getCities(),
-                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),token);
+        List<City> reservedCities = changeOfferRequest.getCities();
+        reservedCities.remove(reservedRoute);
+        String textMessage = reservedCities.isEmpty() ?
+               CHOSE_THE_ROUTE_OF_OFFER:
+                String.format(CURRENT_ROUTE_OF_OFFER, getCurrentRoute(reservedCities));
+        return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
+                CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(),
+                RETURN_TO_CHANGE_OF_OFFER.ordinal(),token,textMessage);
     }
 }

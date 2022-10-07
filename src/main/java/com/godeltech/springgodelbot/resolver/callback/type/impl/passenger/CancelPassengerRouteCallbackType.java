@@ -16,8 +16,11 @@ import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_THE_ROUTE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE;
 
 @Component
 @RequiredArgsConstructor
@@ -43,7 +46,13 @@ public class CancelPassengerRouteCallbackType implements CallbackType {
                 .orElseThrow(RuntimeException::new);
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         passengerRequest.getCities().remove(reservedRoute);
-        return createEditSendMessageForRoutes(callbackQuery, cities, passengerRequest.getCities(),
-                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(),token );
+        List<City> reservedCities = passengerRequest.getCities();
+        reservedCities.remove(reservedRoute);
+        String textMessage = reservedCities.isEmpty() ?
+                String.format(CHOSE_THE_ROUTE, passengerRequest.getActivity()) :
+                String.format(CURRENT_ROUTE, passengerRequest.getActivity(), getCurrentRoute(reservedCities));
+
+        return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
+                PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(),token,textMessage );
     }
 }

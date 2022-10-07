@@ -42,8 +42,10 @@ public class ChoseDatePassengerCallbackType implements CallbackType {
         log.info("Callback data with type: {} with token : {}", CHOSE_DATE_PASSENGER, token);
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
         String selectedRoute = getCurrentRoute(passengerRequest.getCities());
-        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
-        return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_PASSENGER.ordinal(),
+//        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
+        String textMessage = String.format(CHOOSE_THE_FIRST_DATE,passengerRequest.getActivity()
+                ,getCurrentRoute(passengerRequest.getCities()));
+        return createSendMessageForFirstDate(callbackQuery.getMessage(), FIRST_DATE_PASSENGER.ordinal(),
                 CANCEL_PASSENGER_REQUEST.ordinal(),CHOOSE_THE_FIRST_DATE, token);
     }
 }

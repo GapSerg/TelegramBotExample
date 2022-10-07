@@ -2,7 +2,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +14,10 @@ import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_SECOND_DATE_OF_OFFER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.RETURN_TO_CHANGE_OF_OFFER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.setDatesToRequest;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_SECOND_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class ChangeSecondDateOfOfferCallbackType implements CallbackType {
 
 
     private final RequestService requestService;
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
     @Override
     public Integer getCallbackName() {
@@ -42,9 +41,12 @@ public class ChangeSecondDateOfOfferCallbackType implements CallbackType {
         ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
         setDatesToRequest(chosenDate, changeOfferRequest);
         return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                CHOSEN_SECOND_DATE, CHANGE_SECOND_DATE_OF_OFFER.ordinal(),
+                String.format(CHOSEN_DATES,changeOfferRequest.getFirstDate(),changeOfferRequest.getSecondDate()),
+                CHANGE_SECOND_DATE_OF_OFFER.ordinal(),
                 RETURN_TO_CHANGE_OF_OFFER.ordinal(), changeOfferRequest.getSecondDate(), token);
     }
+
+
 
 
 }

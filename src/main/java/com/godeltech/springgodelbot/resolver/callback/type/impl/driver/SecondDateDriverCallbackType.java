@@ -14,6 +14,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_DR
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_DRIVER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.setDatesToRequest;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_SECOND_DATE;
@@ -44,7 +45,9 @@ public class SecondDateDriverCallbackType implements CallbackType {
         setDatesToRequest(chosenDate, driverRequest);
 
 //                getSendMessageWithValidSecondDate(callbackQuery, chosenDate, driverRequest,token) :
-        return createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(), CHOSEN_SECOND_DATE,
+        String textMessage = String.format(CHOSEN_SECOND_DATE,driverRequest.getActivity(),getCurrentRoute(driverRequest.getCities()),
+                driverRequest.getFirstDate(),driverRequest.getSecondDate());
+        return createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(), textMessage,
                 SECOND_DATE_DRIVER.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(), driverRequest.getSecondDate(), token);
     }
 

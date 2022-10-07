@@ -42,8 +42,7 @@ public class MyOffersCallbackType implements CallbackType {
         requestService.checkAndClearChangingOfferRequests(token);
         List<ChangeOfferRequest> offerList = requestService
                 .findByUserIdAndActivity(callbackQuery.getFrom().getId(), activity);
-        return !offerList.isEmpty() ?
-                makeSendMessage(offerList, callbackQuery,token) :
+        return offerList.isEmpty() ?
                 EditMessageText.builder()
                         .chatId(callbackQuery.getMessage().getChatId().toString())
                         .messageId(callbackQuery.getMessage().getMessageId())
@@ -55,7 +54,8 @@ public class MyOffersCallbackType implements CallbackType {
                                         .callbackData(MAIN_MENU.ordinal()+SPLITTER+token)
                                         .build())))
                                 .build())
-                        .build();
+                        .build():
+                makeSendMessage(offerList, callbackQuery,token) ;
     }
 
     private EditMessageText makeSendMessage(List<ChangeOfferRequest> requests, CallbackQuery callbackQuery,String token) {

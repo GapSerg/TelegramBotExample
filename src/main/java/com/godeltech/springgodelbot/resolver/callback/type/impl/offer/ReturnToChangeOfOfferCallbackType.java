@@ -10,8 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.RETURN_TO_CHANGE_OF_OFFER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getEditTextMessageForOffer;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +30,7 @@ public class ReturnToChangeOfOfferCallbackType implements CallbackType {
         log.info("Got {} type with token : {}",RETURN_TO_CHANGE_OF_OFFER,token);
         ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
         ChangeOfferRequest request = requestService.addNewChangeOfferRequest(changeOfferRequest.getOfferId(), callbackQuery.getMessage().getChatId(),token);
-        return  getEditTextMessageForOffer(callbackQuery, token, request);
+        String textMessage = getOffersView(request);
+        return  getEditTextMessageForOffer(callbackQuery, token, request,textMessage);
     }
 }

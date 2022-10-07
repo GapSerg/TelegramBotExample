@@ -32,13 +32,19 @@ public class ChangeDateOfOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got {} type with token: {}",CHANGE_DATE_OF_OFFER,token);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
+        log.info("Got {} type with token: {}", CHANGE_DATE_OF_OFFER, token);
+        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
         if (callbackQuery.getFrom().getUserName() == null)
-            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );
+            throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(), false);
         log.info("Change date of offer with id:{}, with token :{}",
                 changeOfferRequest.getOfferId(), token);
-        return createEditMessageForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),RETURN_TO_CHANGE_OF_OFFER.ordinal(),
-                "You previous date is " + changeOfferRequest.getFirstDate() + " - " + changeOfferRequest.getSecondDate(),token );
+
+        String textMessage = String.format("You previous date was %s ", changeOfferRequest.getSecondDate() == null ?
+                changeOfferRequest.getFirstDate() :
+                changeOfferRequest.getFirstDate() + "-" + changeOfferRequest.getSecondDate());
+        changeOfferRequest.setFirstDate(null);
+        changeOfferRequest.setSecondDate(null);
+        return createEditMessageForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
+                textMessage, token);
     }
 }

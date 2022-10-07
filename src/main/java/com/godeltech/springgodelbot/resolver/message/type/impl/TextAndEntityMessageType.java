@@ -5,6 +5,7 @@ import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.mapper.UserMapper;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.START_MESSAGE;
 public class TextAndEntityMessageType implements MessageType {
     private final UserService userService;
     private final UserMapper userMapper;
+    private final TokenService tokenService;
 
     @Override
     public String getMessageType() {
@@ -74,7 +76,7 @@ public class TextAndEntityMessageType implements MessageType {
         }
         if (!userService.existsByIdAndUsername(message.getFrom().getId(), message.getFrom().getUserName()))
             userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
-        return getStartMenu(message.getChatId(), START_MESSAGE);
+        return getStartMenu(message.getChatId(), START_MESSAGE,tokenService.createToken());
     }
 
 }

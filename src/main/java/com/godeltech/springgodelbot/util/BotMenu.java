@@ -4,8 +4,6 @@ import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
-import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
-import liquibase.repackaged.org.apache.commons.text.RandomStringGenerator;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -17,7 +15,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
 
@@ -42,8 +39,8 @@ public class BotMenu {
                 .build();
     }
 
-    public static EditMessageText getStartMenu(Message message, String text) {
-        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons();
+    public static EditMessageText getStartMenu(Message message, String text,String token) {
+        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return EditMessageText.builder()
                 .chatId(message.getChatId().toString())
                 .messageId(message.getMessageId())
@@ -54,8 +51,8 @@ public class BotMenu {
                 .build();
     }
 
-    public static EditMessageText getStartMenu(ChangeOfferRequest changeOfferRequest, String text) {
-        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons();
+    public static EditMessageText getStartMenu(ChangeOfferRequest changeOfferRequest, String text,String token) {
+        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return EditMessageText.builder()
                 .chatId(changeOfferRequest.getChatId().toString())
                 .messageId(changeOfferRequest.getMessages().stream().findFirst().orElseThrow(UnknownCommandException::new))
@@ -66,8 +63,8 @@ public class BotMenu {
                 .build();
     }
 
-    public static EditMessageText getStartMenu(CallbackQuery callbackQuery) {
-        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons();
+    public static EditMessageText getStartMenu(CallbackQuery callbackQuery,String token) {
+        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
@@ -78,8 +75,8 @@ public class BotMenu {
                 .build();
     }
 
-    public static SendMessage getStartMenu(Long chatId, String text) {
-        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons();
+    public static SendMessage getStartMenu(Long chatId, String text,String token) {
+        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return SendMessage.builder()
                 .chatId(chatId.toString())
                 .text(text + "\n" + "Choose the option you are interested in")
@@ -89,8 +86,8 @@ public class BotMenu {
                 .build();
     }
 
-    public static SendMessage getStartMenu(Long chatId) {
-        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons();
+    public static SendMessage getStartMenu(Long chatId,String token) {
+        List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return SendMessage.builder()
                 .chatId(chatId.toString())
                 .text("Choose the option you are interested in")
@@ -100,9 +97,8 @@ public class BotMenu {
                 .build();
     }
 
-    private static List<List<InlineKeyboardButton>> getStartMenuButtons() {
+    private static List<List<InlineKeyboardButton>> getStartMenuButtons(String token) {
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        String token = createUUIDToken();
         Arrays.stream(Activity.values())
                 .map(activity -> List.of(
                         InlineKeyboardButton.builder()
@@ -117,8 +113,5 @@ public class BotMenu {
                         .build()));
         return buttons;
     }
-    private static String createUUIDToken(){
-        String token = UUID.randomUUID().toString().replaceAll("-","").substring(10);
-        return token;
-    }
+
 }

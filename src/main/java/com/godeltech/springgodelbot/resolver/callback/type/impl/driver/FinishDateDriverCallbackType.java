@@ -18,13 +18,15 @@ import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_DRIVER_REQUEST;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHECK_DRIVER_REQUEST;
-import static com.godeltech.springgodelbot.util.CallbackUtil.createSendMessageWithDoubleCheckOffer;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_DATE;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @Slf4j
 public class FinishDateDriverCallbackType implements CallbackType {
+
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
     private final RequestService requestService;
 
@@ -43,10 +45,12 @@ public class FinishDateDriverCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
-        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_DATE, driverRequest.getFirstDate(),
-                driverRequest.getSecondDate()));
+//        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_DATE, driverRequest.getFirstDate(),
+//                driverRequest.getSecondDate()));
+
         List<PassengerRequest> passengers = requestService.findPassengersByRequestData(driverRequest);
-        return createSendMessageWithDoubleCheckOffer(callbackQuery, passengers, CHECK_DRIVER_REQUEST.ordinal(),
+        String textMessage =getCompletedMessageAnswer(passengers, driverRequest, CREATED_REQUEST);
+        return createSendMessageWithDoubleCheckOffer(callbackQuery, textMessage, CHECK_DRIVER_REQUEST.ordinal(),
                 CANCEL_DRIVER_REQUEST.ordinal(), token);
     }
 }

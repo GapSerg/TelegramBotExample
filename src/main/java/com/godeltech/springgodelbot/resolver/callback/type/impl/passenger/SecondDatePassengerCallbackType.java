@@ -14,6 +14,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_PA
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_PASSENGER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.setDatesToRequest;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_SECOND_DATE;
@@ -40,8 +41,9 @@ public class SecondDatePassengerCallbackType implements CallbackType {
                 chosenDate, token);
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         setDatesToRequest(chosenDate, passengerRequest);
-
-        return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(), CHOSEN_SECOND_DATE,
+        String textMessage = String.format(CHOSEN_SECOND_DATE,passengerRequest.getActivity(),getCurrentRoute(passengerRequest.getCities()),
+                passengerRequest.getFirstDate(),passengerRequest.getSecondDate());
+        return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(), textMessage,
                 SECOND_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), passengerRequest.getSecondDate(), token);
     }
 

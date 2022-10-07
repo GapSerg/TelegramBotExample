@@ -7,7 +7,7 @@ import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.SneakyThrows;
@@ -33,16 +33,16 @@ public class ActivityCallbackType implements CallbackType {
     private final RequestService requestService;
     private final CityService cityService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
     public ActivityCallbackType(RequestService requestService,
                                 CityService cityService,
                                 @Lazy TudaSudaTelegramBot tudaSudaTelegramBot,
-                                MessageService messageService) {
+                                TokenService tokenService) {
         this.requestService = requestService;
         this.cityService = cityService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
-        this.messageService = messageService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ActivityCallbackType implements CallbackType {
     @SneakyThrows
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token  = getCallbackToken(callbackQuery.getData());
-        messageService.checkIncomeToken(token,callbackQuery.getFrom().getId() );
+        tokenService.checkIncomeToken(token,callbackQuery.getFrom().getId() );
         Activity activityType = Activity.valueOf(getCallbackValue(callbackQuery.getData()));
         log.info("Got {} callback type with activity :{} and token : {}",ACTIVITY,activityType,token);
         List<City> cities = cityService.findAll();
@@ -74,8 +74,9 @@ public class ActivityCallbackType implements CallbackType {
                         .cities(new ArrayList<>())
                         .messages(messages)
                         .build(),token );
-                tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
-                return createRouteSendMessage(cities, DRIVER_ROUTE.ordinal(),CANCEL_DRIVER_REQUEST.ordinal() ,callbackQuery.getMessage().getChatId(),token);
+//                tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
+                return createRouteSendMessage(cities, DRIVER_ROUTE.ordinal(),CANCEL_DRIVER_REQUEST.ordinal(),
+                        callbackQuery.getMessage(),token,String.format(CHOSEN_ROLE,activityType));
             case PASSENGER:
                 requestService.savePassengerRequest(PassengerRequest.builder()
                         .chatId(callbackQuery.getMessage().getChatId())
@@ -88,8 +89,9 @@ public class ActivityCallbackType implements CallbackType {
                         .cities(new ArrayList<>())
                         .messages(messages)
                         .build(), token);
-                tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
-                return createRouteSendMessage(cities, PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(), callbackQuery.getMessage().getChatId(), token);
+//                tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
+                return createRouteSendMessage(cities, PASSENGER_ROUTE.ordinal(),CANCEL_PASSENGER_REQUEST.ordinal(),
+                        callbackQuery.getMessage(), token,String.format(CHOSEN_ROLE,activityType));
             default:
                 throw new RuntimeException("There is no such activity");
         }

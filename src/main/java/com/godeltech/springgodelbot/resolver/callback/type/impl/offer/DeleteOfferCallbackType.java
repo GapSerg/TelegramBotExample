@@ -2,7 +2,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.util.CallbackUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.OFFER_WAS_DELETED;
 public class DeleteOfferCallbackType implements CallbackType {
 
     private final RequestService requestService;
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
     @Override
     public Integer getCallbackName() {
@@ -34,8 +34,8 @@ public class DeleteOfferCallbackType implements CallbackType {
         long offerId = Long.parseLong(CallbackUtil.getCallbackValue(callbackQuery.getData()));
         log.info("Delete offer by id :{} and token: {}", offerId,token);
         requestService.deleteOffer(callbackQuery.getMessage(), token);
-        messageService.deleteToken(token);
-        return getStartMenu(callbackQuery.getMessage(), OFFER_WAS_DELETED);
+        tokenService.deleteToken(token);
+        return getStartMenu(callbackQuery.getMessage(), OFFER_WAS_DELETED,tokenService.createToken());
     }
 
 }

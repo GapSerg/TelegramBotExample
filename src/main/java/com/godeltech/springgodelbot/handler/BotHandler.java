@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.handler;
 
 import com.godeltech.springgodelbot.exception.*;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.godeltech.springgodelbot.util.CallbackUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,14 @@ import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 public class BotHandler {
 
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
+    private final TokenService tokenService;
 
     @ExceptionHandler(value = RequestNotFoundException.class)
     @SneakyThrows
     public void handleRequestNotFoundException(RequestNotFoundException exception) {
         log.error(exception.getMessage());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage(),
-                "Something was wrong, Please make try one more time"));
+                "Something was wrong, Please make try one more time",tokenService.createToken()));
     }
 
     @ExceptionHandler(value = UserAuthorizationException.class)
@@ -48,7 +50,7 @@ public class BotHandler {
     @SneakyThrows
     public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
-        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again"));
+        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again",tokenService.createToken()));
     }
 
     @ExceptionHandler(value = RepeatedTokenMessageException.class)

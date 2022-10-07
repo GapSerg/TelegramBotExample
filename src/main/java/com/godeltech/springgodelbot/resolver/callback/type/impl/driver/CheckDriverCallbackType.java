@@ -4,7 +4,7 @@ import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.UserDto;
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +24,14 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.WRITE_ADD_DESCRIPTI
 public class CheckDriverCallbackType implements CallbackType {
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
     public CheckDriverCallbackType(RequestService requestService,
                                    @Lazy TudaSudaTelegramBot tudaSudaTelegramBot,
-                                   MessageService messageService) {
+                                   TokenService tokenService) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
-        this.messageService = messageService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class CheckDriverCallbackType implements CallbackType {
 
     private void checkUsername(CallbackQuery callbackQuery, DriverRequest driverRequest, String token) {
         if (callbackQuery.getFrom().getUserName() == null){
-            messageService.deleteToken(token);
+            tokenService.deleteToken(token);
             tudaSudaTelegramBot.deleteMessages(driverRequest.getChatId(), driverRequest.getMessages());
             throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );}
     }

@@ -42,8 +42,10 @@ public class ChoseDateDriverCallbackType implements CallbackType {
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(),token );
         String selectedRoute = getCurrentRoute(driverRequest.getCities());
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
-        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
-        return createSendMessageForFirstDate(callbackQuery.getMessage().getChatId(), FIRST_DATE_DRIVER.ordinal(),
-                CANCEL_DRIVER_REQUEST.ordinal(),CHOOSE_THE_FIRST_DATE, token);
+//        tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(SELECTED_ROUTE, selectedRoute));
+        String textMessage = String.format(CHOOSE_THE_FIRST_DATE,driverRequest.getActivity()
+                ,getCurrentRoute(driverRequest.getCities()));
+        return createSendMessageForFirstDate(callbackQuery.getMessage(), FIRST_DATE_DRIVER.ordinal(),
+                CANCEL_DRIVER_REQUEST.ordinal(),textMessage, token);
     }
 }

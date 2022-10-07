@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -22,11 +23,13 @@ public class SaveDriverCallbackType implements CallbackType {
 
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
+    private final TokenService tokenService;
 
     public SaveDriverCallbackType(RequestService requestService,
-                                  @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
+                                  @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, TokenService tokenService) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -44,6 +47,6 @@ public class SaveDriverCallbackType implements CallbackType {
                 .add(callbackQuery.getMessage().getMessageId());
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), driverRequest.getMessages());
         requestService.saveDriver(driverRequest,token);
-        return getStartMenu(callbackQuery.getMessage().getChatId(), SUCCESSFUL_REQUEST_SAVING);
+        return getStartMenu(callbackQuery.getMessage().getChatId(), SUCCESSFUL_REQUEST_SAVING, tokenService.createToken());
     }
 }

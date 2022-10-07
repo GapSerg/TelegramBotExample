@@ -3,7 +3,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
-import com.godeltech.springgodelbot.service.MessageService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +20,14 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 public class CancelDriverRequestCallbackType implements CallbackType {
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
-    private final MessageService messageService;
+    private final TokenService tokenService;
 
     public CancelDriverRequestCallbackType(RequestService requestService,
                                            @Lazy TudaSudaTelegramBot tudaSudaTelegramBot,
-                                           MessageService messageService) {
+                                           TokenService tokenService) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
-        this.messageService = messageService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -41,9 +41,9 @@ public class CancelDriverRequestCallbackType implements CallbackType {
         log.info("Got callback : {} with token : {}", Callbacks.CANCEL_DRIVER_REQUEST,token);
         DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
         driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
-        messageService.deleteToken(token);
+        tokenService.deleteToken(token);
         requestService.deleteDriverRequest(token);
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), driverRequest.getMessages());
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning");
+        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",tokenService.createToken());
     }
 }

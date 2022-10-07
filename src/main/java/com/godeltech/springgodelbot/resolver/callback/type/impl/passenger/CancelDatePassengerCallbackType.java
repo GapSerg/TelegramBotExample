@@ -15,8 +15,11 @@ import java.time.LocalDate;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageTextForFirstDate;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -44,8 +47,10 @@ public class CancelDatePassengerCallbackType implements CallbackType {
     private BotApiMethod getEditMessageWithCanceledSecondDate(CallbackQuery callbackQuery, PassengerRequest passengerRequest,
                                                               String token) {
         passengerRequest.setSecondDate(null);
+        String textMessage = String.format(CHOSEN_FIRST_DATE, passengerRequest.getActivity(), getCurrentRoute(passengerRequest.getCities()),
+                passengerRequest.getFirstDate());
         return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(),
-                ConstantUtil.CHOSEN_FIRST_DATE, SECOND_DATE_PASSENGER.ordinal(), CANCEL_DATE_PASSENGER.ordinal(), token);
+                textMessage, SECOND_DATE_PASSENGER.ordinal(), CANCEL_DATE_PASSENGER.ordinal(), token);
     }
 
     private BotApiMethod getEditMessageWithCanceledFirstDate(CallbackQuery callbackQuery, PassengerRequest passengerRequest,
@@ -53,11 +58,14 @@ public class CancelDatePassengerCallbackType implements CallbackType {
         if (passengerRequest.getSecondDate() != null) {
             passengerRequest.setFirstDate(passengerRequest.getSecondDate());
             passengerRequest.setSecondDate(null);
+            String textMessage = String.format(CHOSEN_FIRST_DATE, passengerRequest.getActivity(), getCurrentRoute(passengerRequest.getCities()),
+                    passengerRequest.getFirstDate());
             return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(),
-                    ConstantUtil.CHOSEN_FIRST_DATE, SECOND_DATE_PASSENGER.ordinal(), CANCEL_DATE_PASSENGER.ordinal(), token);
+                    textMessage, SECOND_DATE_PASSENGER.ordinal(), CANCEL_DATE_PASSENGER.ordinal(), token);
         }
         passengerRequest.setFirstDate(null);
+        String textMessage = String.format(CHOOSE_THE_FIRST_DATE, passengerRequest.getActivity(), getCurrentRoute(passengerRequest.getCities()));
         return createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_PASSENGER.ordinal(),
-                CANCEL_PASSENGER_REQUEST.ordinal(), "You've canceled the date", canceledDate, token);
+                CANCEL_PASSENGER_REQUEST.ordinal(), textMessage, canceledDate, token);
     }
 }

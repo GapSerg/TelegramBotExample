@@ -16,8 +16,11 @@ import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_THE_ROUTE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE;
 
 @Component
 @RequiredArgsConstructor
@@ -41,9 +44,14 @@ public class CancelDriverRouteCallbackType implements CallbackType {
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
                 .orElseThrow(RuntimeException::new);
-        DriverRequest supplerRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
-        supplerRequest.getCities().remove(reservedRoute);
-        return createEditSendMessageForRoutes(callbackQuery, cities, supplerRequest.getCities(),
-                DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(), token);
+        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
+        List<City> reservedCities = driverRequest.getCities();
+        reservedCities.remove(reservedRoute);
+        String textMessage = reservedCities.isEmpty() ?
+                String.format(CHOSE_THE_ROUTE, driverRequest.getActivity()) :
+                String.format(CURRENT_ROUTE, driverRequest.getActivity(), getCurrentRoute(reservedCities));
+        return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
+                DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(), token,
+                textMessage);
     }
 }
