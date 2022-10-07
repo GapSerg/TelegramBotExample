@@ -27,6 +27,7 @@ public class CallbackUtil {
 
     public static final String SPLITTER = "&";
     public static final String KRESTIK = "❌";
+    public static final String MARKER = "✅";
     public static final String YES = "✅";
     public static final String MENU = "MENU";
     public static final String HAVE_NO_USERNAME = "You don't have a username, please add it in your personal settings.When you deal with it,  just press the button";
@@ -35,9 +36,6 @@ public class CallbackUtil {
 
 
     public static class RouteUtil {
-
-        public static final String MARKER = "✅";
-
 
         public static SendMessage createRouteSendMessage(List<City> cities, Integer callback, Integer cancelRequestCallback, Long chatId, String token) {
             List<List<InlineKeyboardButton>> buttons = getButtonsList();
@@ -128,24 +126,13 @@ public class CallbackUtil {
         }
     }
 
-    private static String getCancelText(Integer cancelRequestCallback) {
-        return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal())?
-                "Back" : "Back to menu";
-    }
-
-    public static InlineKeyboardButton getCancelButton(Integer cancelRequestCallback, String token, String message) {
-        return InlineKeyboardButton.builder()
-                .text(message)
-                .callbackData(cancelRequestCallback + SPLITTER + token)
-                .build();
-    }
 
     public static class DateUtil {
         public static EditMessageText createEditMessageForSecondDate(CallbackQuery callbackQuery, LocalDate firstDate,
                                                                      String text, Integer callback, Integer cancelRequestCallback, String token) {
             List<List<InlineKeyboardButton>> buttons = createCalendar(firstDate, callback, cancelRequestCallback, firstDate, YES, token);
             return EditMessageText.builder()
-                    .text(String.format(text, firstDate, firstDate.getMonth(), firstDate.getYear()))
+                    .text(String.format(text, firstDate))
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -156,11 +143,11 @@ public class CallbackUtil {
 
         public static EditMessageText createEditMessageForSecondDate(CallbackQuery callbackQuery, LocalDate firstDate,
                                                                      String text, Integer callback, Integer cancelRequestCallback,
-                                                                     LocalDate invalidDate, String token) {
+                                                                     LocalDate secondDate, String token) {
             LocalDate date = LocalDate.now();
-            List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback, firstDate, YES, invalidDate, KRESTIK, token);
+            List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback, firstDate, YES, secondDate, YES, token);
             return EditMessageText.builder()
-                    .text(String.format(text, firstDate, date.getMonth(), date.getYear()))
+                    .text(String.format(text, firstDate, secondDate))
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -229,8 +216,8 @@ public class CallbackUtil {
             List<List<InlineKeyboardButton>> buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
                     .map(date -> addRowOfButtons(callback, numberDayInMonth, date, token))
                     .collect(Collectors.toList());
-            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token,  getCancelText(cancelRequestCallback))));
+//            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback))));
             return buttons;
         }
 
@@ -240,9 +227,33 @@ public class CallbackUtil {
             List<List<InlineKeyboardButton>> buttons = createListOfDateWithPeriod(localDate, numberDayInMonth).stream()
                     .map(date -> addRowOfButtonsWithReservedDate(callback, numberDayInMonth, date, chosenDate, mark, token))
                     .collect(Collectors.toList());
-            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token,  getCancelText(cancelRequestCallback))));
+//            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
+                    getFinishDateButton(callback, token)));
             return buttons;
+        }
+
+        private static InlineKeyboardButton getFinishDateButton(Integer callback, String token) {
+            return InlineKeyboardButton.builder()
+                    .text("Finish")
+                    .callbackData(getFinishCallback(callback) + SPLITTER + token)
+                    .build();
+        }
+
+        private static int getFinishCallback(Integer callback) {
+            switch (Callbacks.values()[callback]) {
+                case FIRST_DATE_DRIVER:
+                case SECOND_DATE_DRIVER:
+                    return FINISH_CHOSE_DATE_DRIVER.ordinal();
+                case FIRST_DATE_PASSENGER:
+                case SECOND_DATE_PASSENGER:
+                    return FINISH_CHOSE_DATE_PASSENGER.ordinal();
+                case CHANGE_FIRST_DATE_OF_OFFER:
+                case CHANGE_SECOND_DATE_OF_OFFER:
+                    return FINISH_DATE_OFFER.ordinal();
+                default:
+                    throw new UnknownCommandException();
+            }
         }
 
         public static List<List<InlineKeyboardButton>> createCalendar(LocalDate localDate, Integer callback,
@@ -254,17 +265,20 @@ public class CallbackUtil {
                     .map(date -> addRowOfButtonsWithReservedDate(callback, numberDayInMonth, date, chosenDate, mark,
                             invalidDate, invalidMark, token))
                     .collect(Collectors.toList());
-            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token,  getCancelText(cancelRequestCallback))));
+//            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
+                    getFinishDateButton(callback, token)));
             return buttons;
         }
 
         private static List<LocalDate> createListOfDateWithPeriod(LocalDate localDate, Integer numberDaysInMonth) {
-            List<LocalDate> list = localDate.withDayOfMonth(1)
-                    .datesUntil(localDate.withDayOfMonth(localDate.getMonth().length(localDate.isLeapYear())), Period.ofDays(3))
+//            List<LocalDate> list = localDate.datesUntil(localDate.withDayOfMonth(localDate.getMonth().length(localDate.isLeapYear())), Period.ofDays(3))
+//                    .collect(Collectors.toList());
+            LocalDate currentDate = LocalDate.now();
+            List<LocalDate> list = currentDate.datesUntil(currentDate.plusDays(30), Period.ofDays(3))
                     .collect(Collectors.toList());
-            if (numberDaysInMonth - list.get(list.size() - 1).getDayOfMonth() == 3)
-                list.add(localDate.withDayOfMonth(numberDaysInMonth));
+//            if (numberDaysInMonth - list.get(list.size() - 1).getDayOfMonth() == 3)
+//                list.add(localDate.withDayOfMonth(numberDaysInMonth));
             return list;
         }
 
@@ -288,38 +302,39 @@ public class CallbackUtil {
         }
 
         private static List<InlineKeyboardButton> getInlineKeyboardButtons(Integer callback, int numberDaysInMonth, LocalDate date, String token) {
-            if (numberDaysInMonth - date.getDayOfMonth() >= 2) {
-                return createDateRowWithThreeDays(callback, date, token);
-            }
-            if (numberDaysInMonth - date.getDayOfMonth() == 1) {
-                return createDateRowWithTwoDays(callback, date, token);
-            }
-            return createDateRowWithOneDay(callback, date, token);
+//            int i= 0;
+//            if (numberDaysInMonth - date.getDayOfMonth() >= 2) {
+            return createDateRowWithThreeDays(callback, date, token);
+//            }
+//            if (numberDaysInMonth - date.getDayOfMonth() == 1) {
+//                return createDateRowWithTwoDays(callback, date, token);
+//            }
+//            return createDateRowWithOneDay(callback, date, token);
         }
 
         private static List<InlineKeyboardButton> getInlineKeyboardButtonsTheSameMonth(Integer callback, int numberDaysInMonth,
                                                                                        LocalDate date,
                                                                                        LocalDate chosenDate, String mark, String token) {
-            if (numberDaysInMonth - date.getDayOfMonth() >= 2) {
-                return createDateRowWithThreeDays(callback, date, chosenDate, mark, token);
-            }
-            if (numberDaysInMonth - date.getDayOfMonth() == 1) {
-                return createDateRowWithTwoDays(callback, date, chosenDate, mark, token);
-            }
-            return createDateRowWithOneDay(callback, date, chosenDate, mark, token);
+//            if (numberDaysInMonth - date.getDayOfMonth() >= 2) {
+            return createDateRowWithThreeDays(callback, date, chosenDate, mark, token);
+//            }
+//            if (numberDaysInMonth - date.getDayOfMonth() == 1) {
+//                return createDateRowWithTwoDays(callback, date, chosenDate, mark, token);
+//            }
+//            return createDateRowWithOneDay(callback, date, chosenDate, mark, token);
         }
 
         private static List<InlineKeyboardButton> getInlineKeyboardButtonsTheSameMonth(Integer callback, int numberDaysInMonth,
                                                                                        LocalDate date,
                                                                                        LocalDate chosenDate, String mark,
                                                                                        LocalDate invalidDate, String invalidMark, String token) {
-            if (numberDaysInMonth - date.getDayOfMonth() >= 2) {
-                return createDateRowWithThreeDays(callback, date, chosenDate, mark, invalidDate, invalidMark, token);
-            }
-            if (numberDaysInMonth - date.getDayOfMonth() == 1) {
-                return createDateRowWithTwoDays(callback, date, chosenDate, mark, invalidDate, invalidMark, token);
-            }
-            return createDateRowWithOneDay(callback, date, chosenDate, mark, invalidDate, invalidMark, token);
+//            if (numberDaysInMonth - date.getDayOfMonth() >= 2) {
+            return createDateRowWithThreeDays(callback, date, chosenDate, mark, invalidDate, invalidMark, token);
+//            }
+//            if (numberDaysInMonth - date.getDayOfMonth() == 1) {
+//                return createDateRowWithTwoDays(callback, date, chosenDate, mark, invalidDate, invalidMark, token);
+//            }
+//            return createDateRowWithOneDay(callback, date, chosenDate, mark, invalidDate, invalidMark, token);
         }
 
         private static List<InlineKeyboardButton> createDateRowWithOneDay(Integer callback, LocalDate date, String token) {
@@ -388,10 +403,27 @@ public class CallbackUtil {
             }
         }
 
+
+        private static Integer getCancelCallback(Integer callback) {
+            switch (Callbacks.values()[callback]) {
+                case FIRST_DATE_DRIVER:
+                case SECOND_DATE_DRIVER:
+                    return CANCEL_DATE_DRIVER.ordinal();
+                case FIRST_DATE_PASSENGER:
+                case SECOND_DATE_PASSENGER:
+                    return CANCEL_DATE_PASSENGER.ordinal();
+                case CHANGE_FIRST_DATE_OF_OFFER:
+                case CHANGE_SECOND_DATE_OF_OFFER:
+                    return CANCEL_DATE_OF_OFFER.ordinal();
+                default:
+                    throw new UnknownCommandException();
+            }
+        }
+
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, Integer callback, String token) {
             return InlineKeyboardButton.builder()
-                    .text(String.valueOf(localDate.getDayOfMonth()))
+                    .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)))
                     .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                     .build();
         }
@@ -399,50 +431,26 @@ public class CallbackUtil {
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, LocalDate chosenDate, Integer callback, String mark, String token) {
             return chosenDate.equals(localDate) ? InlineKeyboardButton.builder()
-                    .text(localDate.getDayOfMonth() + mark)
+                    .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)) + mark)
                     .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
                     .build() :
                     InlineKeyboardButton.builder()
-                            .text(String.valueOf(localDate.getDayOfMonth()))
+                            .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)))
                             .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                             .build();
-        }
-
-        private static Integer getCancelCallback(Integer callback) {
-            switch (Callbacks.values()[callback]) {
-                case SECOND_DATE_DRIVER:
-                    return CANCEL_FIRST_DATE_DRIVER.ordinal();
-                case SECOND_DATE_PASSENGER:
-                    return CANCEL_FIRST_DATE_PASSENGER.ordinal();
-                case FIRST_DATE_DRIVER:
-                    return FIRST_DATE_DRIVER.ordinal();
-                case FIRST_DATE_PASSENGER:
-                    return FIRST_DATE_PASSENGER.ordinal();
-                case CHANGE_FIRST_DATE_OF_OFFER:
-                    return CHANGE_FIRST_DATE_OF_OFFER.ordinal();
-                case CHANGE_SECOND_DATE_OF_OFFER:
-                    return CANCEL_FIRST_DATE_OF_OFFER.ordinal();
-                default:
-                    throw new UnknownCommandException();
-            }
         }
 
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, Integer callback, LocalDate chosenDate, String mark,
                  LocalDate invalidDate, String invalidMark, String token) {
-            if (chosenDate.equals(localDate)) {
+            if (chosenDate.equals(localDate) || invalidDate.equals(localDate)) {
                 return InlineKeyboardButton.builder()
-                        .text(localDate.getDayOfMonth() + mark)
-                        .callbackData(getCancelCallback(callback)+ SPLITTER + token + SPLITTER + localDate)
-                        .build();
-            } else if (invalidDate.equals(localDate)) {
-                return InlineKeyboardButton.builder()
-                        .text(localDate.getDayOfMonth() + invalidMark)
-                        .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
+                        .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)) + mark)
+                        .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
                         .build();
             } else {
                 return InlineKeyboardButton.builder()
-                        .text(String.valueOf(localDate.getDayOfMonth()))
+                        .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)))
                         .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                         .build();
             }
@@ -455,12 +463,21 @@ public class CallbackUtil {
                     .build();
         }
 
-        public static boolean validFirstDate(LocalDate firstDate) {
-            return LocalDate.now().isBefore(firstDate) || LocalDate.now().isEqual(firstDate);
-        }
-
-        public static boolean validSecondDate(LocalDate firstDate, LocalDate secondDate) {
-            return secondDate.isAfter(firstDate);
+        public static void setDatesToRequest(LocalDate chosenDate, Request request) {
+            if (request.getSecondDate() == null) {
+                if (request.getFirstDate().isAfter(chosenDate)) {
+                    request.setSecondDate(request.getFirstDate());
+                    request.setFirstDate(chosenDate);
+                } else {
+                    request.setSecondDate(chosenDate);
+                }
+            } else {
+                if (chosenDate.isAfter(request.getFirstDate())) {
+                    request.setSecondDate(chosenDate);
+                } else {
+                    request.setFirstDate(chosenDate);
+                }
+            }
         }
     }
 
@@ -619,6 +636,19 @@ public class CallbackUtil {
                         .text("Back to offer list")
                         .callbackData(MY_OFFERS.ordinal() + SPLITTER + token + SPLITTER + request.getActivity())
                         .build()));
+    }
+
+
+    private static String getCancelText(Integer cancelRequestCallback) {
+        return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?
+                "Back" : "Back to menu";
+    }
+
+    public static InlineKeyboardButton getCancelButton(Integer cancelRequestCallback, String token, String message) {
+        return InlineKeyboardButton.builder()
+                .text(message)
+                .callbackData(cancelRequestCallback + SPLITTER + token)
+                .build();
     }
 
 }

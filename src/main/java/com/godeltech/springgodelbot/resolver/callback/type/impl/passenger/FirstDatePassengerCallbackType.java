@@ -13,11 +13,10 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_DATE;
-import static com.godeltech.springgodelbot.util.ConstantUtil.INCORRECT_FIRST_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -39,17 +38,18 @@ public class FirstDatePassengerCallbackType implements CallbackType {
                 , token);
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
-        return validFirstDate(firstDate) ?
-                getEditMessageTextWithValidFirstDate(callbackQuery, firstDate, passengerRequest, token) :
-                createEditMessageTextForFirstDateWithIncorrectDate(callbackQuery,
-                        FIRST_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), INCORRECT_FIRST_DATE, firstDate, token);
+
+//                validFirstDate(firstDate) ?
+        return getEditMessageTextWithValidFirstDate(callbackQuery, firstDate, passengerRequest, token);
+//                createEditMessageTextForFirstDateWithIncorrectDate(callbackQuery,
+//                        FIRST_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), INCORRECT_FIRST_DATE, firstDate, token);
 
     }
 
     private EditMessageText getEditMessageTextWithValidFirstDate(CallbackQuery callbackQuery, LocalDate firstDate, PassengerRequest passengerRequest, String token) {
         passengerRequest.setFirstDate(firstDate);
         return createEditMessageForSecondDate(callbackQuery, firstDate,
-                CHOOSE_THE_SECOND_DATE, SECOND_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), token);
+                CHOSEN_FIRST_DATE, SECOND_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), token);
     }
 
 

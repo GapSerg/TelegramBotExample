@@ -18,7 +18,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createCalendar;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SECOND_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE;
 
 @Component
 @RequiredArgsConstructor
@@ -73,7 +73,7 @@ public class NextMonthCallbackType implements CallbackType {
             case SECOND_DATE_DRIVER:
             case SECOND_DATE_PASSENGER:
             case CHANGE_SECOND_DATE_OF_OFFER:
-                return String.format(CHOOSE_THE_SECOND_DATE, chosenDate, localDate.getMonth(), localDate.getYear());
+                return String.format(CHOSEN_FIRST_DATE, chosenDate, localDate.getMonth(), localDate.getYear());
             case FIRST_DATE_DRIVER:
             case FIRST_DATE_PASSENGER:
             case CHANGE_FIRST_DATE_OF_OFFER:

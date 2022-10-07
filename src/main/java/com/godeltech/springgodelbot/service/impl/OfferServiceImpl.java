@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,9 +44,13 @@ public class OfferServiceImpl implements OfferService {
         List<String> routeList = cities.stream()
                 .map(City::getName)
                 .collect(Collectors.toList());
-        return offerRepository.findByDatesAndRoutesAndActivity(secondDate, firstDate, Activity.PASSENGER.name(), routeList).stream()
-                .map(offerMapper::mapToPassengerRequest)
-                .collect(Collectors.toList());
+        return secondDate == null ?
+                offerRepository.findByFirstDateAndRoutesAndActivity(firstDate, Activity.PASSENGER.name(), routeList).stream()
+                        .map(offerMapper::mapToPassengerRequest)
+                        .collect(Collectors.toList()) :
+                offerRepository.findByDatesAndRoutesAndActivity(secondDate, firstDate, Activity.PASSENGER.name(), routeList).stream()
+                        .map(offerMapper::mapToPassengerRequest)
+                        .collect(Collectors.toList());
     }
 
     @Override
@@ -55,9 +60,13 @@ public class OfferServiceImpl implements OfferService {
         List<String> routeList = cities.stream()
                 .map(City::getName)
                 .collect(Collectors.toList());
-        return offerRepository.findByDatesAndRoutesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), routeList).stream()
-                .map(offerMapper::mapToDriverRequest)
-                .collect(Collectors.toList());
+        return secondDate == null ?
+                offerRepository.findByFirstDateAndRoutesAndActivity(firstDate, Activity.DRIVER.name(), routeList).stream()
+                        .map(offerMapper::mapToDriverRequest)
+                        .collect(Collectors.toList()) :
+                offerRepository.findByDatesAndRoutesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), routeList).stream()
+                        .map(offerMapper::mapToDriverRequest)
+                        .collect(Collectors.toList());
     }
 
 
@@ -86,7 +95,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     private Offer getOfferById(Long offerId, Long chatId) {
-        log.info("Get offer by id: {}",offerId);
+        log.info("Get offer by id: {}", offerId);
         return offerRepository.findById(offerId)
                 .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, chatId));
 
@@ -95,7 +104,7 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public void updateCities(ChangeOfferRequest changeOfferRequest) {
-        log.info("Update cities of offer with id : {} and cities : {} ",changeOfferRequest.getOfferId(),
+        log.info("Update cities of offer with id : {} and cities : {} ", changeOfferRequest.getOfferId(),
                 changeOfferRequest.getCities());
         Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
         offer.setCities(changeOfferRequest.getCities());
@@ -105,8 +114,8 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public void updateDatesOfOffer(ChangeOfferRequest changeOfferRequest) {
-        log.info("Update date of offer with first date : {} , and second date : {} ",changeOfferRequest.getFirstDate()
-                ,changeOfferRequest.getSecondDate());
+        log.info("Update date of offer with first date : {} , and second date : {} ", changeOfferRequest.getFirstDate()
+                , changeOfferRequest.getSecondDate());
         Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
         offer.setFirstDate(changeOfferRequest.getFirstDate());
         offer.setSecondDate(changeOfferRequest.getSecondDate());
@@ -125,8 +134,15 @@ public class OfferServiceImpl implements OfferService {
     @Override
     @Transactional
     public void deleteBySecondDateAfter(LocalDate date) {
-        log.info("Delete suppliers whose second date is earlier than : {}", date);
-        offerRepository.deleteDriversBySecondDateBefore(date);
+        log.info("Delete offers whose second date is earlier than : {}", date);
+        offerRepository.deleteOffersBySecondDateBeforeAndSecondDateIsNotNull(date);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByFirstDateAfterWhereSecondDateIsNull(LocalDate date) {
+        log.info("Delete offers whose first date is earlier than :{} and second date is null",date);
+        offerRepository.deleteOffersByFirstDateAfterAndSecondDateIsNull(date);
     }
 
     @Override

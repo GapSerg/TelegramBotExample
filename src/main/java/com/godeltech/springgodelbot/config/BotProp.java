@@ -14,10 +14,5 @@ public class BotProp {
     private String webHookPath;
     private String name;
     private String token;
-
-    private DefaultBotOptions.ProxyType proxyType;
-    private String proxyHost;
-    private int proxyPort;
-
-
+    private int days;
 }

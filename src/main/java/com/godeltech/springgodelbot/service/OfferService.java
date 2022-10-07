@@ -33,5 +33,7 @@ public interface OfferService {
 
     void deleteBySecondDateAfter(LocalDate now);
 
+    void deleteByFirstDateAfterWhereSecondDateIsNull(LocalDate date);
+
     Offer save(PassengerRequest passengerRequest);
 }

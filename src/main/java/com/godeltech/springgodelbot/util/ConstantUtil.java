@@ -21,8 +21,8 @@ public class ConstantUtil {
     public static final String NO_SUITABLE_OFFERS = "There are no offers with these route and dates yet";
 
     public static final String INCORRECT_FIRST_DATE = "You've chosen the wrong date. Please choose the correct date, \nThe current month and year : %s - %s";
-    public static final String INCORRECT_SECOND_DATE = "You've chosen the wrong date. Please choose the correct date,\nThe first date is : %s \nThe current month and year : %s - %s";
-    public static final String CHOOSE_THE_SECOND_DATE = "Choose the second date.\nThe first date is : %s \nCurrent month and year : %s - %s";
+    public static final String CHOSEN_SECOND_DATE = "Chosen dates are :  %s - %s";
+    public static final String CHOSEN_FIRST_DATE = "Chosen date is : %s";
     public static final String CHOOSE_THE_FIRST_DATE = "Choose the first date.\nCurrent month and year %s - %s :";
 
     public static final String WRITE_ADD_DESCRIPTION_FOR_PASSENGER = "You can write description and press enter and we will save your request or just save without description";
@@ -40,5 +40,7 @@ public class ConstantUtil {
     public static final String FINISH = "FINISH";
     public static final String ROUTE_CHANGED = "You've successfully changed route of offer \n";
     public static final String SAVE = "SAVE";
+
+    public static final String DATE_FORMAT="%s-%s";
 
 }

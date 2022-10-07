@@ -55,10 +55,10 @@ public class BotHandler {
     public void handleRepeatedTokenMessageException(RepeatedTokenMessageException exception){
         log.error(exception.getMessage());
     }
-//
-//    @ExceptionHandler(value = RuntimeException.class)
-//    public void handleRuntimeException(RuntimeException exception){
-//        log.error(exception.getMessage()+exception.getLocalizedMessage());
-//    }
+
+    @ExceptionHandler(value = RuntimeException.class)
+    public void handleRuntimeException(RuntimeException exception){
+        log.error(exception.getMessage()+exception.getLocalizedMessage());
+    }
 
 }
