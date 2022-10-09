@@ -60,7 +60,7 @@ public class BotHandler {
 
     @ExceptionHandler(value = RuntimeException.class)
     public void handleRuntimeException(RuntimeException exception){
-        log.error(exception.getMessage()+exception.getLocalizedMessage());
+        log.error(exception.getMessage());
     }
 
 }

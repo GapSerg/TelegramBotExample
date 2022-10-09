@@ -9,11 +9,13 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
 
@@ -58,6 +60,18 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
         return botApiMethod;
     }
 
+    public boolean isMemberOfChat( Long userId){
+        try {
+            log.info("Is he member of group?");
+            ChatMember member = execute(GetChatMember.builder()
+                    .chatId("-870862809")
+                    .userId(userId)
+                    .build());
+            return member.getStatus() != null;
+        } catch (TelegramApiException e) {
+            return false;
+        }
+    }
     public void editPreviousMessage(CallbackQuery callbackQuery, String answer) {
         try {
             log.info("Edit previous message with message Id : {}", callbackQuery.getMessage().getMessageId());

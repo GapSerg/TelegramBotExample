@@ -7,8 +7,10 @@ import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -22,12 +24,22 @@ import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.ConstantUtil.START_MESSAGE;
 
 @Component
-@RequiredArgsConstructor
 @Slf4j
 public class TextAndEntityMessageType implements MessageType {
     private final UserService userService;
     private final UserMapper userMapper;
     private final TokenService tokenService;
+    private final TudaSudaTelegramBot tudaSudaTelegramBot;
+
+    public TextAndEntityMessageType(UserService userService,
+                                    UserMapper userMapper,
+                                    TokenService tokenService,
+                                    @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.tokenService = tokenService;
+        this.tudaSudaTelegramBot = tudaSudaTelegramBot;
+    }
 
     @Override
     public String getMessageType() {
@@ -69,14 +81,19 @@ public class TextAndEntityMessageType implements MessageType {
                 .build();
     }
 
+    @SneakyThrows
     private BotApiMethod makeSendMessageForUser(Message message) {
         if (message.getFrom().getUserName() == null) {
             log.info("User has null username");
-            throw new UserAuthorizationException(User.class,"username",null,message,true);
+            throw new UserAuthorizationException(User.class, "username", null, message, true);
+        }
+        if (!tudaSudaTelegramBot.isMemberOfChat(message.getFrom().getId())) {
+            throw new RuntimeException("User with id : " + message.getFrom().getId() + " isn't a member of group");
         }
         if (!userService.existsByIdAndUsername(message.getFrom().getId(), message.getFrom().getUserName()))
-            userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
-        return getStartMenu(message.getChatId(), START_MESSAGE,tokenService.createToken());
+
+        userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
+        return getStartMenu(message.getChatId(), START_MESSAGE, tokenService.createToken());
     }
 
 }

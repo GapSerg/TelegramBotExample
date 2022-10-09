@@ -76,11 +76,11 @@ public class CallbackUtil {
                             makeUnmarkedRouteButton(route, callback, token))
                     .collect(Collectors.toList());
             if (reservedCities.size() >= 2) {
-                buttons.add(List.of(InlineKeyboardButton.builder()
+                buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
+                        InlineKeyboardButton.builder()
                                 .text(FINISH)
                                 .callbackData(getChoseDateCallback(callback, token))
-                                .build(),
-                        getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback))));
+                                .build()));
             } else {
                 buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback))));
             }
