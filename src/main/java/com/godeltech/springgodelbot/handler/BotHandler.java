@@ -7,8 +7,10 @@ import com.godeltech.springgodelbot.util.CallbackUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 
@@ -61,6 +63,12 @@ public class BotHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public void handleRuntimeException(RuntimeException exception){
         log.error(exception.getMessage());
+    }
+
+    @ExceptionHandler(value = ResourceNotUniqueException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleResourceNotUniqueException(ResourceNotUniqueException resourceNotUniqueException){
+        log.error(resourceNotUniqueException.getMessage());
     }
 
 }

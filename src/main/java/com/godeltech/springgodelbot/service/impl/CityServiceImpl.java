@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.service.impl;
 
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
+import com.godeltech.springgodelbot.exception.ResourceNotUniqueException;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.repository.CityRepository;
 import com.godeltech.springgodelbot.service.CityService;
@@ -39,18 +40,18 @@ public class CityServiceImpl implements CityService {
     @Transactional
     public void deleteById(Integer routeId) {
         log.info("Delete route by id:{}", routeId);
-        if (cityRepository.existsById(routeId)) {
+        if (!cityRepository.existsById(routeId)) {
             cityRepository.deleteById(routeId);
         }
-        ;
     }
 
     @Override
     @Transactional
     public City save(City city) {
         log.info("Save route : {}", city);
+        if (cityRepository.existsByName(city.getName()))
+            throw new ResourceNotUniqueException(City.class,"name",city.getName());
         return cityRepository.save(city);
     }
-
 
 }

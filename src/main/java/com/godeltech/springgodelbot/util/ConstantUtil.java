@@ -6,7 +6,7 @@ public class ConstantUtil {
             " button you'll get opportunities to create a request as a driver and find passengers in the route and dates you are interested in.\n\n" +
             "If you press 'Passenger' button you'll get opportunities to create a request as a passenger and find driver in the route and dates you are interested in\n\n" +
             "If you press 'List of my offers' button, you'll get opportunities to check your already created offers as 'DRIVER' or as 'PASSENGER' and if you want to change some data in them";
-
+    public final static String NO_UNIQUE_PATTERN = "%s already exists with %s=%s";
     public final static String NO_FOUND_PATTERN = "%s wasn't found by %s=%s";
     public final static String AUTHORIZATION_PATTERN = "%s wasn't authorize cause %s=%s";
     public final static String UNKNOWN_COMMAND = "Sorry but the command is incorrect";
