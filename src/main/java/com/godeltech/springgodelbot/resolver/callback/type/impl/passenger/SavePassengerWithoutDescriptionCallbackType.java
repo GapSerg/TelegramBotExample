@@ -45,6 +45,6 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), passengerRequest.getMessages());
         requestService.savePassenger(passengerRequest, token);
         tokenService.deleteToken(token);
-        return BotMenu.getStartMenu(callbackQuery.getMessage(), "We've successfully save your request",tokenService.createToken());
+        return BotMenu.getStartMenu(callbackQuery.getMessage().getChatId(), "We've successfully save your request",tokenService.createToken());
     }
 }
