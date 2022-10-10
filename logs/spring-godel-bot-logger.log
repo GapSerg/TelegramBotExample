@@ -2144,3 +2144,339 @@ You may wish to exclude one of them to ensure predictable runtime behavior
 2022-10-10 14:19:04,138 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-10-10 14:19:04,138 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
 2022-10-10 14:19:04,148 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-10 14:19:08,210 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 7180 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-10 14:19:08,210 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-10 14:19:08,722 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-10 14:19:08,783 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 52 ms. Found 3 JPA repository interfaces.
+2022-10-10 14:19:09,099 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-10 14:19:09,115 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-10 14:19:09,115 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-10 14:19:09,115 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-10 14:19:09,186 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-10 14:19:09,186 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 935 ms
+2022-10-10 14:19:09,276 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-10 14:19:09,340 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-10 14:19:09,413 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-10 14:19:09,481 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-10 14:19:09,740 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-10 14:19:09,798 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-10 14:19:09,855 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-10 14:19:09,871 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-10 14:19:09,940 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-10 14:19:10,002 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-10 14:19:10,319 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-10 14:19:10,324 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 14:19:10,742 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-10 14:19:10,941 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-10 14:19:10,957 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-10 14:19:10,957 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 14:19:10,957 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 14:19:10,957 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 14:19:10,957 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-10 14:19:10,957 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 14:19:10,987 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-10
+2022-10-10 14:19:11,055 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-10 and second date is null
+2022-10-10 14:19:11,552 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 3.667 seconds (JVM running for 4.431)
+2022-10-10 14:19:17,110 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-10 14:19:17,110 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-10 14:19:17,111 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 1 ms
+2022-10-10 14:19:17,219 INFO com.godeltech.springgodelbot.resolver.message.type.impl.TextAndEntityMessageType [http-nio-5000-exec-1] Got /start message
+2022-10-10 14:19:17,233 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group?
+2022-10-10 14:19:17,331 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
+2022-10-10 14:19:17,345 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Create new token
+2022-10-10 14:19:18,993 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Income message with token :6f442c9efcc3d61c444bdf
+2022-10-10 14:19:18,993 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-2] Got ACTIVITY callback type with activity :PASSENGER and token : 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:19,014 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-2] Find all routes
+2022-10-10 14:19:20,510 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-3] Callback data with type: PASSENGER_ROUTE and routeId: 3 and with token: 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:21,619 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-4] Callback data with type: PASSENGER_ROUTE and routeId: 4 and with token: 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:22,584 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-5] Callback data with type: CHOSE_DATE_PASSENGER with token : 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:24,563 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-6] Got FIRST_DATE_PASSENGER type with first date :2022-10-23 with token: 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:25,874 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Find drivers by first date :2022-10-23 and second date:null with cities:[City(id=3, name=WROCLAW), City(id=4, name=GDANSK)]
+2022-10-10 14:19:26,874 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CancelPassengerRequestCallbackType [http-nio-5000-exec-8] Got callback : CANCEL_PASSENGER_REQUEST with token : 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:26,875 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Delete messages with chat id : 834450967 and messages : [656]
+2022-10-10 14:19:26,959 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-8] Delete token from messages : 6f442c9efcc3d61c444bdf
+2022-10-10 14:19:26,959 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-8] Create new token
+2022-10-10 14:19:36,441 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-9] Income message with token :ff4ed5a9e595b7648ef365
+2022-10-10 14:19:36,442 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-9] Got ACTIVITY callback type with activity :PASSENGER and token : ff4ed5a9e595b7648ef365
+2022-10-10 14:19:37,446 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-10] Callback data with type: PASSENGER_ROUTE and routeId: 4 and with token: ff4ed5a9e595b7648ef365
+2022-10-10 14:19:37,973 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-1] Callback data with type: PASSENGER_ROUTE and routeId: 5 and with token: ff4ed5a9e595b7648ef365
+2022-10-10 14:19:38,772 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-2] Callback data with type: CHOSE_DATE_PASSENGER with token : ff4ed5a9e595b7648ef365
+2022-10-10 14:19:39,470 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-3] Got FIRST_DATE_PASSENGER type with first date :2022-10-29 with token: ff4ed5a9e595b7648ef365
+2022-10-10 14:19:43,325 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-4] Find drivers by first date :2022-10-29 and second date:null with cities:[City(id=4, name=GDANSK), City(id=5, name=BREST)]
+2022-10-10 14:19:47,068 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CheckPassengerCallbackType [http-nio-5000-exec-5] Got callback with type : CHECK_PASSENGER_REQUEST with token : ff4ed5a9e595b7648ef365
+2022-10-10 14:19:52,322 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SavePassengerWithoutDescriptionCallbackType [http-nio-5000-exec-6] Got callback with type : SAVE_PASSENGER_WITHOUT_DESCRIPTION with token : ff4ed5a9e595b7648ef365
+2022-10-10 14:19:52,322 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-6] Delete messages with chat id : 834450967 and messages : [657]
+2022-10-10 14:19:52,414 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-6] Save passenger request : Request(chatId=834450967, userDto=UserDto(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97), cities=[City(id=4, name=GDANSK), City(id=5, name=BREST)], firstDate=2022-10-29, secondDate=null, description=null, needForDescription=true, messages=[657], activity=PASSENGER)
+2022-10-10 14:19:52,494 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-6] Delete token from messages : ff4ed5a9e595b7648ef365
+2022-10-10 14:19:52,494 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-6] Create new token
+2022-10-10 14:33:58,495 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group?
+2022-10-10 14:33:58,711 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-8] null
+2022-10-10 14:37:44,863 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 14:37:44,863 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-10 14:37:44,873 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-10 15:11:47,378 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 19224 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-10 15:11:47,385 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-10 15:11:48,075 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-10 15:11:48,147 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 65 ms. Found 3 JPA repository interfaces.
+2022-10-10 15:11:48,548 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-10 15:11:48,556 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:11:48,556 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-10 15:11:48,556 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-10 15:11:48,654 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-10 15:11:48,655 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1207 ms
+2022-10-10 15:11:48,785 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-10 15:11:48,856 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-10 15:11:48,961 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-10 15:11:49,051 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-10 15:11:49,378 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-10 15:11:49,464 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-10 15:11:49,547 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-10 15:11:49,578 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-10 15:11:49,670 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-10 15:11:49,742 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-10 15:11:50,164 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-10 15:11:50,171 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:11:50,732 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-10 15:11:50,989 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:11:51,035 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-10 15:11:51,044 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:11:51,044 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:11:51,045 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:11:51,046 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-10 15:11:51,047 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:11:51,061 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-10
+2022-10-10 15:11:51,149 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-10 and second date is null
+2022-10-10 15:11:52,073 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 5.376 seconds (JVM running for 6.895)
+2022-10-10 15:12:03,142 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-10 15:12:03,142 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-10 15:12:03,143 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 1 ms
+2022-10-10 15:12:03,260 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Income message with token :f9460fae1cd158198ed8a8
+2022-10-10 15:12:03,260 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-1] Got ACTIVITY callback type with activity :PASSENGER and token : f9460fae1cd158198ed8a8
+2022-10-10 15:12:03,284 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-1] Find all routes
+2022-10-10 15:12:04,319 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-2] Callback data with type: PASSENGER_ROUTE and routeId: 3 and with token: f9460fae1cd158198ed8a8
+2022-10-10 15:12:04,893 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-3] Callback data with type: PASSENGER_ROUTE and routeId: 5 and with token: f9460fae1cd158198ed8a8
+2022-10-10 15:12:05,743 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-4] Callback data with type: CHOSE_DATE_PASSENGER with token : f9460fae1cd158198ed8a8
+2022-10-10 15:12:07,416 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-5] Got FIRST_DATE_PASSENGER type with first date :2022-10-26 with token: f9460fae1cd158198ed8a8
+2022-10-10 15:12:09,581 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CancelDatePassengerCallbackType [http-nio-5000-exec-6] Got CANCEL_DATE_PASSENGER type with token : f9460fae1cd158198ed8a8
+2022-10-10 15:12:10,675 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-7] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: f9460fae1cd158198ed8a8
+2022-10-10 15:12:24,522 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-8] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-01 and token : f9460fae1cd158198ed8a8
+2022-10-10 15:12:28,574 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-9] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-01 and token : f9460fae1cd158198ed8a8
+2022-10-10 15:12:33,515 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CancelPassengerRequestCallbackType [http-nio-5000-exec-10] Got callback : CANCEL_PASSENGER_REQUEST with token : f9460fae1cd158198ed8a8
+2022-10-10 15:12:33,549 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Delete messages with chat id : 834450967 and messages : [658]
+2022-10-10 15:12:33,651 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-10] Delete token from messages : f9460fae1cd158198ed8a8
+2022-10-10 15:12:33,651 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-10] Create new token
+2022-10-10 15:12:35,780 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Income message with token :e14cfcb0c04bd0d9bc5b79
+2022-10-10 15:12:35,780 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-1] Got ACTIVITY callback type with activity :DRIVER and token : e14cfcb0c04bd0d9bc5b79
+2022-10-10 15:12:41,079 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-2] null
+2022-10-10 15:15:40,847 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:15:40,849 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-10 15:15:40,855 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-10 15:15:46,753 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 19056 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-10 15:15:46,760 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-10 15:15:48,110 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-10 15:15:56,316 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 8094 ms. Found 3 JPA repository interfaces.
+2022-10-10 15:16:04,607 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-10 15:16:04,627 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:16:04,629 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-10 15:16:04,629 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-10 15:16:04,864 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-10 15:16:04,865 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 17887 ms
+2022-10-10 15:16:05,204 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-10 15:16:05,318 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-10 15:16:05,523 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-10 15:16:05,710 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-10 15:16:06,389 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-10 15:16:06,518 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-10 15:16:06,624 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-10 15:16:06,672 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-10 15:16:06,821 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-10 15:16:06,952 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-10 15:16:07,514 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-10 15:16:07,523 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:16:08,264 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-10 15:16:08,602 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:16:08,630 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-10 15:16:08,639 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:16:08,640 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:16:08,641 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:16:08,657 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-10
+2022-10-10 15:16:08,779 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-10 and second date is null
+2022-10-10 15:16:08,787 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:16:08,787 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-10 15:16:09,483 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 23.547 seconds (JVM running for 26.523)
+2022-10-10 15:16:15,643 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-10 15:16:15,643 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-10 15:16:15,645 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 2 ms
+2022-10-10 15:16:15,809 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.DriverRouteCallbackType [http-nio-5000-exec-1] Callback data with type: DRIVER_ROUTE and routeId: 4 and token: e14cfcb0c04bd0d9bc5b79
+2022-10-10 15:16:15,833 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-1] Find all routes
+2022-10-10 15:16:15,865 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] class com.godeltech.springgodelbot.dto.DriverRequest wasn't found by token=e14cfcb0c04bd0d9bc5b79
+2022-10-10 15:16:15,866 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Create new token
+2022-10-10 15:16:16,997 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Income message with token :da4eef939ec0e2518a1488
+2022-10-10 15:16:16,997 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-2] Got ACTIVITY callback type with activity :PASSENGER and token : da4eef939ec0e2518a1488
+2022-10-10 15:16:17,856 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-3] Callback data with type: PASSENGER_ROUTE and routeId: 4 and with token: da4eef939ec0e2518a1488
+2022-10-10 15:16:19,228 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-4] Callback data with type: PASSENGER_ROUTE and routeId: 5 and with token: da4eef939ec0e2518a1488
+2022-10-10 15:16:20,299 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-5] Callback data with type: CHOSE_DATE_PASSENGER with token : da4eef939ec0e2518a1488
+2022-10-10 15:28:33,118 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11m57s15ms96µs100ns).
+2022-10-10 15:29:16,208 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-7] Callback data with type: CHOSE_DATE_PASSENGER with token : da4eef939ec0e2518a1488
+2022-10-10 15:29:16,208 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-6] Callback data with type: CHOSE_DATE_PASSENGER with token : da4eef939ec0e2518a1488
+2022-10-10 15:29:41,856 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-8] Callback data with type: CHOSE_DATE_PASSENGER with token : da4eef939ec0e2518a1488
+2022-10-10 15:29:47,117 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-9] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: da4eef939ec0e2518a1488
+2022-10-10 15:30:00,474 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-10] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-01 and token : da4eef939ec0e2518a1488
+2022-10-10 15:31:27,050 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m52s31ms929µs400ns).
+2022-10-10 15:32:02,044 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-1] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-01 and token : da4eef939ec0e2518a1488
+2022-10-10 15:35:01,208 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m3s541ms793µs100ns).
+2022-10-10 15:35:01,214 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-2] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-01 and token : da4eef939ec0e2518a1488
+2022-10-10 15:35:01,479 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:35:01,482 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-10 15:35:01,491 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-10 15:35:09,849 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 26492 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-10 15:35:09,854 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-10 15:35:10,603 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-10 15:35:10,679 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 69 ms. Found 3 JPA repository interfaces.
+2022-10-10 15:35:11,218 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-10 15:35:11,230 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:35:11,231 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-10 15:35:11,231 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-10 15:35:11,380 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-10 15:35:11,381 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1476 ms
+2022-10-10 15:35:11,608 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-10 15:35:11,702 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-10 15:35:11,842 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-10 15:35:11,956 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-10 15:35:12,507 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-10 15:35:12,638 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-10 15:35:12,774 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-10 15:35:12,822 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-10 15:35:12,940 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-10 15:35:13,052 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-10 15:35:13,643 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-10 15:35:13,652 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:35:14,529 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-10 15:35:14,937 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:35:14,963 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-10 15:35:14,976 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:35:14,976 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:35:14,977 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:35:14,995 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-10
+2022-10-10 15:35:15,121 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-10 and second date is null
+2022-10-10 15:35:15,129 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:35:15,130 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-10 15:35:15,759 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 6.481 seconds (JVM running for 7.697)
+2022-10-10 15:35:20,831 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-10 15:35:20,831 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-10 15:35:20,833 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 2 ms
+2022-10-10 15:35:20,983 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-1] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-01 and token : da4eef939ec0e2518a1488
+2022-10-10 15:35:20,986 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] class com.godeltech.springgodelbot.dto.PassengerRequest wasn't found by token=da4eef939ec0e2518a1488
+2022-10-10 15:35:20,986 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Create new token
+2022-10-10 15:35:22,466 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Income message with token :ed4c598c50d680d2282da4
+2022-10-10 15:35:22,467 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-2] Got ACTIVITY callback type with activity :PASSENGER and token : ed4c598c50d680d2282da4
+2022-10-10 15:35:22,487 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-2] Find all routes
+2022-10-10 15:35:25,362 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-3] Callback data with type: PASSENGER_ROUTE and routeId: 2 and with token: ed4c598c50d680d2282da4
+2022-10-10 15:35:25,935 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-4] Callback data with type: PASSENGER_ROUTE and routeId: 4 and with token: ed4c598c50d680d2282da4
+2022-10-10 15:35:26,741 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-5] Callback data with type: CHOSE_DATE_PASSENGER with token : ed4c598c50d680d2282da4
+2022-10-10 15:35:27,935 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-6] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: ed4c598c50d680d2282da4
+2022-10-10 15:35:35,060 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.SecondDatePassengerCallbackType [http-nio-5000-exec-7] Got SECOND_DATE_PASSENGER callback type with second date :2022-11-02 and token : ed4c598c50d680d2282da4
+2022-10-10 15:41:54,549 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:41:54,551 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-10 15:41:54,558 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-10 15:42:04,830 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 704 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-10 15:42:04,837 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-10 15:42:05,638 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-10 15:42:05,736 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 90 ms. Found 3 JPA repository interfaces.
+2022-10-10 15:42:06,459 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-10 15:42:06,481 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:42:06,482 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-10 15:42:06,483 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-10 15:42:06,634 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-10 15:42:06,634 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1739 ms
+2022-10-10 15:42:06,865 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-10 15:42:06,950 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-10 15:42:07,081 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-10 15:42:07,190 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-10 15:42:07,751 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-10 15:42:07,878 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-10 15:42:08,024 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-10 15:42:08,071 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-10 15:42:08,194 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-10 15:42:08,302 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-10 15:42:08,921 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-10 15:42:08,932 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:42:09,821 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-10 15:42:10,237 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:42:10,271 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-10 15:42:10,282 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:42:10,282 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:42:10,282 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:42:10,302 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-10
+2022-10-10 15:42:10,431 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-10 and second date is null
+2022-10-10 15:42:10,440 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:42:10,440 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-10 15:42:11,130 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 6.955 seconds (JVM running for 8.323)
+2022-10-10 15:42:21,374 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-10 15:42:21,374 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-10 15:42:21,375 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 1 ms
+2022-10-10 15:42:21,488 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CancelPassengerRequestCallbackType [http-nio-5000-exec-1] Got callback : CANCEL_PASSENGER_REQUEST with token : ed4c598c50d680d2282da4
+2022-10-10 15:42:21,490 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] class com.godeltech.springgodelbot.dto.PassengerRequest wasn't found by token=ed4c598c50d680d2282da4
+2022-10-10 15:42:21,490 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Create new token
+2022-10-10 15:42:22,895 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Income message with token :6b40e683c553039bd07d45
+2022-10-10 15:42:22,896 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-2] Got ACTIVITY callback type with activity :PASSENGER and token : 6b40e683c553039bd07d45
+2022-10-10 15:42:22,921 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-2] Find all routes
+2022-10-10 15:42:23,711 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-3] Callback data with type: PASSENGER_ROUTE and routeId: 2 and with token: 6b40e683c553039bd07d45
+2022-10-10 15:42:24,334 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-4] Callback data with type: PASSENGER_ROUTE and routeId: 4 and with token: 6b40e683c553039bd07d45
+2022-10-10 15:42:25,281 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-5] Callback data with type: CHOSE_DATE_PASSENGER with token : 6b40e683c553039bd07d45
+2022-10-10 15:42:27,535 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-6] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: 6b40e683c553039bd07d45
+2022-10-10 15:42:45,181 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:42:45,182 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-10 15:42:45,189 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-10 15:42:49,297 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 20564 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-10 15:42:49,301 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-10 15:42:50,156 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-10 15:42:50,251 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 84 ms. Found 3 JPA repository interfaces.
+2022-10-10 15:42:50,916 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-10 15:42:50,925 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:42:50,925 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-10 15:42:50,926 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-10 15:42:51,060 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-10 15:42:51,060 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1700 ms
+2022-10-10 15:42:51,264 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-10 15:42:51,376 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-10 15:42:51,522 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-10 15:42:51,650 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-10 15:42:52,187 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-10 15:42:52,311 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-10 15:42:52,438 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-10 15:42:52,485 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-10 15:42:52,635 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-10 15:42:52,749 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-10 15:42:53,354 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-10 15:42:53,364 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:42:54,240 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-10 15:42:54,668 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-10 15:42:54,695 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-10 15:42:54,705 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:42:54,705 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:42:54,706 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://dfbe-82-209-241-194.eu.ngrok.io
+2022-10-10 15:42:54,723 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-10
+2022-10-10 15:42:54,857 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-10 and second date is null
+2022-10-10 15:42:54,866 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-10 15:42:54,866 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-10 15:42:55,455 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 6.902 seconds (JVM running for 9.079)
+2022-10-10 15:43:03,021 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-10 15:43:03,021 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-10 15:43:03,023 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 2 ms
+2022-10-10 15:43:03,246 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CancelPassengerRequestCallbackType [http-nio-5000-exec-1] Got callback : CANCEL_PASSENGER_REQUEST with token : 6b40e683c553039bd07d45
+2022-10-10 15:43:03,251 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] class com.godeltech.springgodelbot.dto.PassengerRequest wasn't found by token=6b40e683c553039bd07d45
+2022-10-10 15:43:03,251 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Create new token
+2022-10-10 15:43:04,536 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-3] Income message with token :a64ea88fcbec9f7b1dd868
+2022-10-10 15:43:04,536 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-3] Got ACTIVITY callback type with activity :PASSENGER and token : a64ea88fcbec9f7b1dd868
+2022-10-10 15:43:04,563 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-3] Find all routes
+2022-10-10 15:43:05,859 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-2] Callback data with type: PASSENGER_ROUTE and routeId: 4 and with token: a64ea88fcbec9f7b1dd868
+2022-10-10 15:43:06,428 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.PassengerRouteCallbackType [http-nio-5000-exec-4] Callback data with type: PASSENGER_ROUTE and routeId: 6 and with token: a64ea88fcbec9f7b1dd868
+2022-10-10 15:43:07,079 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-5] Callback data with type: CHOSE_DATE_PASSENGER with token : a64ea88fcbec9f7b1dd868
+2022-10-10 15:43:15,644 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-6] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: a64ea88fcbec9f7b1dd868
+2022-10-10 15:43:55,500 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m4s11ms731µs600ns).
+2022-10-10 15:46:02,593 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-8] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: a64ea88fcbec9f7b1dd868
+2022-10-10 15:46:02,593 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-7] Got FIRST_DATE_PASSENGER type with first date :2022-11-01 with token: a64ea88fcbec9f7b1dd868
+2022-10-10 15:46:02,804 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-10 15:46:02,807 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-10 15:46:02,813 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

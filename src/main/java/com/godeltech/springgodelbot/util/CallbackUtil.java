@@ -291,7 +291,8 @@ public class CallbackUtil {
 
         private static List<InlineKeyboardButton> addRowOfButtonsWithReservedDate(Integer callback, int numberDaysInMonth,
                                                                                   LocalDate date, LocalDate chosenDate, String mark, String token) {
-            return date.getMonth().equals(chosenDate.getMonth()) ?
+            LocalDate plusDate = chosenDate.plusDays(2);
+            return chosenDate.getMonth().equals(date.getMonth()) || chosenDate.getMonth().equals(plusDate.getMonth()) ?
                     getInlineKeyboardButtonsTheSameMonth(callback, numberDaysInMonth, date, chosenDate, mark, token)
                     : getInlineKeyboardButtons(callback, numberDaysInMonth, date, token);
         }
@@ -299,7 +300,9 @@ public class CallbackUtil {
         private static List<InlineKeyboardButton> addRowOfButtonsWithReservedDate(Integer callback, int numberDaysInMonth,
                                                                                   LocalDate date, LocalDate chosenDate, String mark,
                                                                                   LocalDate invalidDate, String invalidMark, String token) {
-            return (date.getMonth().equals(chosenDate.getMonth()) || date.getMonth().equals(invalidDate.getMonth())) ?
+            LocalDate plusDate=date.plusDays(2);
+            return (chosenDate.getMonth().equals(date.getMonth()) || invalidDate.getMonth().equals(date.getMonth())
+                    || chosenDate.getMonth().equals(plusDate.getMonth()) || invalidDate.getMonth().equals(plusDate.getMonth())) ?
                     getInlineKeyboardButtonsTheSameMonth(callback, numberDaysInMonth, date, chosenDate, mark, invalidDate, invalidMark, token)
                     : getInlineKeyboardButtons(callback, numberDaysInMonth, date, token);
         }
