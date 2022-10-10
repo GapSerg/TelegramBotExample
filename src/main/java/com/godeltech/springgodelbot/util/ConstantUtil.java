@@ -8,6 +8,7 @@ public class ConstantUtil {
             "If you press 'List of my offers' button, you'll get opportunities to check your already created offers as 'DRIVER' or as 'PASSENGER' and if you want to change some data in them";
     public final static String NO_UNIQUE_PATTERN = "%s already exists with %s=%s";
     public final static String NO_FOUND_PATTERN = "%s wasn't found by %s=%s";
+    public static final String MEMBERSHIP_PATTERN = "User with id = %s, and username = %s isn't a member of chmoki group";
     public final static String AUTHORIZATION_PATTERN = "%s wasn't authorize cause %s=%s";
     public final static String UNKNOWN_COMMAND = "Sorry but the command is incorrect";
     public final static String OFFERS_FOR_REQUESTS_PATTERN = "User : %s %s \nRoute: %s \uD83D\uDE82 \n%s ⏰ \nRole: %s \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";

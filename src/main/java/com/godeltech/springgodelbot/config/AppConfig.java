@@ -71,6 +71,7 @@ public class AppConfig {
         tudaSudaTelegramBot.setBotUsername(botProp.getName());
         tudaSudaTelegramBot.setBotToken(botProp.getToken());
         tudaSudaTelegramBot.setBotPath(botProp.getWebHookPath());
+        tudaSudaTelegramBot.setChmokiId(botProp.getChmokiId());
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(tudaSudaTelegramBot, setWebhookInstance);
         return tudaSudaTelegramBot;

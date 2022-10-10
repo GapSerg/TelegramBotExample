@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.handler;
 
 import com.godeltech.springgodelbot.exception.*;
+import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.godeltech.springgodelbot.util.CallbackUtil;
@@ -11,6 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.util.List;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 
@@ -27,7 +35,7 @@ public class BotHandler {
     public void handleRequestNotFoundException(RequestNotFoundException exception) {
         log.error(exception.getMessage());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage(),
-                "Something was wrong, Please make try one more time",tokenService.createToken()));
+                "Something was wrong, Please make try one more time", tokenService.createToken()));
     }
 
     @ExceptionHandler(value = UserAuthorizationException.class)
@@ -52,23 +60,64 @@ public class BotHandler {
     @SneakyThrows
     public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
-        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again",tokenService.createToken()));
+        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again", tokenService.createToken()));
     }
 
     @ExceptionHandler(value = RepeatedTokenMessageException.class)
-    public void handleRepeatedTokenMessageException(RepeatedTokenMessageException exception){
+    public void handleRepeatedTokenMessageException(RepeatedTokenMessageException exception) {
         log.error(exception.getMessage());
     }
 
     @ExceptionHandler(value = RuntimeException.class)
-    public void handleRuntimeException(RuntimeException exception){
+    public void handleRuntimeException(RuntimeException exception) {
         log.error(exception.getMessage());
     }
 
     @ExceptionHandler(value = ResourceNotUniqueException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleResourceNotUniqueException(ResourceNotUniqueException resourceNotUniqueException){
+    public void handleResourceNotUniqueException(ResourceNotUniqueException resourceNotUniqueException) {
         log.error(resourceNotUniqueException.getMessage());
     }
 
+    @ExceptionHandler(value = MembershipException.class)
+    @SneakyThrows
+    public void handleMembershipException(MembershipException membershipException) {
+        log.error(membershipException.getMessage());
+        Message message = membershipException.getBotMessage();
+         if(membershipException.isFromMessage()){
+            tudaSudaTelegramBot.execute(createSendMessage(message)) ;
+         }
+    }
+
+    private SendMessage createSendMessage(Message message) {
+        return SendMessage.builder()
+                .chatId(message.getChatId().toString())
+                .text("You aren't a member of chmoki group. Please correct it")
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("I've corrected it")
+                                        .callbackData(String.valueOf(Callbacks.MAIN_MENU.ordinal()))
+                                        .build()
+                        )))
+                        .build())
+
+                .build();
+    }
+    private EditMessageText createEditMessageText(Message message) {
+        return EditMessageText.builder()
+                .chatId(message.getChatId().toString())
+                .messageId(message.getMessageId())
+                .text("You aren't a member of chmoki group. Please correct it")
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("I've corrected it")
+                                        .callbackData(String.valueOf(Callbacks.MAIN_MENU.ordinal()))
+                                        .build()
+                        )))
+                        .build())
+
+                .build();
+    }
 }

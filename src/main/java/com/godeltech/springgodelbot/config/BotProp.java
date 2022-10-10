@@ -15,4 +15,5 @@ public class BotProp {
     private String name;
     private String token;
     private int days;
+    private String chmokiId;
 }

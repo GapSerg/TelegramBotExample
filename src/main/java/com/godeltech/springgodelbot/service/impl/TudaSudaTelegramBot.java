@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.service.impl;
 
+import com.godeltech.springgodelbot.exception.MembershipException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
 import com.godeltech.springgodelbot.service.MessageResolverService;
@@ -14,12 +15,15 @@ import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberBanned;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberLeft;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
@@ -33,6 +37,8 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
     private String botUsername;
     private String botToken;
     private String botPath;
+    private String chmokiId;
+
     public TudaSudaTelegramBot(SetWebhook setWebhookInstance, MessageResolverService messageResolverService, CallbackResolverService callbackResolverService) {
         super(setWebhookInstance);
         this.messageResolverService = messageResolverService;
@@ -60,16 +66,30 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
         return botApiMethod;
     }
 
-    public boolean isMemberOfChat( Long userId){
+    public void checkMembership(Message message) {
         try {
             log.info("Is he member of group?");
-            ChatMember member = execute(GetChatMember.builder()
-                    .chatId("-870862809")
-                    .userId(userId)
+            ChatMember chatMember = execute(GetChatMember.builder()
+                    .chatId(chmokiId)
+                    .userId(message.getFrom().getId())
                     .build());
-            return member.getStatus() != null;
+            if (chatMember instanceof ChatMemberBanned || chatMember instanceof ChatMemberLeft)
+                throw new MembershipException(message.getFrom().getId(),message.getFrom().getUserName(),message,true);
         } catch (TelegramApiException e) {
-            return false;
+            throw new MembershipException(message.getFrom().getId(),message.getFrom().getUserName(),message,true);
+        }
+    }
+    public void checkMembership(User user, Message message) {
+        try {
+            log.info("Is he member of group?");
+            ChatMember chatMember = execute(GetChatMember.builder()
+                    .chatId(chmokiId)
+                    .userId(user.getId())
+                    .build());
+            if (chatMember instanceof ChatMemberBanned || chatMember instanceof ChatMemberLeft)
+                throw new MembershipException(user.getId(), user.getUserName(),message,false);
+        } catch (TelegramApiException e) {
+            throw new MembershipException(user.getId(), user.getUserName(),message,false);
         }
     }
     public void editPreviousMessage(CallbackQuery callbackQuery, String answer) {
@@ -89,7 +109,8 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
     public void deleteMessages(Long chatId, Set<Integer> messages) {
         log.info("Delete messages with chat id : {} and messages : {}", chatId, messages);
         messages.forEach(message -> {
-                    deleteMessage(chatId, message);}
+                    deleteMessage(chatId, message);
+                }
         );
     }
 

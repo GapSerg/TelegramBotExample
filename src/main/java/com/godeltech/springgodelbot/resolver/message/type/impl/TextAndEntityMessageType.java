@@ -87,12 +87,10 @@ public class TextAndEntityMessageType implements MessageType {
             log.info("User has null username");
             throw new UserAuthorizationException(User.class, "username", null, message, true);
         }
-        if (!tudaSudaTelegramBot.isMemberOfChat(message.getFrom().getId())) {
-            throw new RuntimeException("User with id : " + message.getFrom().getId() + " isn't a member of group");
-        }
+        tudaSudaTelegramBot.checkMembership(message);
         if (!userService.existsByIdAndUsername(message.getFrom().getId(), message.getFrom().getUserName()))
 
-        userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
+            userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
         return getStartMenu(message.getChatId(), START_MESSAGE, tokenService.createToken());
     }
 

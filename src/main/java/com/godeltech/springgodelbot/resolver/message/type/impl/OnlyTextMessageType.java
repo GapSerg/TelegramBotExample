@@ -49,9 +49,7 @@ public class OnlyTextMessageType implements MessageType {
         List<String> tokens = tokenService.findByUserId(message.getFrom().getId());
         Map.Entry<String, ? extends Request> entry = requestService.findRequest(tokens, message.getText());
         if (entry == null) {
-            if(message.getChat().getType().equals("group")&&message.getChat().getTitle().equals("MyChat"))
-                log.info("You added to group or deleted");
-            return getUnknownMessage(message);
+            tudaSudaTelegramBot.checkMembership(message);
         }
         if (entry.getValue() instanceof DriverRequest) {
             log.info("Got message for saving description of driver with token :{} ", entry.getKey());
