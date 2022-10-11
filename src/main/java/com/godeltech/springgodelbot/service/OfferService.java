@@ -6,6 +6,7 @@ import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.entity.Offer;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,15 +22,15 @@ public interface OfferService {
 
     List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity);
 
-    ChangeOfferRequest getById(Long offerId, Long chatId);
+    ChangeOfferRequest getById(Long offerId, Message message);
 
-    void deleteById(Long offerId, Long chatId);
+    void deleteById(Long offerId, Message message);
 
-    void updateCities(ChangeOfferRequest changeOfferRequest);
+    void updateCities(ChangeOfferRequest changeOfferRequest, Message message);
 
-    void updateDatesOfOffer(ChangeOfferRequest changeOfferRequest);
+    void updateDatesOfOffer(ChangeOfferRequest changeOfferRequest, Message message);
 
-    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest);
+    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, Message message);
 
     void deleteBySecondDateAfter(LocalDate now);
 

@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.handler;
 
 import com.godeltech.springgodelbot.exception.*;
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
@@ -34,8 +35,10 @@ public class BotHandler {
     @SneakyThrows
     public void handleRequestNotFoundException(RequestNotFoundException exception) {
         log.error(exception.getMessage());
+        Token createdToken = tokenService.createToken(exception.getBotMessage().getFrom().getId(),
+                exception.getBotMessage().getMessageId(), exception.getBotMessage().getChatId());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage(),
-                "Something was wrong, Please make try one more time", tokenService.createToken()));
+                "Something was wrong, Please make try one more time", createdToken.getId()));
     }
 
     @ExceptionHandler(value = UserAuthorizationException.class)
@@ -60,7 +63,10 @@ public class BotHandler {
     @SneakyThrows
     public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
-        tudaSudaTelegramBot.execute(getStartMenu(exception.getChatId(), "There is no such type of request, please try again", tokenService.createToken()));
+        Token createdToken = tokenService.createToken(exception.getBotMessage().getFrom().getId(), exception.getBotMessage().getMessageId(), exception.getBotMessage().getChatId());
+        tudaSudaTelegramBot.deleteMessage(exception.getBotMessage().getChatId(), exception.getBotMessage().getMessageId());
+        tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage().getChatId(),
+                "There is no such type of request, please try again", createdToken.getId()));
     }
 
     @ExceptionHandler(value = RepeatedTokenMessageException.class)
@@ -84,9 +90,9 @@ public class BotHandler {
     public void handleMembershipException(MembershipException membershipException) {
         log.error(membershipException.getMessage());
         Message message = membershipException.getBotMessage();
-         if(membershipException.isFromMessage()){
-            tudaSudaTelegramBot.execute(createSendMessage(message)) ;
-         }
+        if (membershipException.isFromMessage()) {
+            tudaSudaTelegramBot.execute(createSendMessage(message));
+        }
     }
 
     private SendMessage createSendMessage(Message message) {
@@ -104,6 +110,7 @@ public class BotHandler {
 
                 .build();
     }
+
     private EditMessageText createEditMessageText(Message message) {
         return EditMessageText.builder()
                 .chatId(message.getChatId().toString())

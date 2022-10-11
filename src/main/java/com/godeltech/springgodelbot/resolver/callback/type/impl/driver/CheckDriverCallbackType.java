@@ -54,7 +54,7 @@ public class CheckDriverCallbackType implements CallbackType {
 
     private void checkUsername(CallbackQuery callbackQuery, DriverRequest driverRequest, String token) {
         if (callbackQuery.getFrom().getUserName() == null){
-            tokenService.deleteToken(token);
+            tokenService.deleteToken(token, callbackQuery.getMessage());
             tudaSudaTelegramBot.deleteMessages(driverRequest.getChatId(), driverRequest.getMessages());
             throw new UserAuthorizationException(UserDto.class, "username", null, callbackQuery.getMessage(),false );}
     }

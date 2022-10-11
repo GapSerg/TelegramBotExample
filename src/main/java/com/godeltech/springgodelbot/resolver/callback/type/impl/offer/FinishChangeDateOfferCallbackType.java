@@ -14,8 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
-import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
@@ -35,7 +33,7 @@ public class FinishChangeDateOfferCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got {} callback type with token : {}", Callbacks.FINISH_DATE_OFFER, token);
         ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
-        requestService.updateDates(changeOfferRequest, token);
+        requestService.updateDates(changeOfferRequest, token,callbackQuery.getMessage() );
         List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                 requestService.findPassengersByRequestData(changeOfferRequest) :
                 requestService.findDriversByRequestData(changeOfferRequest);

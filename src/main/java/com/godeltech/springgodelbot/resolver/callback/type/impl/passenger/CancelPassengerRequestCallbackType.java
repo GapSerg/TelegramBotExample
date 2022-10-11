@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
 import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.TokenService;
@@ -41,8 +42,10 @@ public class CancelPassengerRequestCallbackType implements CallbackType {
         PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(),token );
         passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
         tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), passengerRequest.getMessages());
-        tokenService.deleteToken(token);
+        tokenService.deleteToken(token,callbackQuery.getMessage() );
         requestService.deletePassengerRequest(token);
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",tokenService.createToken());
+        Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
+                callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
+        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",createdToken.getId());
     }
 }

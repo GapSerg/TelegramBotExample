@@ -2,8 +2,10 @@ package com.godeltech.springgodelbot.service.impl;
 
 import com.godeltech.springgodelbot.exception.MembershipException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
 import com.godeltech.springgodelbot.service.MessageResolverService;
+import com.godeltech.springgodelbot.service.TokenService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -24,6 +26,9 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberLeft;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -33,22 +38,25 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
 
     private final MessageResolverService messageResolverService;
     private final CallbackResolverService callbackResolverService;
-
+    private final TokenService tokenService;
     private String botUsername;
     private String botToken;
     private String botPath;
     private String chmokiId;
 
-    public TudaSudaTelegramBot(SetWebhook setWebhookInstance, MessageResolverService messageResolverService, CallbackResolverService callbackResolverService) {
+
+    public TudaSudaTelegramBot(SetWebhook setWebhookInstance, MessageResolverService messageResolverService, CallbackResolverService callbackResolverService, TokenService tokenService) {
         super(setWebhookInstance);
         this.messageResolverService = messageResolverService;
         this.callbackResolverService = callbackResolverService;
+        this.tokenService = tokenService;
     }
 
-    public TudaSudaTelegramBot(SetWebhook setWebhookInstance, DefaultBotOptions defaultBotOptions, MessageResolverService messageResolverService, CallbackResolverService callbackResolverService) {
+    public TudaSudaTelegramBot(SetWebhook setWebhookInstance, DefaultBotOptions defaultBotOptions, MessageResolverService messageResolverService, CallbackResolverService callbackResolverService, TokenService tokenService) {
         super(defaultBotOptions, setWebhookInstance);
         this.messageResolverService = messageResolverService;
         this.callbackResolverService = callbackResolverService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -74,11 +82,12 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
                     .userId(message.getFrom().getId())
                     .build());
             if (chatMember instanceof ChatMemberBanned || chatMember instanceof ChatMemberLeft)
-                throw new MembershipException(message.getFrom().getId(),message.getFrom().getUserName(),message,true);
+                throw new MembershipException(message.getFrom().getId(), message.getFrom().getUserName(), message, true);
         } catch (TelegramApiException e) {
-            throw new MembershipException(message.getFrom().getId(),message.getFrom().getUserName(),message,true);
+            throw new MembershipException(message.getFrom().getId(), message.getFrom().getUserName(), message, true);
         }
     }
+
     public void checkMembership(User user, Message message) {
         try {
             log.info("Is he member of group?");
@@ -87,11 +96,12 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
                     .userId(user.getId())
                     .build());
             if (chatMember instanceof ChatMemberBanned || chatMember instanceof ChatMemberLeft)
-                throw new MembershipException(user.getId(), user.getUserName(),message,false);
+                throw new MembershipException(user.getId(), user.getUserName(), message, false);
         } catch (TelegramApiException e) {
-            throw new MembershipException(user.getId(), user.getUserName(),message,false);
+            throw new MembershipException(user.getId(), user.getUserName(), message, false);
         }
     }
+
     public void editPreviousMessage(CallbackQuery callbackQuery, String answer) {
         try {
             log.info("Edit previous message with message Id : {}", callbackQuery.getMessage().getMessageId());
@@ -123,5 +133,12 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
         } catch (TelegramApiException e) {
             throw new UnknownCommandException();
         }
+    }
+
+    public void deleteExpiredTokens(LocalDateTime date) {
+        tokenService.deleteNonUsableExpiredTokens(date);
+        List<Token> tokens = tokenService.getUsableExpiredTokens(date);
+        tokens.forEach(token -> deleteMessage(token.getChatId(), token.getMessageId()));
+        tokenService.deleteAll(tokens);
     }
 }

@@ -19,11 +19,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserEntity getById(Long userId, Long chatId) {
+    public UserEntity getById(Long userId, Message message) {
         ;
         log.info("find user by id = {}", userId);
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(UserEntity.class, "id", userId, chatId));
+                .orElseThrow(() -> new ResourceNotFoundException(UserEntity.class, "id", userId, message));
     }
 
     @Override

@@ -24,13 +24,13 @@ public interface RequestService {
 
     ChangeOfferRequest getChangeOfferRequest(Message message, String token);
 
-    void updateDates(ChangeOfferRequest changeOfferRequest, String token);
+    void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message);
 
     void clearChangeOfferRequestsAndPassengerRequests(String token);
 
     void clearDriverRequestsAndPassengerRequests(String token);
 
-    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token);
+    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message);
 
     void deleteChangeOfferRequest(String token);
     void deleteDriverRequest(String token);
@@ -42,7 +42,7 @@ public interface RequestService {
 
     boolean existsPassengerRequestByToken(String token);
 
-    void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token);
+    void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message);
 
     ChangeOfferRequest deleteOffer(Message message, String token);
 
@@ -50,7 +50,7 @@ public interface RequestService {
 
     List<ChangeOfferRequest> findByUserIdAndActivity(Long id, Activity activity);
 
-    ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId, String token);
+    ChangeOfferRequest addNewChangeOfferRequest(long offerId, Message message, String token);
 
     List<PassengerRequest> findPassengersByRequestData(Request request);
 

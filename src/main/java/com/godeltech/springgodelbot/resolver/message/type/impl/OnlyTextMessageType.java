@@ -5,6 +5,7 @@ import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.TokenService;
@@ -65,25 +66,31 @@ public class OnlyTextMessageType implements MessageType {
 
     private SendMessage updateDescriptionOfRequest(Message message, Map.Entry<String, ? extends Request> entry) {
         entry.getValue().setDescription(message.getText());
-        requestService.updateDescriptionOfOffer((ChangeOfferRequest) entry.getValue(), entry.getKey() );
+        requestService.updateDescriptionOfOffer((ChangeOfferRequest) entry.getValue(), entry.getKey(),message );
         tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
-        return getStartMenu(message.getChatId(), DESCRIPTION_WAS_UPDATED,tokenService.createToken());
+        tokenService.deleteToken(entry.getKey(),message );
+        Token createdToken = tokenService.createToken(message.getFrom().getId(), message.getChatId());
+        return getStartMenu(message.getChatId(), DESCRIPTION_WAS_UPDATED,createdToken.getId());
     }
 
     private SendMessage savePassengerRequest(Message message, Map.Entry<String, ? extends Request> entry) {
         entry.getValue().setDescription(message.getText());
         requestService.savePassenger((PassengerRequest) entry.getValue(), entry.getKey());
         tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
-        tokenService.deleteToken(entry.getKey());
-        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING,tokenService.createToken());
+        tokenService.deleteToken(entry.getKey(),message );
+        Token createdToken = tokenService.createToken(message.getFrom().getId(),
+                message.getChatId());
+        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING,createdToken.getId());
     }
 
     private SendMessage saveDriverRequest(Message message, Map.Entry<String, ? extends Request> entry) {
         tudaSudaTelegramBot.deleteMessages(message.getChatId(), entry.getValue().getMessages());
         entry.getValue().setDescription(message.getText());
         requestService.saveDriver((DriverRequest) entry.getValue(), entry.getKey());
-        tokenService.deleteToken(entry.getKey());
-        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING,tokenService.createToken());
+        tokenService.deleteToken(entry.getKey(),message );
+        Token createdToken = tokenService.createToken(message.getFrom().getId(),
+                 message.getChatId());
+        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING,createdToken.getId());
     }
 
 

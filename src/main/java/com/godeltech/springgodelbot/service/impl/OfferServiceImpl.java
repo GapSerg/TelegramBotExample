@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -82,44 +83,44 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public ChangeOfferRequest getById(Long offerId, Long chatId) {
+    public ChangeOfferRequest getById(Long offerId, Message message) {
         log.info("Find offer by id : {}", offerId);
         return offerRepository.findById(offerId)
                 .map(offerMapper::mapToChangeOfferRequest)
-                .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, chatId));
+                .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, message));
     }
 
     @Override
     @Transactional
-    public void deleteById(Long offerId, Long chatId) {
+    public void deleteById(Long offerId, Message message) {
         log.info("Delete offer by id : {}", offerId);
-        Offer offer = getOfferById(offerId, chatId);
+        Offer offer = getOfferById(offerId, message);
         offerRepository.delete(offer);
     }
 
-    private Offer getOfferById(Long offerId, Long chatId) {
+    private Offer getOfferById(Long offerId, Message message) {
         log.info("Get offer by id: {}", offerId);
         return offerRepository.findById(offerId)
-                .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, chatId));
+                .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, message));
 
     }
 
     @Override
     @Transactional
-    public void updateCities(ChangeOfferRequest changeOfferRequest) {
+    public void updateCities(ChangeOfferRequest changeOfferRequest, Message message) {
         log.info("Update cities of offer with id : {} and cities : {} ", changeOfferRequest.getOfferId(),
                 changeOfferRequest.getCities());
-        Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), message);
         offer.setCities(changeOfferRequest.getCities());
         offerRepository.save(offer);
     }
 
     @Override
     @Transactional
-    public void updateDatesOfOffer(ChangeOfferRequest changeOfferRequest) {
+    public void updateDatesOfOffer(ChangeOfferRequest changeOfferRequest, Message message) {
         log.info("Update date of offer with first date : {} , and second date : {} ", changeOfferRequest.getFirstDate()
                 , changeOfferRequest.getSecondDate());
-        Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), message);
         offer.setFirstDate(changeOfferRequest.getFirstDate());
         offer.setSecondDate(changeOfferRequest.getSecondDate()==null ?
                 null :
@@ -129,9 +130,9 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest) {
+    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, Message message) {
         log.info("Update description of offer with id : {}", changeOfferRequest.getOfferId());
-        Offer offer = getOfferById(changeOfferRequest.getOfferId(), changeOfferRequest.getChatId());
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), message);
         offer.setDescription(changeOfferRequest.getDescription());
         offerRepository.save(offer);
     }

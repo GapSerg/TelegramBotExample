@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.resolver.message.type.impl;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
 import com.godeltech.springgodelbot.mapper.UserMapper;
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.TokenService;
@@ -91,7 +92,8 @@ public class TextAndEntityMessageType implements MessageType {
         if (!userService.existsByIdAndUsername(message.getFrom().getId(), message.getFrom().getUserName()))
 
             userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
-        return getStartMenu(message.getChatId(), START_MESSAGE, tokenService.createToken());
+        Token createdToken = tokenService.createToken(message.getFrom().getId(), message.getMessageId(), message.getChatId());
+        return getStartMenu(message.getChatId(), START_MESSAGE, createdToken.getId());
     }
 
 }

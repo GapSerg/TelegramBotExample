@@ -29,7 +29,7 @@ public class ReturnToChangeOfOfferCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got {} type with token : {}",RETURN_TO_CHANGE_OF_OFFER,token);
         ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
-        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(changeOfferRequest.getOfferId(), callbackQuery.getMessage().getChatId(),token);
+        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(changeOfferRequest.getOfferId(), callbackQuery.getMessage(),token);
         String textMessage = getOffersView(request);
         return  getEditTextMessageForOffer(callbackQuery, token, request,textMessage);
     }

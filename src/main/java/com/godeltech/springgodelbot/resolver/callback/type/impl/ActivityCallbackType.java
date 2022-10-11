@@ -54,7 +54,7 @@ public class ActivityCallbackType implements CallbackType {
     @SneakyThrows
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token  = getCallbackToken(callbackQuery.getData());
-        tokenService.checkIncomeToken(token,callbackQuery.getFrom().getId() );
+        tokenService.checkIncomeToken(token,callbackQuery.getMessage());
         Activity activityType = Activity.valueOf(getCallbackValue(callbackQuery.getData()));
         log.info("Got {} callback type with activity :{} and token : {}",ACTIVITY,activityType,token);
         List<City> cities = cityService.findAll();
@@ -74,7 +74,6 @@ public class ActivityCallbackType implements CallbackType {
                         .cities(new ArrayList<>())
                         .messages(messages)
                         .build(),token );
-//                tudaSudaTelegramBot.editPreviousMessage(callbackQuery, String.format(CHOSEN_ROLE, activityType));
                 return createRouteSendMessage(cities, DRIVER_ROUTE.ordinal(),CANCEL_DRIVER_REQUEST.ordinal(),
                         callbackQuery.getMessage(),token,String.format(CHOSEN_ROLE,activityType));
             case PASSENGER:

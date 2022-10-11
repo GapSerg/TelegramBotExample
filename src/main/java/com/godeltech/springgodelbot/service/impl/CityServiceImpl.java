@@ -27,14 +27,14 @@ public class CityServiceImpl implements CityService {
         log.info("Find all routes");
         return cityRepository.findAll();
     }
-
-    @Override
-    @Cacheable(value = "routes", key = "#routeId")
-    public City getById(Integer routeId, Long chatId) {
-        log.info("Get route by id:{}", routeId);
-        return cityRepository.findById(routeId)
-                .orElseThrow(() -> new ResourceNotFoundException(City.class, "routeId", routeId, chatId));
-    }
+//
+//    @Override
+//    @Cacheable(value = "routes", key = "#routeId")
+//    public City getById(Integer routeId, Long chatId) {
+//        log.info("Get route by id:{}", routeId);
+//        return cityRepository.findById(routeId)
+//                .orElseThrow(() -> new ResourceNotFoundException(City.class, "routeId", routeId, chatId));
+//    }
 
     @Override
     @Transactional
