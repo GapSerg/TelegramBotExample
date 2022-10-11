@@ -28,7 +28,7 @@ public class ChangeOfferCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         long offerId = Long.parseLong(getCallbackValue(callbackQuery.getData()));
         log.info("Got {} callback type with route id :{} and token: {}", CHANGE_OFFER, offerId, token);
-        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage().getChatId(), token);
+        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage(), token);
         String textMessage = getOffersView(request);
         return getEditTextMessageForOffer(callbackQuery, token, request, textMessage);
     }

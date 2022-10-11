@@ -6,6 +6,7 @@ import com.godeltech.springgodelbot.dto.DriverRequest;
 import com.godeltech.springgodelbot.dto.PassengerRequest;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
 import com.godeltech.springgodelbot.service.MessageResolverService;
+import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import com.google.common.cache.CacheBuilder;
 import lombok.Data;
@@ -65,9 +66,9 @@ public class AppConfig {
     @Bean
     @SneakyThrows
     public TudaSudaTelegramBot tudaSudaTelegramBot(SetWebhook setWebhookInstance, MessageResolverService messageResolverService,
-                                                   CallbackResolverService callbackResolverService) {
+                                                   CallbackResolverService callbackResolverService, TokenService tokenService) {
         TudaSudaTelegramBot tudaSudaTelegramBot =
-                new TudaSudaTelegramBot(setWebhookInstance, messageResolverService, callbackResolverService);
+                new TudaSudaTelegramBot(setWebhookInstance, messageResolverService, callbackResolverService, tokenService);
         tudaSudaTelegramBot.setBotUsername(botProp.getName());
         tudaSudaTelegramBot.setBotToken(botProp.getToken());
         tudaSudaTelegramBot.setBotPath(botProp.getWebHookPath());

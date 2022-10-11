@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-10-changes-create-table-token" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="token"/>
+            </not>
+        </preConditions>
+        <createTable tableName="token">
+            <column name="id" type="VARCHAR(528)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message_id" type="INT">
+<!--                <constraints nullable="true"/>-->
+            </column>
+            <column name="chat_id" type="BIGSERIAL">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_reserved" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

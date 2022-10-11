@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public interface UserService {
 
 
-    UserEntity getById(Long userId, Long chatId);
+    UserEntity getById(Long userId, Message message);
 
     UserEntity save(UserEntity userEntity, Message message);
 

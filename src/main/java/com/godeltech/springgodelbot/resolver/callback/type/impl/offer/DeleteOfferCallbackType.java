@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.TokenService;
@@ -34,8 +35,10 @@ public class DeleteOfferCallbackType implements CallbackType {
         long offerId = Long.parseLong(CallbackUtil.getCallbackValue(callbackQuery.getData()));
         log.info("Delete offer by id :{} and token: {}", offerId,token);
         requestService.deleteOffer(callbackQuery.getMessage(), token);
-        tokenService.deleteToken(token);
-        return getStartMenu(callbackQuery.getMessage(), OFFER_WAS_DELETED,tokenService.createToken());
+        tokenService.deleteToken(token, callbackQuery.getMessage());
+        Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
+                callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
+        return getStartMenu(callbackQuery.getMessage(), OFFER_WAS_DELETED,createdToken.getId());
     }
 
 }

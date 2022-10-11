@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -37,8 +38,10 @@ public class CancelChangeOfferRequest implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got callback : {} with token : {}", CANCEL_CHANGE_OFFER_REQUEST,token);
-        tokenService.deleteToken(token);
+        tokenService.deleteToken(token, callbackQuery.getMessage());
         tudaSudaTelegramBot.deleteMessage(callbackQuery.getMessage().getChatId(), callbackQuery.getMessage().getMessageId());
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",tokenService.createToken());
+        Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
+                callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
+        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",createdToken.getId());
     }
 }

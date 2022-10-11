@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl;
 
 import com.godeltech.springgodelbot.mapper.UserMapper;
+import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.UserService;
@@ -51,9 +52,12 @@ public class MainMenuActivityCallbackType implements CallbackType {
         if (!userService.existsByIdAndUsername(callbackQuery.getFrom().getId(), callbackQuery.getFrom().getUserName()))
             userService.save(userMapper.mapToUserEntity(callbackQuery.getFrom()), callbackQuery.getMessage());
         if (data.length > 1) {
-            tokenService.deleteToken(getCallbackToken(callbackQuery.getData()));
+            tokenService.deleteToken(getCallbackToken(callbackQuery.getData()),callbackQuery.getMessage() );
         }
-        return getStartMenu(callbackQuery, tokenService.createToken());
+        Token token = tokenService.createToken(callbackQuery.getFrom().getId(),
+                callbackQuery.getMessage().getMessageId(),
+                callbackQuery.getMessage().getChatId());
+        return getStartMenu(callbackQuery,token.getId());
     }
 
 }

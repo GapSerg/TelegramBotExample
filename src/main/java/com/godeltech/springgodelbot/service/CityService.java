@@ -7,7 +7,7 @@ import java.util.List;
 public interface CityService {
     List<City> findAll();
 
-    City getById(Integer routeId, Long chatId);
+//    City getById(Integer routeId, Long chatId);
 
     void deleteById(Integer routeId);
 

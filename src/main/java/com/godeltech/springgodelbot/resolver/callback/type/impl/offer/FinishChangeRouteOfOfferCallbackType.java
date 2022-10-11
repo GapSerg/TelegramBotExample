@@ -38,11 +38,11 @@ public class FinishChangeRouteOfOfferCallbackType implements CallbackType {
         log.info("Got callback type :{}, with token:{}", FINISH_CHANGING_ROUTE_OF_OFFER, token);
         ChangeOfferRequest changeOfferRequest =
                 requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
-        requestService.updateRouteOfOffer(changeOfferRequest,token );
+        requestService.updateRouteOfOffer(changeOfferRequest,token,callbackQuery.getMessage() );
         List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                requestService.findPassengersByRequestData(changeOfferRequest) :
                requestService.findDriversByRequestData(changeOfferRequest);
-        tokenService.deleteToken(token);
+        tokenService.deleteToken(token, callbackQuery.getMessage());
         String textMessage = getCompletedMessageAnswer(requests, changeOfferRequest, ROUTE_CHANGED);
         return getAvailableOffersList(requests,callbackQuery, textMessage,token);
     }

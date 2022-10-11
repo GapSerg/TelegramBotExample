@@ -70,9 +70,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void updateDates(ChangeOfferRequest changeOfferRequest, String token) {
+    public void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message) {
         log.debug("Update dates of offer with id: {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.updateDatesOfOffer(changeOfferRequest);
+        offerService.updateDatesOfOffer(changeOfferRequest, message);
         deleteChangeOfferRequest(token);
     }
 
@@ -91,9 +91,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token) {
+    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message) {
         log.debug("Update description of offer with offer id: {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.updateDescriptionOfOffer(changeOfferRequest);
+        offerService.updateDescriptionOfOffer(changeOfferRequest,message );
         deleteChangeOfferRequest(token);
     }
 
@@ -135,9 +135,9 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token) {
+    public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message) {
         log.info("Update route of offer with id :{}", changeOfferRequest.getOfferId());
-        offerService.updateCities(changeOfferRequest);
+        offerService.updateCities(changeOfferRequest, message);
         deleteChangeOfferRequest(token);
     }
 
@@ -145,7 +145,7 @@ public class RequestServiceImpl implements RequestService {
     public ChangeOfferRequest deleteOffer(Message message, String token) {
         ChangeOfferRequest changeOfferRequest = getChangeOfferRequest(message, token);
         log.debug("Delete offer with id : {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.deleteById(changeOfferRequest.getOfferId(), message.getChatId());
+        offerService.deleteById(changeOfferRequest.getOfferId(), message);
         deleteChangeOfferRequest(token);
         return changeOfferRequest;
     }
@@ -163,10 +163,10 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public ChangeOfferRequest addNewChangeOfferRequest(long offerId, Long chatId, String token) {
+    public ChangeOfferRequest addNewChangeOfferRequest(long offerId, Message message, String token) {
         log.debug("Add new change offer request with offer id : {} and token: {}", offerId, token);
-        ChangeOfferRequest request = offerService.getById(offerId, chatId);
-        request.setChatId(chatId);
+        ChangeOfferRequest request = offerService.getById(offerId, message);
+        request.setChatId(message.getChatId());
         changeDriverRequests.put(token, request);
         return request;
     }

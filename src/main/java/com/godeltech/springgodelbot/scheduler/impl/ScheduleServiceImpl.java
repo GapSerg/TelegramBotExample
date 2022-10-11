@@ -3,12 +3,14 @@ package com.godeltech.springgodelbot.scheduler.impl;
 import com.godeltech.springgodelbot.scheduler.ScheduleService;
 import com.godeltech.springgodelbot.service.OfferService;
 import com.godeltech.springgodelbot.service.TokenService;
+import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final OfferService offerService;
-    private final TokenService tokenService;
+    private final TudaSudaTelegramBot tudaSudaTelegramBot;
 
 
     @Override
@@ -28,10 +30,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         offerService.deleteByFirstDateAfterWhereSecondDateIsNull(date);
     }
     @Override
-    @Scheduled(initialDelayString = "${schedule.start}", fixedDelay = 146400000)
+    @Scheduled(initialDelayString = "${schedule.start}", fixedDelayString = "${schedule.work}")
     public void deleteExpireTokens() {
         log.info("Deleting expired offers");
-        LocalDate date = LocalDate.now().minusDays(2);
-        tokenService.deleteExpiredTokens(date);
+        LocalDateTime localDateTime=  LocalDateTime.now().minusHours(16);
+        tudaSudaTelegramBot.deleteExpiredTokens(localDateTime);
     }
 }
