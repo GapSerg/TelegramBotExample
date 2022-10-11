@@ -48,7 +48,7 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
         tokenService.deleteToken(token,callbackQuery.getMessage() );
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
-        return BotMenu.getStartMenu(callbackQuery.getMessage(), "We've successfully save your request",
+        return BotMenu.getStartMenu(callbackQuery.getMessage().getChatId(), "We've successfully save your request",
                 createdToken.getId());
     }
 }
