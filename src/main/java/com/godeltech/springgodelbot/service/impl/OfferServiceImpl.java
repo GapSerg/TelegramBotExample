@@ -158,14 +158,18 @@ public class OfferServiceImpl implements OfferService {
 
     private boolean checkRoute(List<String> cities, Offer offer) {
         boolean result = false;
+
         int difference = cities.size() < offer.getCities().size() ?
                 cities.size() - offer.getCities().size() :
                 offer.getCities().size() - cities.size();
+        List<String> offerCities = offer.getCities().stream()
+                .map(City::getName)
+                .collect(Collectors.toList());
         int matches = 0;
         int previousSupplierIndex = -1;
         for (int i = 0; i < cities.size(); i++) {
             var route = cities.get(i);
-            int supplierIndex = offer.getCities().lastIndexOf(route);
+            int supplierIndex = offerCities.lastIndexOf(route);
             if (supplierIndex != -1 &&
                     i >= difference &&
                     previousSupplierIndex <= supplierIndex) {
