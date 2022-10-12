@@ -1,60 +1,61 @@
 package com.godeltech.springgodelbot.service;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.dto.DriverRequest;
-import com.godeltech.springgodelbot.dto.PassengerRequest;
-import com.godeltech.springgodelbot.dto.Request;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.Offer;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.Token;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public interface RequestService {
 
-    void saveDriverRequest(DriverRequest driverRequest, String token);
+    void saveDriver(Request driverRequest, Message message, User user);
 
-    DriverRequest getDriverRequest(Message message, String token);
 
-    void savePassengerRequest(PassengerRequest passengerRequest, String token);
+    void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message, User user);
 
-    void saveDriver(DriverRequest driverRequest, String token);
 
-    PassengerRequest getPassengerRequest(Message message, String token);
+    void updateDescriptionOfOffer(Request request, Message message);
 
-    ChangeOfferRequest getChangeOfferRequest(Message message, String token);
 
-    void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message);
 
-    void clearChangeOfferRequestsAndPassengerRequests(String token);
+    void savePassenger(Request request, Message message, User user);
 
-    void clearDriverRequestsAndPassengerRequests(String token);
 
-    void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message);
+    void updateRouteOfOffer(Request changeOfferRequest, String token, Message message, User user);
 
-    void deleteChangeOfferRequest(String token);
-    void deleteDriverRequest(String token);
-    void deletePassengerRequest(String token);
+    void deleteOffer(Message message, String token, User user);
 
-    void clearDriverRequestsAndChangeOfferRequests(String token);
+    List<ChangeOfferRequest> findUsersOffersByActivity(Long id, Activity activity);
 
-    void savePassenger(PassengerRequest passengerRequest, String token);
 
-    boolean existsPassengerRequestByToken(String token);
+    List<Offer> findPassengersByRequestData(Request request);
 
-    void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message);
+    List<Offer> findDriversByRequestData(Request request);
 
-    ChangeOfferRequest deleteOffer(Message message, String token);
+    Request findRequestByUserIdForSave(Message message);
 
-    void checkAndClearChangingOfferRequests(String token);
+    Request saveRequest(Request request, String tokenId, Message message, User user);
 
-    List<ChangeOfferRequest> findByUserIdAndActivity(Long id, Activity activity);
+    Request getRequest(Message message, String tokenId, User user);
 
-    ChangeOfferRequest addNewChangeOfferRequest(long offerId, Message message, String token);
+    Request updateRequest(Request request, Message message, User user);
 
-    List<PassengerRequest> findPassengersByRequestData(Request request);
+    void deleteRequest(Request request, Message message);
 
-    List<DriverRequest> findDriversByRequestData(Request request);
+    Request prepareRequestForDescription(Request request);
 
-    Map.Entry<String, ? extends Request> findRequest(List<String> tokens, String text);
+    ChangeOfferRequest refreshChangeOfferRequest(Request changeOfferRequest, Message message, User user);
+
+    Request setOfferToRequest(long offerId, Request request, Message message, User user);
+
+    Request getOrSaveRequest(Request request, String token, Message message, User user);
+
+    void deleteAllByTokens(List<Token> tokens);
+
+    void deleteNonUsableExpiredTokens(LocalDateTime date);
 }

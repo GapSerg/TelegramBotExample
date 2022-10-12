@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-11--create-type-request_type" author="a.miachyn">
+        <sql>CREATE TYPE type_of_request AS ENUM('DRIVER_REQUEST','PASSENGER_REQUEST','CHANGE_OFFER_REQUEST')</sql>
+    </changeSet>
+</databaseChangeLog>

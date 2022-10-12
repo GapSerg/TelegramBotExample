@@ -2,7 +2,7 @@
 //
 //import com.godeltech.springgodelbot.mapper.PassengerMapper;
 //import com.godeltech.springgodelbot.model.entity.UserEntity;
-//import com.godeltech.springgodelbot.dto.PassengerRequest;
+//import com.godeltech.springgodelbot.model.entity.PassengerRequest;
 //import lombok.RequiredArgsConstructor;
 //import org.modelmapper.ModelMapper;
 //import org.springframework.stereotype.Component;

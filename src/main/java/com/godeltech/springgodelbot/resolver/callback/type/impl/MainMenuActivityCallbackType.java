@@ -1,8 +1,10 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl;
 
 import com.godeltech.springgodelbot.mapper.UserMapper;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
+import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.UserService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
@@ -24,15 +26,17 @@ public class MainMenuActivityCallbackType implements CallbackType {
     private final UserMapper userMapper;
     private final TokenService tokenService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
+    private final RequestService requestService;
 
     public MainMenuActivityCallbackType(UserService userService,
                                         UserMapper userMapper,
                                         TokenService tokenService,
-                                        @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
+                                        @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, RequestService requestService) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.tokenService = tokenService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
+        this.requestService = requestService;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class MainMenuActivityCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Got {} callback type", MAIN_MENU);
+        log.info("Got {} callback type by user : {}", MAIN_MENU,callbackQuery.getFrom().getUserName());
         String[] data = callbackQuery.getData().split(SPLITTER);
         if (callbackQuery.getFrom().getUserName() == null)
             return makeEditMessageForUserWithoutUsername(callbackQuery.getMessage());
@@ -52,7 +56,9 @@ public class MainMenuActivityCallbackType implements CallbackType {
         if (!userService.existsByIdAndUsername(callbackQuery.getFrom().getId(), callbackQuery.getFrom().getUserName()))
             userService.save(userMapper.mapToUserEntity(callbackQuery.getFrom()), callbackQuery.getMessage());
         if (data.length > 1) {
-            tokenService.deleteToken(getCallbackToken(callbackQuery.getData()),callbackQuery.getMessage() );
+            Request request =
+                    requestService.getRequest(callbackQuery.getMessage(), getCallbackToken(callbackQuery.getData()),callbackQuery.getFrom() );
+            requestService.deleteRequest(request,callbackQuery.getMessage());
         }
         Token token = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(),

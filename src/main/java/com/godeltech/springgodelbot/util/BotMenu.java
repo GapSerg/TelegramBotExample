@@ -1,7 +1,6 @@
 package com.godeltech.springgodelbot.util;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.exception.UnknownCommandException;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -54,8 +53,8 @@ public class BotMenu {
     public static EditMessageText getStartMenu(ChangeOfferRequest changeOfferRequest, String text,String token) {
         List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return EditMessageText.builder()
-                .chatId(changeOfferRequest.getChatId().toString())
-                .messageId(changeOfferRequest.getMessages().stream().findFirst().orElseThrow(UnknownCommandException::new))
+                .chatId(changeOfferRequest.getToken().getChatId().toString())
+                .messageId(changeOfferRequest.getToken().getMessageId())
                 .text(text + "\nChoose the option you are interested in")
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)

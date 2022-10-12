@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,10 @@ public class ChangeOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         long offerId = Long.parseLong(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with route id :{} and token: {}", CHANGE_OFFER, offerId, token);
-        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(offerId, callbackQuery.getMessage(), token);
+        log.info("Got {} callback type with route id :{} and token: {} by user :{}",
+                CHANGE_OFFER, offerId, token, callbackQuery.getFrom().getUserName());
+        Request request = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
+        request = requestService.setOfferToRequest(offerId, request, callbackQuery.getMessage(), callbackQuery.getFrom());
         String textMessage = getOffersView(request);
         return getEditTextMessageForOffer(callbackQuery, token, request, textMessage);
     }

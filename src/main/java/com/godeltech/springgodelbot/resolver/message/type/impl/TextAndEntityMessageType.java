@@ -92,8 +92,7 @@ public class TextAndEntityMessageType implements MessageType {
         if (!userService.existsByIdAndUsername(message.getFrom().getId(), message.getFrom().getUserName()))
 
             userService.save(userMapper.mapToUserEntity(message.getFrom()), message);
-        Token createdToken = tokenService.createToken(message.getFrom().getId(), message.getMessageId(), message.getChatId());
+        Token createdToken = tokenService.createToken(message.getFrom().getId(), message.getChatId());
         return getStartMenu(message.getChatId(), START_MESSAGE, createdToken.getId());
     }
-
 }

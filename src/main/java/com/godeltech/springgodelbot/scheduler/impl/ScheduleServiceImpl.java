@@ -33,7 +33,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Scheduled(initialDelayString = "${schedule.start}", fixedDelayString = "${schedule.work}")
     public void deleteExpireTokens() {
         log.info("Deleting expired offers");
-        LocalDateTime localDateTime=  LocalDateTime.now().minusHours(16);
+        LocalDateTime localDateTime=  LocalDateTime.now().minusHours(36);
         tudaSudaTelegramBot.deleteExpiredTokens(localDateTime);
     }
 }

@@ -1,178 +1,101 @@
 package com.godeltech.springgodelbot.service.impl;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.dto.DriverRequest;
-import com.godeltech.springgodelbot.dto.PassengerRequest;
-import com.godeltech.springgodelbot.dto.Request;
-import com.godeltech.springgodelbot.exception.RequestNotFoundException;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.PassengerRequest;
+import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
+import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.Offer;
+import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.Token;
+import com.godeltech.springgodelbot.model.repository.RequestRepository;
 import com.godeltech.springgodelbot.service.OfferService;
 import com.godeltech.springgodelbot.service.RequestService;
+import com.godeltech.springgodelbot.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
 
 
-    private final Map<String, PassengerRequest> passengerRequests;
-
-    private final Map<String, DriverRequest> driverRequests;
-
-    private final Map<String, ChangeOfferRequest> changeDriverRequests;
-
     private final OfferService offerService;
 
+    private final TokenService tokenService;
 
-    public DriverRequest getDriverRequest(Message message, String token) {
-        log.debug("Getting driver request with token {}", token);
-        if (driverRequests.containsKey(token))
-            return driverRequests.get(token);
-        throw new RequestNotFoundException(DriverRequest.class, "token", token, message);
-    }
+    private final RequestRepository requestRepository;
 
-    @Override
-    public void savePassengerRequest(PassengerRequest passengerRequest, String token) {
-        log.debug("Save passenger request : {}", passengerRequest);
-        passengerRequests.put(token, passengerRequest);
-    }
-
-    @Override
-    public void saveDriver(DriverRequest driverRequest, String token) {
-        log.debug("Saving driver request with token: {}", token);
-            offerService.save(driverRequest);
-            deleteDriverRequest(token);
-
-    }
-
-    @Override
-    public PassengerRequest getPassengerRequest(Message message, String token) {
-        log.debug("Get passenger request with chat token: {}", token);
-        if (passengerRequests.containsKey(token))
-            return passengerRequests.get(token);
-        throw new RequestNotFoundException(PassengerRequest.class, "token", token, message);
-    }
 
 
     @Override
-    public ChangeOfferRequest getChangeOfferRequest(Message message, String token) {
-        log.debug("Get change offer request by token: {}", token);
-        if (changeDriverRequests.containsKey(token))
-            return changeDriverRequests.get(token);
-        throw new RequestNotFoundException(ChangeOfferRequest.class, "token", token, message);
+    @Transactional
+    public void saveDriver(Request request, Message message, User user) {
+        log.debug("Saving driver request with token: {}", message);
+        offerService.save((DriverRequest) request, user,message );
+//        deleteRequest(request, message);
     }
 
     @Override
-    public void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message) {
+    @Transactional
+    public void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message, User user) {
         log.debug("Update dates of offer with id: {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.updateDatesOfOffer(changeOfferRequest, message);
-        deleteChangeOfferRequest(token);
+        offerService.updateDatesOfOffer(changeOfferRequest, message,user );
+    }
+
+
+    @Override
+    @Transactional
+    public void updateDescriptionOfOffer(Request request, Message message) {
+        log.debug("Update description of offer with offer id: {} and token: {}", request.getOfferId(), request.getToken().getId());
+        offerService.updateDescriptionOfOffer((ChangeOfferRequest) request, message,message.getFrom() );
+//        deleteRequest(request, message);/
+    }
+
+    @Transactional
+    @Override
+    public void savePassenger(Request request, Message message, User user) {
+        log.debug("Save passenger request : {} and token: {}", request, message);
+        offerService.save((PassengerRequest) request, user,message );
+//        deleteRequest(request, message);
     }
 
     @Override
-    public void clearChangeOfferRequestsAndPassengerRequests(String token) {
-        log.debug("Clear maps changeOfferRequests and passengerRequests with chat id: {}", token);
-        deleteChangeOfferRequest(token);
-        deletePassengerRequest(token);
-    }
-
-    @Override
-    public void clearDriverRequestsAndPassengerRequests(String token) {
-        log.debug("Clear driver and passenger requests with chat id :{}", token);
-        deleteDriverRequest(token);
-        deletePassengerRequest(token);
-    }
-
-    @Override
-    public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message) {
-        log.debug("Update description of offer with offer id: {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.updateDescriptionOfOffer(changeOfferRequest,message );
-        deleteChangeOfferRequest(token);
-    }
-
-    @Override
-    public void deleteChangeOfferRequest(String token) {
-        log.debug("Remove change offer request with token : {}",token);
-        changeDriverRequests.remove(token);
-    }
-
-    @Override
-    public void deleteDriverRequest(String token) {
-        log.debug("Remove driver request with token : {}",token);
-        driverRequests.remove(token);
-    }
-
-    @Override
-    public void deletePassengerRequest(String token) {
-        log.debug("Remove passenger request with token : {}",token);
-        passengerRequests.remove(token);
-    }
-
-    @Override
-    public void clearDriverRequestsAndChangeOfferRequests(String token) {
-        log.debug("Clear driver and change offer requests with chat id :{}", token);
-        deleteDriverRequest(token);
-        deleteChangeOfferRequest(token);
-    }
-
-    @Override
-    public void savePassenger(PassengerRequest passengerRequest, String token) {
-        log.debug("Save passenger request : {} and token: {}", passengerRequest, token);
-        offerService.save(passengerRequest);
-        deletePassengerRequest(token);
-    }
-
-    @Override
-    public boolean existsPassengerRequestByToken(String token) {
-        return passengerRequests.containsKey(token);
-    }
-
-    @Override
-    public void updateRouteOfOffer(ChangeOfferRequest changeOfferRequest, String token, Message message) {
+    public void updateRouteOfOffer(Request changeOfferRequest, String token, Message message, User user) {
         log.info("Update route of offer with id :{}", changeOfferRequest.getOfferId());
-        offerService.updateCities(changeOfferRequest, message);
-        deleteChangeOfferRequest(token);
+        offerService.updateCities((ChangeOfferRequest) changeOfferRequest, message,user );
     }
 
     @Override
-    public ChangeOfferRequest deleteOffer(Message message, String token) {
-        ChangeOfferRequest changeOfferRequest = getChangeOfferRequest(message, token);
-        log.debug("Delete offer with id : {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.deleteById(changeOfferRequest.getOfferId(), message);
-        deleteChangeOfferRequest(token);
-        return changeOfferRequest;
+    public void deleteOffer(Message message, String token, User user) {
+        Request request = getRequest(message, token,user );
+        log.debug("Delete offer with id : {} and token: {}", request.getOfferId(), token);
+        offerService.deleteById(request.getOfferId(), message, user);
+        deleteRequest(request, message);
+
     }
 
     @Override
-    public void checkAndClearChangingOfferRequests(String token) {
-        log.debug("Check and clear if exists changeSupplierRequests by token:{}", token);
-        changeDriverRequests.remove(token);
-    }
-
-    @Override
-    public List<ChangeOfferRequest> findByUserIdAndActivity(Long id, Activity activity) {
+    public List<ChangeOfferRequest> findUsersOffersByActivity(Long id, Activity activity) {
         log.debug("Find offers by id:{} and activity :{}", id, activity);
         return offerService.findByUserEntityIdAndActivity(id, activity);
     }
 
-    @Override
-    public ChangeOfferRequest addNewChangeOfferRequest(long offerId, Message message, String token) {
-        log.debug("Add new change offer request with offer id : {} and token: {}", offerId, token);
-        ChangeOfferRequest request = offerService.getById(offerId, message);
-        request.setChatId(message.getChatId());
-        changeDriverRequests.put(token, request);
-        return request;
-    }
+
 
     @Override
-    public List<PassengerRequest> findPassengersByRequestData(Request request) {
+    public List<Offer> findPassengersByRequestData(Request request) {
         log.debug("Find passengers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
         return offerService.findPassengersByFirstDateBeforeAndSecondDateAfterAndCities(request.getSecondDate(),
@@ -180,7 +103,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<DriverRequest> findDriversByRequestData(Request request) {
+    public List<Offer> findDriversByRequestData(Request request) {
         log.debug("Find drivers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
         return offerService.findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes(request.getSecondDate(),
@@ -188,19 +111,114 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Map.Entry<String, ? extends Request> findRequest(List<String> tokens, String text) {
-        return Stream.of(driverRequests.entrySet(), passengerRequests.entrySet(), changeDriverRequests.entrySet())
-                .flatMap(Set::stream)
-                .filter(request -> tokens.contains(request.getKey()))
-                .filter(request -> request.getValue().getNeedForDescription())
-                .findAny()
-                .orElse(null);
+    public Request findRequestByUserIdForSave(Message message) {
+        log.info("Find request for saving with user id : {}", message.getFrom().getId());
+        List<Request> requests = requestRepository.findByTokenUserIdAndNeedForDescriptionTrue(message.getFrom().getId());
+        if (requests.isEmpty()) {
+            return null;
+        } else if (requests.size() == 1) {
+            return requests.get(0);
+        } else {
+            throw new UnknownCommandException();
+        }
+    }
+
+    @Override
+    @Transactional
+    public Request saveRequest(Request request, String tokenId, Message message, User user) {
+        log.info("Save new request with tokenId: {} with activity : {}", tokenId, request.getActivity());
+        Token token = tokenService.checkIncomeToken(tokenId, message,user );
+        request.setToken(token);
+        return requestRepository.save(request);
+    }
+
+    @Override
+    public Request getRequest(Message message, String tokenId, User user) {
+        log.info("Get request by token id : {}", tokenId);
+        return requestRepository.findByTokenId(tokenId)
+                .orElseThrow(() -> new ResourceNotFoundException(Request.class, "tokenId", tokenId, message,user ));
+    }
+
+    @Override
+    @Transactional
+    public Request updateRequest(Request request, Message message, User user) {
+        log.info("Update request with id : {}", request.getId());
+        getById(request.getId(), message,user );
+        return requestRepository.save(request);
+    }
+
+    @Override
+    @Transactional
+    public void deleteRequest(Request request, Message message) {
+        log.info("Delete request with id : {}", request.getId());
+//        Request necessaryRequest = getById(request.getId(), message);
+        requestRepository.deleteById(request.getId());
+    }
+
+    @Override
+    @Transactional
+    public Request prepareRequestForDescription(Request request) {
+        log.info("Prepare request with id :{} and user id : {} for save with description"
+                , request.getId(), request.getToken().getUserId());
+        requestRepository.setNeedForDescriptionInRequestsWithUserId(false, request.getToken().getUserId());
+        request.setNeedForDescription(true);
+        return requestRepository.save(request);
+    }
+
+    @Override
+    @Transactional
+    public ChangeOfferRequest refreshChangeOfferRequest(Request changeOfferRequest, Message message, User user) {
+        log.info("Refresh change offer request with id : {}",changeOfferRequest.getOfferId());
+        ChangeOfferRequest refreshedRequest = offerService.getById(changeOfferRequest.getOfferId(), message,user );
+        refreshedRequest.setId(changeOfferRequest.getId());
+        refreshedRequest.setToken(changeOfferRequest.getToken());
+        return requestRepository.save(refreshedRequest);
+    }
+
+    @Override
+    @Transactional
+    public Request setOfferToRequest(long offerId, Request request, Message message, User user) {
+            log.debug("Set offer  with id :{} to change offer request with id : {}  and token: {}",
+                    offerId,request.getId(), request.getToken().getId());
+            ChangeOfferRequest changeOffer = offerService.getById(offerId, message,user );
+            changeOffer.setToken(request.getToken());
+            changeOffer.setId(request.getId());
+            return requestRepository.save(changeOffer);
+
+    }
+
+    @Override
+    @Transactional
+    public Request getOrSaveRequest(Request request, String tokenId, Message message, User user) {
+        log.info("Check request by tokenId :{}",tokenId);
+        Optional<Request> possibleRequest = requestRepository.findByTokenId(tokenId);
+        if(possibleRequest.isPresent()){
+            Request oldRequest = possibleRequest.get();
+            request.setToken(oldRequest.getToken());
+            request.setId(oldRequest.getId());
+        }else {
+            Token token = tokenService.getById(tokenId, message,user );
+            request.setToken(token);
+        }
+        return requestRepository.save(request);
+
+    }
+
+    @Override
+    public void deleteAllByTokens(List<Token> tokens) {
+
+    }
+
+    @Override
+    public void deleteNonUsableExpiredTokens(LocalDateTime date) {
+        tokenService.deleteNonUsableExpiredTokens(date);
     }
 
 
-    public void saveDriverRequest(DriverRequest driverRequest, String token) {
-        log.debug("Save supplier request: {} with token : {}", driverRequest, token);
-        driverRequests.put(token, driverRequest);
-
+    private Request getById(Long id, Message message, User user) {
+        log.info("Get request by id : {}", id);
+        return requestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Request.class, "id", id, message,user ));
     }
+
 }

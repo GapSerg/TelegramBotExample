@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
-import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +37,13 @@ public class SecondDatePassengerCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         LocalDate chosenDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} callback type with second date :{} and token : {}", SECOND_DATE_PASSENGER,
-                chosenDate, token);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
+        log.info("Got {} callback type with second date :{} and token : {} by user : {}",
+                SECOND_DATE_PASSENGER, chosenDate, token, callbackQuery.getFrom().getUserName());
+        Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
         setDatesToRequest(chosenDate, passengerRequest);
-        String textMessage = String.format(CHOSEN_SECOND_DATE,passengerRequest.getActivity(),getCurrentRoute(passengerRequest.getCities()),
-                passengerRequest.getFirstDate(),passengerRequest.getSecondDate());
+        passengerRequest= requestService.updateRequest(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
+        String textMessage = String.format(CHOSEN_SECOND_DATE, passengerRequest.getActivity(), getCurrentRoute(passengerRequest.getCities()),
+                passengerRequest.getFirstDate(), passengerRequest.getSecondDate());
         return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(), textMessage,
                 SECOND_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), passengerRequest.getSecondDate(), token);
     }

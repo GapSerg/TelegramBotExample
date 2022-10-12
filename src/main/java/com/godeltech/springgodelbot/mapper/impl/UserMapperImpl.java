@@ -1,6 +1,5 @@
 package com.godeltech.springgodelbot.mapper.impl;
 
-import com.godeltech.springgodelbot.dto.UserDto;
 import com.godeltech.springgodelbot.mapper.UserMapper;
 import com.godeltech.springgodelbot.model.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +23,4 @@ public class UserMapperImpl implements UserMapper {
         return modelMapper.map(user, UserEntity.class);
     }
 
-    @Override
-    public UserEntity mapToUserEntity(UserDto userDto) {
-        return modelMapper.map(userDto, UserEntity.class);
-    }
-
-    @Override
-    public UserDto mapToUserDto(UserEntity userEntity) {
-        return modelMapper.map(userEntity, UserDto.class);
-    }
 }

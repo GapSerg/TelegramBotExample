@@ -1,7 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
+import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.model.entity.City;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
@@ -15,11 +16,11 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
-import static com.godeltech.springgodelbot.util.ConstantUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_THE_ROUTE_OF_OFFER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE_OF_OFFER;
 
 @Component
 @RequiredArgsConstructor
@@ -38,20 +39,21 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {} and token : {}", CANCEL_ROUTE_OF_OFFER, routeId,token);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
+        log.info("Callback data with type: {} and routeId: {} and token : {} by user : {}",
+                CANCEL_ROUTE_OF_OFFER, routeId, token, callbackQuery.getFrom().getUserName());
+        Request changeOfferRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
-        List<City> reservedCities = changeOfferRequest.getCities();
-        reservedCities.remove(reservedRoute);
+                .orElseThrow(() -> new ResourceNotFoundException(City.class, callbackQuery.getMessage(), callbackQuery.getFrom()));
+        List<String> reservedCities = changeOfferRequest.getCities();
+        reservedCities.remove(reservedRoute.getName());
         String textMessage = reservedCities.isEmpty() ?
-               CHOSE_THE_ROUTE_OF_OFFER:
+                CHOSE_THE_ROUTE_OF_OFFER :
                 String.format(CURRENT_ROUTE_OF_OFFER, getCurrentRoute(reservedCities));
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(),
-                RETURN_TO_CHANGE_OF_OFFER.ordinal(),token,textMessage);
+                RETURN_TO_CHANGE_OF_OFFER.ordinal(), token, getOffersView(changeOfferRequest));
     }
 }

@@ -35,7 +35,7 @@ public class BotHandler {
     @SneakyThrows
     public void handleRequestNotFoundException(RequestNotFoundException exception) {
         log.error(exception.getMessage());
-        Token createdToken = tokenService.createToken(exception.getBotMessage().getFrom().getId(),
+        Token createdToken = tokenService.createToken(exception.getUser().getId(),
                 exception.getBotMessage().getMessageId(), exception.getBotMessage().getChatId());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage(),
                 "Something was wrong, Please make try one more time", createdToken.getId()));
@@ -63,7 +63,7 @@ public class BotHandler {
     @SneakyThrows
     public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
-        Token createdToken = tokenService.createToken(exception.getBotMessage().getFrom().getId(), exception.getBotMessage().getMessageId(), exception.getBotMessage().getChatId());
+        Token createdToken = tokenService.createToken(exception.getUser().getId(), exception.getBotMessage().getMessageId(), exception.getBotMessage().getChatId());
         tudaSudaTelegramBot.deleteMessage(exception.getBotMessage().getChatId(), exception.getBotMessage().getMessageId());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage().getChatId(),
                 "There is no such type of request, please try again", createdToken.getId()));

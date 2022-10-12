@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
-import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -35,36 +35,39 @@ public class CancelDateDriverCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got {} type with token : {}", CANCEL_DATE_DRIVER, token);
+        log.info("Got {} type with token : {} by user : {}",
+                CANCEL_DATE_DRIVER, token,callbackQuery.getFrom().getUserName());
         LocalDate canceledDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
+        Request driverRequest =requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
         return canceledDate.equals(driverRequest.getFirstDate()) ?
-                getEditMessageWithCanceledFirstDate(callbackQuery, driverRequest, token, canceledDate) :
-                getEditMessageWithCanceledSecondDate(callbackQuery, driverRequest, token);
+                getEditMessageWithCanceledFirstDate(callbackQuery, driverRequest,canceledDate) :
+                getEditMessageWithCanceledSecondDate(callbackQuery, driverRequest);
     }
 
-    private BotApiMethod getEditMessageWithCanceledSecondDate(CallbackQuery callbackQuery, DriverRequest driverRequest,
-                                                              String token) {
+    private BotApiMethod getEditMessageWithCanceledSecondDate(CallbackQuery callbackQuery, Request driverRequest) {
         driverRequest.setSecondDate(null);
         String textMessage = String.format(CHOSEN_FIRST_DATE, driverRequest.getActivity(), getCurrentRoute(driverRequest.getCities()),
                 driverRequest.getFirstDate());
+        driverRequest = requestService.updateRequest(driverRequest,callbackQuery.getMessage(),callbackQuery.getFrom() );
         return createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(),
-                textMessage, SECOND_DATE_DRIVER.ordinal(), CANCEL_DATE_DRIVER.ordinal(), token);
+                textMessage, SECOND_DATE_DRIVER.ordinal(), CANCEL_DATE_DRIVER.ordinal(), driverRequest.getToken().getId());
     }
 
-    private BotApiMethod getEditMessageWithCanceledFirstDate(CallbackQuery callbackQuery, DriverRequest driverRequest,
-                                                             String token, LocalDate canceledDate) {
+    private BotApiMethod getEditMessageWithCanceledFirstDate(CallbackQuery callbackQuery, Request driverRequest,
+                                                              LocalDate canceledDate) {
         if (driverRequest.getSecondDate() != null) {
             driverRequest.setFirstDate(driverRequest.getSecondDate());
             driverRequest.setSecondDate(null);
+            driverRequest = requestService.updateRequest(driverRequest,callbackQuery.getMessage(),callbackQuery.getFrom());
             String textMessage = String.format(CHOSEN_FIRST_DATE, driverRequest.getActivity(), getCurrentRoute(driverRequest.getCities()),
                     driverRequest.getFirstDate());
             return createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(),
-                    textMessage, SECOND_DATE_DRIVER.ordinal(), CANCEL_DATE_DRIVER.ordinal(), token);
+                    textMessage, SECOND_DATE_DRIVER.ordinal(), CANCEL_DATE_DRIVER.ordinal(), driverRequest.getToken().getId());
         }
         driverRequest.setFirstDate(null);
         String textMessage = String.format(CHOOSE_THE_FIRST_DATE, driverRequest.getActivity(), getCurrentRoute(driverRequest.getCities()));
+        driverRequest = requestService.updateRequest(driverRequest,callbackQuery.getMessage(),callbackQuery.getFrom() );
         return createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_DRIVER.ordinal(),
-                CANCEL_DRIVER_REQUEST.ordinal(), textMessage, canceledDate, token);
+                CANCEL_DRIVER_REQUEST.ordinal(), textMessage, canceledDate, driverRequest.getToken().getId());
     }
 }
