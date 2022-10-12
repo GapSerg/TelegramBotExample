@@ -76,7 +76,7 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
 
     public void checkMembership(Message message) {
         try {
-            log.info("Is he member of group?");
+            log.info("Is he member of group? user : {}", message.getFrom().getUserName());
             ChatMember chatMember = execute(GetChatMember.builder()
                     .chatId(chmokiId)
                     .userId(message.getFrom().getId())
@@ -90,7 +90,7 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
 
     public void checkMembership(User user, Message message) {
         try {
-            log.info("Is he member of group?");
+            log.info("Is he member of group? user : {}",user.getUserName());
             ChatMember chatMember = execute(GetChatMember.builder()
                     .chatId(chmokiId)
                     .userId(user.getId())

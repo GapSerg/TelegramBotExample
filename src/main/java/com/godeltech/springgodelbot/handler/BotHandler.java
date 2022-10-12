@@ -55,7 +55,9 @@ public class BotHandler {
     @ExceptionHandler(value = UnknownCommandException.class)
     @SneakyThrows
     public void handleUnknownCommandException(UnknownCommandException exception) {
-        log.error(exception.getMessage());
+        log.error("Unknown message with from chat id : {} and tittle :{} ",
+                exception.getTelegramMessage().getChat().getId(),exception.getTelegramMessage().getChat().getTitle());
+
 //        tudaSudaTelegramBot.execute(makeSendMessageForUser(exception.getTelegramMessage()));
     }
 
