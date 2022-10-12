@@ -41,6 +41,8 @@ public class CancelChangeOfferRequest implements CallbackType {
         log.info("Got callback : {} with token : {} by user : {}",
                 CANCEL_CHANGE_OFFER_REQUEST,token,callbackQuery.getFrom().getUserName());
         Request changeOfferRequest = requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
+        if (changeOfferRequest.getToken().getMessageId()==null)
+            changeOfferRequest.getToken().setMessageId(callbackQuery.getMessage().getMessageId());
         requestService.deleteRequest(changeOfferRequest,callbackQuery.getMessage());
         tudaSudaTelegramBot.deleteMessage(callbackQuery.getMessage().getChatId(), callbackQuery.getMessage().getMessageId());
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),

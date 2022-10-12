@@ -1,10 +1,7 @@
 package com.godeltech.springgodelbot.resolver.message.type.impl;
 
-import com.godeltech.springgodelbot.model.entity.DriverRequest;
-import com.godeltech.springgodelbot.model.entity.PassengerRequest;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
-import com.godeltech.springgodelbot.model.entity.Request;
-import com.godeltech.springgodelbot.model.entity.Token;
+import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -17,8 +14,10 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
-import static com.godeltech.springgodelbot.util.ConstantUtil.DESCRIPTION_WAS_UPDATED;
+import java.util.List;
+
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.showSavedRequestWithDescription;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SUCCESSFUL_REQUEST_SAVING;
 
 @Component
@@ -61,30 +60,33 @@ public class OnlyTextMessageType implements MessageType {
         }
     }
 
-    private SendMessage updateDescriptionOfRequest(Message message,Request request) {
-        request.setDescription(message.getText());
-        requestService.updateDescriptionOfOffer( request, message);
+    private SendMessage updateDescriptionOfRequest(Message message, Request request) {
         tudaSudaTelegramBot.deleteMessage(request.getToken().getChatId(), request.getToken().getMessageId());
-        Token createdToken = tokenService.createToken(message.getFrom().getId(), message.getChatId());
-        return getStartMenu(message.getChatId(), DESCRIPTION_WAS_UPDATED, createdToken.getId());
+        request.setDescription(message.getText());
+        request.getToken().setMessageId(null);
+        requestService.updateDescriptionOfOffer(request, message);
+        List<Offer> requests = request.getActivity() == Activity.DRIVER ?
+                requestService.findPassengersByRequestData(request) :
+                requestService.findDriversByRequestData(request);
+        return showSavedRequestWithDescription(message, request, requests, CANCEL_CHANGE_OFFER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
     }
 
     private SendMessage savePassengerRequest(Message message, Request request) {
-        request.setDescription(message.getText());
-        requestService.savePassenger(request, message, message.getFrom());
         tudaSudaTelegramBot.deleteMessage(request.getToken().getChatId(), request.getToken().getMessageId());
-        Token createdToken = tokenService.createToken(message.getFrom().getId(),
-                message.getChatId());
-        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING, createdToken.getId());
+        request.setDescription(message.getText());
+        request.getToken().setMessageId(null);
+        requestService.savePassenger(request, message, message.getFrom());
+        List<Offer> offers = requestService.findDriversByRequestData(request);
+        return showSavedRequestWithDescription(message, request, offers, CANCEL_PASSENGER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
     }
 
     private SendMessage saveDriverRequest(Message message, Request request) {
         tudaSudaTelegramBot.deleteMessage(message.getChatId(), request.getToken().getMessageId());
         request.setDescription(message.getText());
-        requestService.saveDriver(request, message,message.getFrom() );
-        Token createdToken = tokenService.createToken(message.getFrom().getId(),
-                message.getChatId());
-        return getStartMenu(message.getChatId(), SUCCESSFUL_REQUEST_SAVING, createdToken.getId());
+        request.getToken().setMessageId(null);
+        requestService.saveDriver(request, message, message.getFrom());
+        List<Offer> offers = requestService.findPassengersByRequestData(request);
+        return showSavedRequestWithDescription(message, request, offers, CANCEL_DRIVER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
     }
 
 

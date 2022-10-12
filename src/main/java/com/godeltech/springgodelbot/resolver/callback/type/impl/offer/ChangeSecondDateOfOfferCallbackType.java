@@ -13,9 +13,8 @@ import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_SECOND_DATE_OF_OFFER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.RETURN_TO_CHANGE_OF_OFFER;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
@@ -41,7 +40,7 @@ public class ChangeSecondDateOfOfferCallbackType implements CallbackType {
         setDatesToRequest(chosenDate, changeOfferRequest);
         changeOfferRequest= requestService.updateRequest(changeOfferRequest,callbackQuery.getMessage(),callbackQuery.getFrom() );
         return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                String.format(CHOSEN_DATES,changeOfferRequest.getFirstDate(),changeOfferRequest.getSecondDate()),
+                String.format(getOffersView(changeOfferRequest),changeOfferRequest.getFirstDate(),changeOfferRequest.getSecondDate()),
                 CHANGE_SECOND_DATE_OF_OFFER.ordinal(),
                 RETURN_TO_CHANGE_OF_OFFER.ordinal(), changeOfferRequest.getSecondDate(), changeOfferRequest.getToken().getId());
     }

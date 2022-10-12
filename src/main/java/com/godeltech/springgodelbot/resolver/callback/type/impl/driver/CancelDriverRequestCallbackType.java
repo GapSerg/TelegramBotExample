@@ -43,6 +43,8 @@ public class CancelDriverRequestCallbackType implements CallbackType {
                 Callbacks.CANCEL_DRIVER_REQUEST, token, callbackQuery.getFrom().getUserName());
         Request driverRequest =
                 requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
+        if (driverRequest.getToken().getMessageId()==null)
+            driverRequest.getToken().setMessageId(callbackQuery.getMessage().getMessageId());
         requestService.deleteRequest(driverRequest, callbackQuery.getMessage());
         tudaSudaTelegramBot.deleteMessage(driverRequest.getToken().getChatId(), driverRequest.getToken().getMessageId());
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),

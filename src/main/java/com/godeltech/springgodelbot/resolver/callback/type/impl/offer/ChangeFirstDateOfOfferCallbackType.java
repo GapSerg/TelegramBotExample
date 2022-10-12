@@ -12,9 +12,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE_OF_OFFER;
 
 @Component
@@ -38,7 +37,7 @@ public class ChangeFirstDateOfOfferCallbackType implements CallbackType {
         Request changeOfferRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         changeOfferRequest.setFirstDate(firstDate);
         changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
-        String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER, changeOfferRequest.getFirstDate());
+        String textMessage = String.format(getOffersView(changeOfferRequest), changeOfferRequest.getFirstDate());
         return createEditMessageForSecondDate(callbackQuery, firstDate, textMessage
                 , CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(), changeOfferRequest.getToken().getId());
 

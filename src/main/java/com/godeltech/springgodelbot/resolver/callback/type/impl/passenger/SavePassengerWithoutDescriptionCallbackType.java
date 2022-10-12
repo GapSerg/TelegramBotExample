@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
+import com.godeltech.springgodelbot.model.entity.Offer;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
@@ -13,8 +14,12 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SAVE_PASSENGER_WITHOUT_DESCRIPTION;
+import java.util.List;
+
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.CallbackUtil.showSavedRequestWithoutDescription;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SUCCESSFUL_REQUEST_SAVING;
 
 @Component
 @Slf4j
@@ -44,10 +49,7 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
                 SAVE_PASSENGER_WITHOUT_DESCRIPTION, token, callbackQuery.getFrom().getUserName());
         Request passengerRequest =requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
         requestService.savePassenger(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
-        tudaSudaTelegramBot.deleteMessage(passengerRequest.getToken().getChatId(),passengerRequest.getToken().getMessageId());
-        Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
-                callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
-        return BotMenu.getStartMenu(callbackQuery.getMessage().getChatId(), "We've successfully save your request",
-                createdToken.getId());
+        List<Offer> offers = requestService.findDriversByRequestData(passengerRequest);
+        return showSavedRequestWithoutDescription(callbackQuery, passengerRequest,CANCEL_PASSENGER_REQUEST, offers,SUCCESSFUL_REQUEST_SAVING);
     }
 }

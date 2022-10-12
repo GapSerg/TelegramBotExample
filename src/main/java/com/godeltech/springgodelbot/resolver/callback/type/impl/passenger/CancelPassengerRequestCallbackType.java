@@ -40,11 +40,13 @@ public class CancelPassengerRequestCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got callback : {} with token : {} by user : {}",
                 Callbacks.CANCEL_PASSENGER_REQUEST, token, callbackQuery.getFrom().getUserName());
-        Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
-        requestService.deleteRequest(passengerRequest,callbackQuery.getMessage());
-        tudaSudaTelegramBot.deleteMessage(passengerRequest.getToken().getChatId(),passengerRequest.getToken().getMessageId());
+        Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
+        if (passengerRequest.getToken().getMessageId() == null)
+            passengerRequest.getToken().setMessageId(callbackQuery.getMessage().getMessageId());
+        requestService.deleteRequest(passengerRequest, callbackQuery.getMessage());
+        tudaSudaTelegramBot.deleteMessage(passengerRequest.getToken().getChatId(), passengerRequest.getToken().getMessageId());
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",createdToken.getId());
+        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning", createdToken.getId());
     }
 }

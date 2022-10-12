@@ -16,10 +16,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_THE_ROUTE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE_OF_OFFER;
 
@@ -55,6 +54,6 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
                 String.format(CURRENT_ROUTE_OF_OFFER, getCurrentRoute(reservedCities));
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(),
-                RETURN_TO_CHANGE_OF_OFFER.ordinal(), token, textMessage);
+                RETURN_TO_CHANGE_OF_OFFER.ordinal(), token, getOffersView(changeOfferRequest));
     }
 }

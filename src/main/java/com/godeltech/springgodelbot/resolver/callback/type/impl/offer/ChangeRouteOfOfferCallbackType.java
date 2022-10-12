@@ -17,10 +17,9 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE_OF_OFFER;
 
 @Component
@@ -58,10 +57,11 @@ public class ChangeRouteOfOfferCallbackType implements CallbackType {
                     });
         }
         Request updatedRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
+
         return createEditSendMessageForRoutes(callbackQuery, cities, updatedRequest.getCities(),
                 CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                 updatedRequest.getToken().getId(),
-                String.format(CURRENT_ROUTE_OF_OFFER, getCurrentRoute(updatedRequest.getCities())));
+                getOffersView(updatedRequest));
     }
 
     private void checkReservedCitiesForPassenger(List<String> reservedCities) {

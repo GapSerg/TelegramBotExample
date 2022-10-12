@@ -633,7 +633,12 @@ public class CallbackUtil {
     }
 
     private static List<List<InlineKeyboardButton>> getChangeOfferButtons(Request request, String token) {
-        return List.of(List.of(InlineKeyboardButton.builder()
+        return List.of(
+                List.of(InlineKeyboardButton.builder()
+                        .text("Suitable offers")
+                        .callbackData(SHOW_SUITABLE_OFFERS.ordinal() + SPLITTER + token)
+                        .build()),
+                List.of(InlineKeyboardButton.builder()
                                 .text("Change route")
                                 .callbackData(CHANGE_ROUTE_OF_OFFER.ordinal() + SPLITTER + token)
                                 .build(),
@@ -659,13 +664,53 @@ public class CallbackUtil {
         return offers.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
                 request.getActivity(),
                 getCurrentRoute(request.getCities()),
-                getDatesInf(request.getFirstDate(), request.getSecondDate())) :
+                getDatesInf(request.getFirstDate(), request.getSecondDate()),descriptionInf(request.getDescription())) :
                 String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
                         getCurrentRoute(request.getCities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
+                        descriptionInf(request.getDescription()),
                         getListOfOffersForRequest(offers));
     }
 
+    private static String descriptionInf(String description) {
+        return description == null ?
+                "" :
+                "\nDescription: " + description;
+    }
+
+    public static SendMessage showSavedRequestWithDescription(Message message, Request request, List<Offer> offers,
+                                                              Callbacks callback,String messageText) {
+        return SendMessage.builder()
+                .text(getCompletedMessageAnswer(offers, request, messageText))
+                .chatId(message.getChatId().toString())
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("Main menu")
+                                        .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
+                                        .build()
+                        )))
+                        .build())
+                .build();
+    }
+
+    public static EditMessageText showSavedRequestWithoutDescription(CallbackQuery callbackQuery, Request request,
+                                                                     Callbacks callback,
+                                                                     List<Offer> offers,String messageText) {
+        return EditMessageText.builder()
+                .text(getCompletedMessageAnswer(offers, request, messageText))
+                .chatId(callbackQuery.getMessage().getChatId().toString())
+                .messageId(callbackQuery.getMessage().getMessageId())
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("Main menu")
+                                        .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
+                                        .build()
+                        )))
+                        .build())
+                .build();
+    }
     private static String getCancelText(Integer cancelRequestCallback) {
         return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?
                 "Back" : "Back to menu";

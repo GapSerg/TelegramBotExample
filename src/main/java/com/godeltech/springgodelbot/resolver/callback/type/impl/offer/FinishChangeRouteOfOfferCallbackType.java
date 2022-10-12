@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_CHANGE_OFFER_REQUEST;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.FINISH_CHANGING_ROUTE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
@@ -42,9 +43,7 @@ public class FinishChangeRouteOfOfferCallbackType implements CallbackType {
         List<Offer> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                requestService.findPassengersByRequestData(changeOfferRequest) :
                requestService.findDriversByRequestData(changeOfferRequest);
-        tokenService.deleteToken(token, callbackQuery.getMessage(),callbackQuery.getFrom() );
-        String textMessage = getCompletedMessageAnswer(requests, changeOfferRequest, ROUTE_CHANGED);
-        return getAvailableOffersList(requests,callbackQuery, textMessage,token);
+        return showSavedRequestWithoutDescription(callbackQuery, changeOfferRequest, CANCEL_CHANGE_OFFER_REQUEST, requests, DATES_WERE_CHANGED);
     }
 
 

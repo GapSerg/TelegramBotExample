@@ -12,10 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageTextForFirstDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE_OF_OFFER;
 
 @Component
@@ -48,7 +47,7 @@ public class CancelDateOfOfferCallbackType implements CallbackType {
         changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
         String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER, changeOfferRequest.getFirstDate());
         return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                textMessage, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
+                getOffersView(changeOfferRequest), CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                 changeOfferRequest.getToken().getId());
     }
 
@@ -60,13 +59,13 @@ public class CancelDateOfOfferCallbackType implements CallbackType {
             changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
             String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER, changeOfferRequest.getFirstDate());
             return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
-                    textMessage, CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
+                    getOffersView(changeOfferRequest), CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                     changeOfferRequest.getToken().getId());
         }
         changeOfferRequest.setFirstDate(null);
         String textMessage = "Chose the date";
         changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
         return createEditMessageTextForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
-                RETURN_TO_CHANGE_OF_OFFER.ordinal(), textMessage, canceledDate, changeOfferRequest.getToken().getId());
+                RETURN_TO_CHANGE_OF_OFFER.ordinal(), getOffersView(changeOfferRequest), canceledDate, changeOfferRequest.getToken().getId());
     }
 }
