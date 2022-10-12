@@ -55,7 +55,4 @@ public interface RequestService {
 
     Request getOrSaveRequest(Request request, String token, Message message, User user);
 
-    void deleteAllByTokens(List<Token> tokens);
-
-    void deleteNonUsableExpiredTokens(LocalDateTime date);
 }

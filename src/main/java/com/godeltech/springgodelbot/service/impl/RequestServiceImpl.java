@@ -44,7 +44,6 @@ public class RequestServiceImpl implements RequestService {
     public void saveDriver(Request request, Message message, User user) {
         log.debug("Saving driver request with token: {}", message);
         offerService.save((DriverRequest) request, user,message );
-//        deleteRequest(request, message);
     }
 
     @Override
@@ -60,7 +59,6 @@ public class RequestServiceImpl implements RequestService {
     public void updateDescriptionOfOffer(Request request, Message message) {
         log.debug("Update description of offer with offer id: {} and token: {}", request.getOfferId(), request.getToken().getId());
         offerService.updateDescriptionOfOffer((ChangeOfferRequest) request, message,message.getFrom() );
-//        deleteRequest(request, message);/
     }
 
     @Transactional
@@ -68,7 +66,6 @@ public class RequestServiceImpl implements RequestService {
     public void savePassenger(Request request, Message message, User user) {
         log.debug("Save passenger request : {} and token: {}", request, message);
         offerService.save((PassengerRequest) request, user,message );
-//        deleteRequest(request, message);
     }
 
     @Override
@@ -203,17 +200,6 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.save(request);
 
     }
-
-    @Override
-    public void deleteAllByTokens(List<Token> tokens) {
-
-    }
-
-    @Override
-    public void deleteNonUsableExpiredTokens(LocalDateTime date) {
-        tokenService.deleteNonUsableExpiredTokens(date);
-    }
-
 
     private Request getById(Long id, Message message, User user) {
         log.info("Get request by id : {}", id);
