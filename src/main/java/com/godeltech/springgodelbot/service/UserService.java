@@ -9,7 +9,9 @@ public interface UserService {
 
     UserEntity getById(Long userId, Message message, User user);
 
-    UserEntity save(UserEntity userEntity, Message message);
+    UserEntity save(UserEntity userEntity);
 
-    boolean existsByIdAndUsername(Long id, String username);
+    boolean existsById(Long id);
+
+    void userAuthorization(User user, Message message, boolean isMessage);
 }

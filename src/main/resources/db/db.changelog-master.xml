@@ -14,4 +14,5 @@
     <include file="classpath:db/changelog/v.0.6/2022-10-10-changes-create-table-token.xml"/>
     <include file="classpath:db/changelog/v.0.7/2022-10-11-changes-create-type-request_type.xml"/>
     <include file="classpath:db/changelog/v.0.7/2022-10-11-changes-create-table-request.xml"/>
+    <include file="classpath:db/changelog/v.0.8/2022-10-12-changes-alter-table-telegram_user.xml"/>
 </databaseChangeLog>

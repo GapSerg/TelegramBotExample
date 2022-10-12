@@ -68,6 +68,7 @@ public class BotMenu {
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .text("Choose the role you are interested in")
+
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())

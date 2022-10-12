@@ -4,6 +4,7 @@ import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.TokenService;
+import com.godeltech.springgodelbot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -24,9 +25,11 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 @Slf4j
 public class OffersActivityCallbackType implements CallbackType {
     private final TokenService tokenService;
+    private final UserService userService;
 
-    public OffersActivityCallbackType(TokenService tokenService) {
+    public OffersActivityCallbackType(TokenService tokenService, UserService userService) {
         this.tokenService = tokenService;
+        this.userService = userService;
     }
 
     @Override
@@ -36,13 +39,15 @@ public class OffersActivityCallbackType implements CallbackType {
 
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
-        log.info("Got {} callback type", OFFERS_ACTIVITY);
         String token = getCallbackToken(callbackQuery.getData());
-        tokenService.checkIncomeToken(token,callbackQuery.getMessage(),callbackQuery.getFrom() );
+        log.info("Got {} callback type with token : {} by user : {}",
+                OFFERS_ACTIVITY, token, callbackQuery.getFrom().getUserName());
+        tokenService.checkIncomeToken(token, callbackQuery.getMessage(), callbackQuery.getFrom());
+        userService.userAuthorization(callbackQuery.getFrom(), callbackQuery.getMessage(), false);
         List<InlineKeyboardButton> buttons = Arrays.stream(Activity.values())
                 .map(activity -> InlineKeyboardButton.builder()
                         .text(activity.name())
-                        .callbackData(Callbacks.MY_OFFERS.ordinal()+ SPLITTER + token + SPLITTER + activity )
+                        .callbackData(Callbacks.MY_OFFERS.ordinal() + SPLITTER + token + SPLITTER + activity)
                         .build())
                 .collect(Collectors.toList());
         return EditMessageText.builder()

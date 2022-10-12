@@ -22,7 +22,7 @@ public class OfferMapperImpl implements OfferMapper {
     @Override
     public Offer mapToOffer(Request request, User user, List<City> cities) {
         Offer offer = modelMapper.map(request, Offer.class);
-        offer.setUserEntity(userMapper.mapToUserEntity(user));
+        offer.setUserEntity(userMapper.mapToUserEntity(user, true));
         offer.setCities(cities);
         return offer;
     }

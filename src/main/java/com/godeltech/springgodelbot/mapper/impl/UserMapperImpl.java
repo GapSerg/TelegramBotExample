@@ -19,8 +19,10 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
-    public UserEntity mapToUserEntity(User user) {
-        return modelMapper.map(user, UserEntity.class);
+    public UserEntity mapToUserEntity(User user, boolean isValid) {
+        UserEntity userEntity= modelMapper.map(user, UserEntity.class);
+        userEntity.setValid(isValid);
+        return userEntity;
     }
 
 }

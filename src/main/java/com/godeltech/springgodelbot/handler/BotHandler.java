@@ -48,7 +48,8 @@ public class BotHandler {
         if (exception.isOnText()) {
             tudaSudaTelegramBot.execute(CallbackUtil.makeSendMessageForUserWithoutUsername(exception.getBotMessage()));
         } else {
-            tudaSudaTelegramBot.execute(CallbackUtil.makeEditMessageForUserWithoutUsername(exception.getBotMessage()));
+            tudaSudaTelegramBot.deleteMessage(exception.getBotMessage().getChatId(), exception.getBotMessage().getMessageId());
+            tudaSudaTelegramBot.execute(CallbackUtil.makeSendMessageForUserWithoutUsername(exception.getBotMessage()));
         }
     }
 
@@ -56,7 +57,7 @@ public class BotHandler {
     @SneakyThrows
     public void handleUnknownCommandException(UnknownCommandException exception) {
         log.error("Unknown message with from chat id : {} and tittle :{} ",
-                exception.getTelegramMessage().getChat().getId(),exception.getTelegramMessage().getChat().getTitle());
+                exception.getTelegramMessage().getChat().getId(), exception.getTelegramMessage().getChat().getTitle());
 
 //        tudaSudaTelegramBot.execute(makeSendMessageForUser(exception.getTelegramMessage()));
     }

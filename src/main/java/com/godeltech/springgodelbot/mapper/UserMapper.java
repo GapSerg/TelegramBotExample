@@ -5,6 +5,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 public interface UserMapper {
     User mapToUser(UserEntity userEntity);
 
-    UserEntity mapToUserEntity(User user);
+    UserEntity mapToUserEntity(User user, boolean isValid);
 
 }
