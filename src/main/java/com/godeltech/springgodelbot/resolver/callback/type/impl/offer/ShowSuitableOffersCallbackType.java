@@ -50,7 +50,7 @@ public class ShowSuitableOffersCallbackType implements CallbackType {
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
                                         .text("Back")
-                                        .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token)
+                                        .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token+SPLITTER+changeOfferRequest.getOfferId())
                                         .build()
                         )))
                         .build())
