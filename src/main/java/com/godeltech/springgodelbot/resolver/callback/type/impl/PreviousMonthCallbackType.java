@@ -54,16 +54,8 @@ public class PreviousMonthCallbackType implements CallbackType {
     }
 
     private LocalDate returnChosenDate(CallbackQuery callbackQuery, Callbacks callback, String token) {
-        switch (callback) {
-            case SECOND_DATE_DRIVER:
-                return requestService.getDriverRequest(callbackQuery.getMessage(), token)
+                return requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() )
                         .getFirstDate();
-            case SECOND_DATE_PASSENGER:
-                return requestService.getPassengerRequest(callbackQuery.getMessage(), token)
-                        .getFirstDate();
-            default:
-                return null;
-        }
     }
 
     private String returnText(Callbacks callback, LocalDate localDate, LocalDate chosenDate) {

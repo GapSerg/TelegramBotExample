@@ -1,7 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.dto.Request;
+import com.godeltech.springgodelbot.model.entity.Offer;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.TokenService;
@@ -36,13 +36,13 @@ public class FinishChangeRouteOfOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         log.info("Got callback type :{}, with token:{}", FINISH_CHANGING_ROUTE_OF_OFFER, token);
-        ChangeOfferRequest changeOfferRequest =
-                requestService.getChangeOfferRequest(callbackQuery.getMessage(),token );
-        requestService.updateRouteOfOffer(changeOfferRequest,token,callbackQuery.getMessage() );
-        List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
+        Request changeOfferRequest =
+                requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
+        requestService.updateRouteOfOffer(changeOfferRequest,token,callbackQuery.getMessage(),callbackQuery.getFrom());
+        List<Offer> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                requestService.findPassengersByRequestData(changeOfferRequest) :
                requestService.findDriversByRequestData(changeOfferRequest);
-        tokenService.deleteToken(token, callbackQuery.getMessage());
+        tokenService.deleteToken(token, callbackQuery.getMessage(),callbackQuery.getFrom() );
         String textMessage = getCompletedMessageAnswer(requests, changeOfferRequest, ROUTE_CHANGED);
         return getAvailableOffersList(requests,callbackQuery, textMessage,token);
     }

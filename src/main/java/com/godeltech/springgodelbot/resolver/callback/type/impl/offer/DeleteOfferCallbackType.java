@@ -33,9 +33,9 @@ public class DeleteOfferCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         long offerId = Long.parseLong(CallbackUtil.getCallbackValue(callbackQuery.getData()));
-        log.info("Delete offer by id :{} and token: {}", offerId,token);
-        requestService.deleteOffer(callbackQuery.getMessage(), token);
-        tokenService.deleteToken(token, callbackQuery.getMessage());
+        log.info("Delete offer by id :{} and token: {} by user : {}",
+                offerId,token,callbackQuery.getFrom().getUserName());
+        requestService.deleteOffer(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
         return getStartMenu(callbackQuery.getMessage(), OFFER_WAS_DELETED,createdToken.getId());

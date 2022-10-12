@@ -38,7 +38,7 @@ public class OffersActivityCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         log.info("Got {} callback type", OFFERS_ACTIVITY);
         String token = getCallbackToken(callbackQuery.getData());
-        tokenService.checkIncomeToken(token,callbackQuery.getMessage());
+        tokenService.checkIncomeToken(token,callbackQuery.getMessage(),callbackQuery.getFrom() );
         List<InlineKeyboardButton> buttons = Arrays.stream(Activity.values())
                 .map(activity -> InlineKeyboardButton.builder()
                         .text(activity.name())

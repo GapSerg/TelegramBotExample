@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,12 @@ public class ReturnToChangeOfOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got {} type with token : {}",RETURN_TO_CHANGE_OF_OFFER,token);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
-        ChangeOfferRequest request = requestService.addNewChangeOfferRequest(changeOfferRequest.getOfferId(), callbackQuery.getMessage(),token);
+        log.info("Got {} type with token : {} by user : {}"
+                ,RETURN_TO_CHANGE_OF_OFFER,token,callbackQuery.getFrom().getUserName());
+        Request changeOfferRequest = requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom());
+        ChangeOfferRequest request =
+                requestService.refreshChangeOfferRequest(changeOfferRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
         String textMessage = getOffersView(request);
-        return  getEditTextMessageForOffer(callbackQuery, token, request,textMessage);
+        return  getEditTextMessageForOffer(callbackQuery, token,  request,textMessage);
     }
 }

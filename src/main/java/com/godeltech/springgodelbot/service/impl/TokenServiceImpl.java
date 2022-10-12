@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -31,21 +32,21 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     @Transactional
-    public void checkIncomeToken(String id, Message message) {
+    public Token checkIncomeToken(String id, Message message, User user) {
         log.info("Income message with token :{}", id);
-        Token token = getById(id, message);
+        Token token = getById(id, message, user);
         if (token.isReserved())
             throw new RepeatedTokenMessageException(id);
         token.setMessageId(message.getMessageId());
         token.setReserved(true);
-        tokenRepository.save(token);
+        return tokenRepository.save(token);
     }
 
     @Override
     @Transactional
-    public void deleteToken(String id, Message message) {
+    public void deleteToken(String id, Message message, User user) {
         log.info("Delete token from messages : {}", id);
-        Token token = getById(id, message);
+        Token token = getById(id, message, user);
         tokenRepository.delete(token);
     }
 
@@ -65,7 +66,6 @@ public class TokenServiceImpl implements TokenService {
         Token token = Token.builder()
                 .id(tokenId)
                 .userId(userId)
-                .messageId(messageId)
                 .chatId(chatId)
                 .isReserved(false)
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
@@ -103,20 +103,24 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public Token getById(String token, Message message) {
+    public Token getById(String token, Message message, User user) {
         return tokenRepository.findById(token)
-                .orElseThrow(() -> new ResourceNotFoundException(Token.class, "id", token, message));
+                .orElseThrow(() -> new ResourceNotFoundException(Token.class, "id", token, message, user));
     }
 
     @Override
+    @Transactional
     public void deleteNonUsableExpiredTokens(LocalDateTime date) {
         log.info("Delete non usable expired tokens");
         tokenRepository.findByCreatedAtBeforeAndMessageIdIsNull(Timestamp.valueOf(date));
     }
 
     @Override
+    @Transactional
     public void deleteAll(List<Token> tokens) {
         log.info("Delete tokens : {}", tokens);
-        tokenRepository.deleteAll(tokens);
+        tokens.stream()
+                .map(Token::getId)
+                .forEach(tokenRepository::deleteById);
     }
 }

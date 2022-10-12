@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
-import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
@@ -39,12 +39,12 @@ public class CancelDriverRequestCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got callback : {} with token : {}", Callbacks.CANCEL_DRIVER_REQUEST, token);
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(), token);
-        driverRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
-        tokenService.deleteToken(token, callbackQuery.getMessage());
-        requestService.deleteDriverRequest(token);
-        tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), driverRequest.getMessages());
+        log.info("Got callback : {} with token : {} by user : {}",
+                Callbacks.CANCEL_DRIVER_REQUEST, token, callbackQuery.getFrom().getUserName());
+        Request driverRequest =
+                requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
+        requestService.deleteRequest(driverRequest, callbackQuery.getMessage());
+        tudaSudaTelegramBot.deleteMessage(driverRequest.getToken().getChatId(), driverRequest.getToken().getMessageId());
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
         return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning", createdToken.getId());

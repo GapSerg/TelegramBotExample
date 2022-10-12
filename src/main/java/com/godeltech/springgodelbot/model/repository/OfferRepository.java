@@ -23,7 +23,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             "oc.offer_id JOIN city c ON oc.city_id=c.id WHERE c.name IN :cities " +
             "GROUP BY o2.id " +
             "HAVING COUNT(o2.id)>= 2)", nativeQuery = true)
-    Set<Offer> findByDatesAndRoutesAndActivity(LocalDate secondDate, LocalDate firstDate, String activity,
+    Set<Offer> findByDatesAndCitiesAndActivity(LocalDate secondDate, LocalDate firstDate, String activity,
                                                List<String> cities);
     @Query(value = "SELECT * FROM offer o1 JOIN offer_city oc ON o1.id=oc.offer_id " +
             "JOIN city c ON oc.city_id=c.id WHERE ((o1.second_date is null AND o1.first_date = :firstDate) " +
@@ -33,8 +33,8 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
             "oc.offer_id JOIN city c ON oc.city_id=c.id WHERE c.name IN :cities " +
             "GROUP BY o2.id " +
             "HAVING COUNT(o2.id)>= 2)", nativeQuery = true)
-    Set<Offer> findByFirstDateAndRoutesAndActivity(LocalDate firstDate, String activity,
-                                               List<String> cities);
+    Set<Offer> findByFirstDateAndCitiesAndActivity(LocalDate firstDate, String activity,
+                                                   List<String> cities);
 
     void deleteOffersBySecondDateBeforeAndSecondDateIsNotNull(LocalDate date);
 

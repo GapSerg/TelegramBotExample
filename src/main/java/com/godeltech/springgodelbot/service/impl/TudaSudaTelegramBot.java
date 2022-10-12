@@ -131,7 +131,7 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
                     .messageId(message)
                     .build());
         } catch (TelegramApiException e) {
-            throw new UnknownCommandException();
+            log.error("Can't delete message with message Id : {}",message);
         }
     }
 

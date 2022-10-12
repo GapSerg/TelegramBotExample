@@ -1,13 +1,12 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
-import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.time.LocalDate;
@@ -35,17 +34,14 @@ public class FirstDatePassengerCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         LocalDate firstDate = LocalDate.parse(getCallbackValue(callbackQuery.getData()));
-        log.info("Got {} type with first date :{} with token: {}", FIRST_DATE_PASSENGER, firstDate
-                , token);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
+        log.info("Got {} type with first date :{} with token: {} by user : {}",
+                FIRST_DATE_PASSENGER, firstDate, token,callbackQuery.getFrom().getUserName());
+        Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
         passengerRequest.setFirstDate(firstDate);
-
+        passengerRequest= requestService.updateRequest(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
         String textMessage = String.format(CHOSEN_FIRST_DATE, passengerRequest.getActivity(),
-                getCurrentRoute(passengerRequest.getCities()),firstDate);
-        return createEditMessageForSecondDate(callbackQuery, firstDate,
+                getCurrentRoute(passengerRequest.getCities()),passengerRequest.getFirstDate());
+        return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(),
                 textMessage, SECOND_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), token);
     }
-
-
-
 }

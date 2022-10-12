@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +20,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserEntity getById(Long userId, Message message) {
+    public UserEntity getById(Long userId, Message message, User user) {
         ;
         log.info("find user by id = {}", userId);
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(UserEntity.class, "id", userId, message));
+                .orElseThrow(() -> new ResourceNotFoundException(UserEntity.class, "id", userId, message,user ));
     }
 
     @Override

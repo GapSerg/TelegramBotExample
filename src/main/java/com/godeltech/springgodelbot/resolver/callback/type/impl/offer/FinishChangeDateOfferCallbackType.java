@@ -1,7 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.dto.Request;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.Offer;
 import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
@@ -31,21 +31,23 @@ public class FinishChangeDateOfferCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got {} callback type with token : {}", Callbacks.FINISH_DATE_OFFER, token);
-        ChangeOfferRequest changeOfferRequest = requestService.getChangeOfferRequest(callbackQuery.getMessage(), token);
-        requestService.updateDates(changeOfferRequest, token,callbackQuery.getMessage() );
-        List<? extends Request> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
+        log.info("Got {} callback type with token : {} by user : {}",
+                Callbacks.FINISH_DATE_OFFER, token,callbackQuery.getFrom().getUserName());
+        ChangeOfferRequest changeOfferRequest =
+                (ChangeOfferRequest) requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
+        requestService.updateDates(changeOfferRequest, token,callbackQuery.getMessage(),callbackQuery.getFrom() );
+        List<Offer> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
                 requestService.findPassengersByRequestData(changeOfferRequest) :
                 requestService.findDriversByRequestData(changeOfferRequest);
         return updateDatesOfSupplierAndGetStartMenu(callbackQuery,
-                requests, changeOfferRequest, token);
+                requests, changeOfferRequest);
 
     }
 
-    private BotApiMethod updateDatesOfSupplierAndGetStartMenu(CallbackQuery callbackQuery, List<? extends Request> requests,
-                                                              ChangeOfferRequest changeOfferRequest, String token) {
+    private BotApiMethod updateDatesOfSupplierAndGetStartMenu(CallbackQuery callbackQuery, List<Offer> requests,
+                                                              ChangeOfferRequest changeOfferRequest) {
         String textMessage = getCompletedMessageAnswer(requests, changeOfferRequest,DATES_WERE_CHANGED);
-        return getAvailableOffersList(requests, callbackQuery, textMessage, token);
+        return getAvailableOffersList(requests, callbackQuery, textMessage, changeOfferRequest.getToken().getId());
     }
 
 

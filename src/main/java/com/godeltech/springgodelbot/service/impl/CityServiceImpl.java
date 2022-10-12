@@ -10,8 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +30,12 @@ public class CityServiceImpl implements CityService {
         log.info("Find all routes");
         return cityRepository.findAll();
     }
-//
-//    @Override
-//    @Cacheable(value = "routes", key = "#routeId")
-//    public City getById(Integer routeId, Long chatId) {
-//        log.info("Get route by id:{}", routeId);
-//        return cityRepository.findById(routeId)
-//                .orElseThrow(() -> new ResourceNotFoundException(City.class, "routeId", routeId, chatId));
-//    }
+
+    @Cacheable(value = "routes", key = "#name")
+    public City getByName(String name, Message message, User user) {
+        return cityRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException(City.class, "name", name, message, user));
+    }
 
     @Override
     @Transactional
@@ -50,8 +51,15 @@ public class CityServiceImpl implements CityService {
     public City save(City city) {
         log.info("Save route : {}", city);
         if (cityRepository.existsByName(city.getName()))
-            throw new ResourceNotUniqueException(City.class,"name",city.getName());
+            throw new ResourceNotUniqueException(City.class, "name", city.getName());
         return cityRepository.save(city);
+    }
+
+    @Override
+    public List<City> findCitiesByName(List<String> cities, Message message, User user) {
+        return cities.stream()
+                .map(city -> getByName(city, message, user))
+                .collect(Collectors.toList());
     }
 
 }

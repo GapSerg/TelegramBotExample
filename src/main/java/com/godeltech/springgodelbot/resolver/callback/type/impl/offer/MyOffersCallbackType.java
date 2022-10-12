@@ -1,8 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
 import com.godeltech.springgodelbot.model.entity.Activity;
-import com.godeltech.springgodelbot.model.entity.City;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -39,9 +39,11 @@ public class MyOffersCallbackType implements CallbackType {
         String token = getCallbackToken(callbackQuery.getData());
         Activity activity = Activity.valueOf(getCallbackValue(callbackQuery.getData()));
         log.info("Callback with type :{} and activity : {} and token: {}", MY_OFFERS, activity,token);
-        requestService.checkAndClearChangingOfferRequests(token);
+        Request request = requestService.getOrSaveRequest(ChangeOfferRequest.builder()
+                .activity(activity)
+                .build(), token,callbackQuery.getMessage(),callbackQuery.getFrom() );
         List<ChangeOfferRequest> offerList = requestService
-                .findByUserIdAndActivity(callbackQuery.getFrom().getId(), activity);
+                .findUsersOffersByActivity(callbackQuery.getFrom().getId(), activity);
         return offerList.isEmpty() ?
                 EditMessageText.builder()
                         .chatId(callbackQuery.getMessage().getChatId().toString())
@@ -51,7 +53,7 @@ public class MyOffersCallbackType implements CallbackType {
                                 .keyboard(List.of(List.of(InlineKeyboardButton
                                         .builder()
                                         .text("Back to menu")
-                                        .callbackData(MAIN_MENU.ordinal()+SPLITTER+token)
+                                        .callbackData(MAIN_MENU.ordinal()+SPLITTER+request.getToken().getId())
                                         .build())))
                                 .build())
                         .build():
@@ -61,8 +63,7 @@ public class MyOffersCallbackType implements CallbackType {
     private EditMessageText makeSendMessage(List<ChangeOfferRequest> requests, CallbackQuery callbackQuery,String token) {
         List<List<InlineKeyboardButton>> buttons = requests.stream()
                 .map(request -> List.of(InlineKeyboardButton.builder()
-                        .text(String.format(OFFERS_OF_DRIVERS_PATTERN, request.getCities().stream().map(City::getName)
-                                .collect(Collectors.joining("➖"))))
+                        .text(String.format(OFFERS_OF_DRIVERS_PATTERN, String.join("➖", request.getCities())))
                         .callbackData(CHANGE_OFFER.ordinal() +SPLITTER+token+ SPLITTER + request.getOfferId())
                         .build()))
                 .collect(Collectors.toList());

@@ -1,7 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
-import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.model.entity.City;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -18,7 +19,6 @@ import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEdi
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_THE_ROUTE;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE;
 
 @Component
@@ -39,18 +39,21 @@ public class DriverRouteCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {} and token: {}", DRIVER_ROUTE, routeId,token);
+        log.info("Callback data with type: {} and routeId: {} and token: {} by user : {}",
+                DRIVER_ROUTE, routeId, token, callbackQuery.getFrom().getUserName());
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(),token );
-        List<City> reservedCities = driverRequest.getCities();
-        reservedCities.add(reservedRoute);
-        String textMessage =  String.format(CURRENT_ROUTE,driverRequest.getActivity(),getCurrentRoute(reservedCities));
+                .orElseThrow(() -> new ResourceNotFoundException(City.class, callbackQuery.getMessage(), callbackQuery.getFrom()));
+        Request driverRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
+        List<String> reservedCities = driverRequest.getCities();
+        reservedCities.add(reservedRoute.getName());
+        driverRequest = requestService.updateRequest(driverRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
+        String textMessage = String.format(CURRENT_ROUTE, driverRequest.getActivity(), getCurrentRoute(driverRequest.getCities()));
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
-                DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(),CANCEL_DRIVER_REQUEST.ordinal(),token,textMessage);
+                DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
+                driverRequest.getToken().getId(), textMessage);
 
     }
 }

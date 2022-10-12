@@ -1,9 +1,9 @@
 package com.godeltech.springgodelbot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.dto.DriverRequest;
-import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
+import com.godeltech.springgodelbot.model.entity.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.PassengerRequest;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
 import com.godeltech.springgodelbot.service.MessageResolverService;
 import com.godeltech.springgodelbot.service.TokenService;

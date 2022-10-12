@@ -2,9 +2,7 @@ package com.godeltech.springgodelbot.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -27,4 +25,7 @@ public class Token {
     @Column
     @Setter
     private boolean isReserved;
+    @OneToOne(mappedBy = "token", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Request request;
 }

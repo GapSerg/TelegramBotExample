@@ -1,9 +1,9 @@
 package com.godeltech.springgodelbot.util;
 
-import com.godeltech.springgodelbot.dto.ChangeOfferRequest;
-import com.godeltech.springgodelbot.dto.Request;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.City;
+import com.godeltech.springgodelbot.model.entity.Offer;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRouteFromCities;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 public class CallbackUtil {
@@ -55,7 +56,7 @@ public class CallbackUtil {
 
         public static BotApiMethod createEditSendMessageForRoutes(CallbackQuery callbackQuery,
                                                                   List<City> cities,
-                                                                  List<City> reservedCities,
+                                                                  List<String> reservedCities,
                                                                   Integer callback, Integer cancelRouteCallback,
                                                                   Integer cancelRequestCallback, String token, String textMessage) {
             List<List<InlineKeyboardButton>> buttons = getRouteButtons(cities, reservedCities, callback, cancelRouteCallback, cancelRequestCallback, token);
@@ -69,10 +70,10 @@ public class CallbackUtil {
                     .build();
         }
 
-        private static List<List<InlineKeyboardButton>> getRouteButtons(List<City> cities, List<City> reservedCities, Integer callback, Integer cancelRouteCallback, Integer cancelRequestCallback, String token) {
+        private static List<List<InlineKeyboardButton>> getRouteButtons(List<City> cities, List<String> reservedCities, Integer callback, Integer cancelRouteCallback, Integer cancelRequestCallback, String token) {
             List<List<InlineKeyboardButton>> buttons = cities.stream()
-                    .map(route -> reservedCities.contains(route) ?
-                            makeMarkedRouteButton(route, cancelRouteCallback, token, reservedCities.lastIndexOf(route)) :
+                    .map(route -> reservedCities.contains(route.getName()) ?
+                            makeMarkedRouteButton(route, cancelRouteCallback, token, reservedCities.lastIndexOf(route.getName())) :
                             makeUnmarkedRouteButton(route, callback, token))
                     .collect(Collectors.toList());
             if (reservedCities.size() >= 2) {
@@ -87,7 +88,11 @@ public class CallbackUtil {
             return buttons;
         }
 
-        public static String getCurrentRoute(List<City> reservedCities) {
+        public static String getCurrentRoute(List<String> reservedCities) {
+            return String.join("➡", reservedCities);
+        }
+
+        public static String getCurrentRouteFromCities(List<City> reservedCities) {
             return reservedCities
                     .stream()
                     .map(City::getName)
@@ -300,13 +305,12 @@ public class CallbackUtil {
         private static List<InlineKeyboardButton> addRowOfButtonsWithReservedDate(Integer callback, int numberDaysInMonth,
                                                                                   LocalDate date, LocalDate chosenDate, String mark,
                                                                                   LocalDate invalidDate, String invalidMark, String token) {
-            LocalDate plusDate=date.plusDays(2);
+            LocalDate plusDate = date.plusDays(2);
             return (chosenDate.getMonth().equals(date.getMonth()) || invalidDate.getMonth().equals(date.getMonth())
                     || chosenDate.getMonth().equals(plusDate.getMonth()) || invalidDate.getMonth().equals(plusDate.getMonth())) ?
                     getInlineKeyboardButtonsTheSameMonth(callback, numberDaysInMonth, date, chosenDate, mark, invalidDate, invalidMark, token)
                     : getInlineKeyboardButtons(callback, numberDaysInMonth, date, token);
         }
-
 
         private static List<InlineKeyboardButton> getInlineKeyboardButtons(Integer callback, int numberDaysInMonth, LocalDate date, String token) {
 //            int i= 0;
@@ -573,29 +577,31 @@ public class CallbackUtil {
                 .build();
     }
 
-    public static String getListOfOffersForRequest(List<? extends Request> requests) {
-        return requests.stream()
+    public static String getListOfOffersForRequest(List<Offer> offers) {
+        return offers.stream()
                 .map(CallbackUtil::getOffersViewForRequest)
                 .collect(Collectors.joining("\n\n"));
     }
 
     public static String getOffersView(Request request) {
         return request.getDescription() != null ?
-                String.format(OFFER_OF_CHANGING_OFFER_PATTERN, getCurrentRoute(request.getCities()), getDatesInf(request.getFirstDate(),request.getSecondDate()),
-                        request.getActivity(), request.getDescription()) :
-                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, getCurrentRoute(request.getCities()),getDatesInf(request.getFirstDate(),request.getSecondDate()),
-                        request.getActivity());
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN, request.getActivity(),
+                        getCurrentRoute(request.getCities()), getDatesInf(request.getFirstDate(), request.getSecondDate()),
+                        request.getDescription()) :
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, request.getActivity(),
+                        getCurrentRoute(request.getCities()), getDatesInf(request.getFirstDate(),
+                                request.getSecondDate()));
     }
 
-    public static String getOffersViewForRequest(Request request) {
-        return request.getDescription() != null ?
-                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(request.getUserDto().getFirstName()),
-                        getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()),
-                       getDatesInf(request.getFirstDate(),request.getSecondDate()),
-                        request.getActivity(), request.getDescription(), request.getUserDto().getUserName()) :
-                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(request.getUserDto().getFirstName()),
-                        getCorrectName(request.getUserDto().getLastName()), getCurrentRoute(request.getCities()),
-                        getDatesInf(request.getFirstDate(),request.getSecondDate()), request.getActivity(), request.getUserDto().getUserName());
+    public static String getOffersViewForRequest(Offer offer) {
+        return offer.getDescription() != null ?
+                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(offer.getUserEntity().getFirstName()),
+                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities()),
+                        getDatesInf(offer.getFirstDate(), offer.getSecondDate()),
+                        offer.getDescription(), offer.getUserEntity().getUserName()) :
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(offer.getUserEntity().getFirstName()),
+                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities()),
+                        getDatesInf(offer.getFirstDate(), offer.getSecondDate()), offer.getUserEntity().getUserName());
     }
 
     private static String getCorrectName(String name) {
@@ -604,7 +610,7 @@ public class CallbackUtil {
                 name;
     }
 
-    public static EditMessageText getAvailableOffersList(List<? extends Request> requests, CallbackQuery callbackQuery, String message, String token) {
+    public static EditMessageText getAvailableOffersList(List<Offer> requests, CallbackQuery callbackQuery, String message, String token) {
         return EditMessageText.builder()
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .chatId(callbackQuery.getMessage().getChatId().toString())
@@ -615,7 +621,7 @@ public class CallbackUtil {
                 .build();
     }
 
-    public static EditMessageText getEditTextMessageForOffer(CallbackQuery callbackQuery, String token, ChangeOfferRequest request,String messageText) {
+    public static EditMessageText getEditTextMessageForOffer(CallbackQuery callbackQuery, String token, Request request, String messageText) {
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
@@ -626,7 +632,7 @@ public class CallbackUtil {
                 .build();
     }
 
-    private static List<List<InlineKeyboardButton>> getChangeOfferButtons(ChangeOfferRequest request, String token) {
+    private static List<List<InlineKeyboardButton>> getChangeOfferButtons(Request request, String token) {
         return List.of(List.of(InlineKeyboardButton.builder()
                                 .text("Change route")
                                 .callbackData(CHANGE_ROUTE_OF_OFFER.ordinal() + SPLITTER + token)
@@ -649,15 +655,15 @@ public class CallbackUtil {
                         .build()));
     }
 
-    public static String getCompletedMessageAnswer(List<? extends Request> requests, Request request, String completedMessage) {
-        return requests.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
+    public static String getCompletedMessageAnswer(List<Offer> offers, Request request, String completedMessage) {
+        return offers.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
                 request.getActivity(),
                 getCurrentRoute(request.getCities()),
                 getDatesInf(request.getFirstDate(), request.getSecondDate())) :
                 String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
                         getCurrentRoute(request.getCities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
-                        getListOfOffersForRequest(requests));
+                        getListOfOffersForRequest(offers));
     }
 
     private static String getCancelText(Integer cancelRequestCallback) {

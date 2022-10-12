@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
-import com.godeltech.springgodelbot.dto.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -41,13 +41,11 @@ public class SaveDriverCallbackType implements CallbackType {
     @Override
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
-        log.info("Got {} callback type without description with token:{} with user : {}",SAVE_DRIVER_WITHOUT_DESCRIPTION
-                , token,callbackQuery.getFrom().getUserName());
-        DriverRequest driverRequest = requestService.getDriverRequest(callbackQuery.getMessage(),token );
-        driverRequest.getMessages()
-                .add(callbackQuery.getMessage().getMessageId());
-        tudaSudaTelegramBot.deleteMessages(callbackQuery.getMessage().getChatId(), driverRequest.getMessages());
-        requestService.saveDriver(driverRequest,token);
+        log.info("Got {} callback type without description with token:{} with user : {}",
+                SAVE_DRIVER_WITHOUT_DESCRIPTION, token,callbackQuery.getFrom().getUserName());
+        Request driverRequest =requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
+        tudaSudaTelegramBot.deleteMessage(driverRequest.getToken().getChatId(),driverRequest.getToken().getMessageId());
+        requestService.saveDriver(driverRequest,callbackQuery.getMessage(),callbackQuery.getFrom() );
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
         return getStartMenu(callbackQuery.getMessage().getChatId(), SUCCESSFUL_REQUEST_SAVING, createdToken.getId());

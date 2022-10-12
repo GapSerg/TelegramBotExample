@@ -1,7 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
-import com.godeltech.springgodelbot.dto.PassengerRequest;
+import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.model.entity.City;
+import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -37,21 +38,27 @@ public class PassengerRouteCallbackType implements CallbackType {
     public BotApiMethod createSendMessage(CallbackQuery callbackQuery) {
         String token = getCallbackToken(callbackQuery.getData());
         int routeId = Integer.parseInt(getCallbackValue(callbackQuery.getData()));
-        log.info("Callback data with type: {} and routeId: {} and with token: {}", PASSENGER_ROUTE, routeId, token);
+        log.info("Callback data with type: {} and routeId: {} and with token: {} by user : {}",
+                PASSENGER_ROUTE, routeId, token,callbackQuery.getFrom().getUserName());
         List<City> cities = cityService.findAll();
         City reservedRoute = cities.stream()
                 .filter(route -> route.getId().equals(routeId))
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
-        PassengerRequest passengerRequest = requestService.getPassengerRequest(callbackQuery.getMessage(), token);
-        passengerRequest.getMessages().add(callbackQuery.getMessage().getMessageId());
-        List<City> reservedCities = passengerRequest.getCities();
-        if (reservedCities.size() > 1)
-            reservedCities.remove(1);
-        reservedCities.add(reservedRoute);
+                .orElseThrow(()->new ResourceNotFoundException(City.class,callbackQuery.getMessage(),callbackQuery.getFrom()));
+        Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
+        List<String> reservedCities = passengerRequest.getCities();
+        checkReservedCitiesForPassenger(reservedCities);
+        reservedCities.add(reservedRoute.getName());
+        passengerRequest = requestService.updateRequest(passengerRequest,callbackQuery.getMessage(),callbackQuery.getFrom() );
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), token,
                 String.format(CURRENT_ROUTE, passengerRequest.getActivity(), getCurrentRoute(reservedCities)));
+    }
+
+    private void checkReservedCitiesForPassenger(List<String> reservedCities) {
+        if (reservedCities.size() > 1) {
+           reservedCities.remove(1);
+        }
     }
 
 }
