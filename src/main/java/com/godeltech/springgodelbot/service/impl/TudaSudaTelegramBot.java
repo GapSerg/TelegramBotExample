@@ -66,9 +66,11 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
 
         BotApiMethod botApiMethod = null;
         if (update.hasMessage()) {
+            checkMembership(update.getMessage());
             botApiMethod = messageResolverService.handleMessage(update.getMessage());
             return botApiMethod;
         } else if (update.hasCallbackQuery()) {
+            checkMembership(update.getCallbackQuery().getFrom(),update.getCallbackQuery().getMessage());
             botApiMethod = callbackResolverService.handleCallBack(update.getCallbackQuery());
             return botApiMethod;
         }

@@ -12,10 +12,10 @@ public class ConstantUtil {
     public static final String MEMBERSHIP_PATTERN = "User with id = %s, and username = %s isn't a member of chmoki group";
     public final static String AUTHORIZATION_PATTERN = "%s wasn't authorize cause %s=%s";
     public final static String UNKNOWN_COMMAND = "Sorry but the command is incorrect";
-    public final static String OFFERS_FOR_REQUESTS_PATTERN = "\nUser : %s %s \nRole: %s \nRoute: %s \uD83D\uDE82 \n%s ⏰ \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";
-    public final static String OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC = "\nUser : %s %s\nRole: %s  \nRoute: %s \uD83D\uDE82 \n%s ⏰  \nhttps://t.me/%s";
-    public final static String OFFER_OF_CHANGING_OFFER_PATTERN = "Your current offer:\nRole: %s \nRoute: %s \uD83D\uDE82 \n%s ⏰ \nDescription: %s \uD83D\uDCC4";
-    public final static String OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC = "Your current offer:\nRole: %s \nRoute: %s \uD83D\uDE82 \n%s ⏰ \n";
+    public final static String OFFERS_FOR_REQUESTS_PATTERN = "\nUser : %s %s \nRole: %s \nRoute: %s \n%s ⏰ \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";
+    public final static String OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC = "\nUser : %s %s\nRole: %s  \nRoute: %s \n%s ⏰  \nhttps://t.me/%s";
+    public final static String OFFER_OF_CHANGING_OFFER_PATTERN = "Your current offer:\nRole: %s \nRoute: %s  \n%s ⏰ \nDescription: %s \uD83D\uDCC4";
+    public final static String OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC = "Your current offer:\nRole: %s \nRoute: %s \n%s ⏰ \n";
     public final static String OFFERS_OF_DRIVERS_PATTERN = "%s \uD83D\uDE82 \n";
     public static final String SAVE_WITHOUT_DESCRIPTION = "Save without description";
     public static final String SUITABLE_OFFERS = "%sYour offer :\nRole : %s\nSelected route : %s\n%s ⏰\n%s\n\nHere are current offers, that may be suitable :\n\n%s";

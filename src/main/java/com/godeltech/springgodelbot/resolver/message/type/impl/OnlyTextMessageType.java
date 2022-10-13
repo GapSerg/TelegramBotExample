@@ -26,13 +26,11 @@ public class OnlyTextMessageType implements MessageType {
 
     private final RequestService requestService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
-    private final TokenService tokenService;
 
     public OnlyTextMessageType(RequestService requestService,
-                               @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, TokenService tokenService) {
+                               @Lazy TudaSudaTelegramBot tudaSudaTelegramBot) {
         this.requestService = requestService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
-        this.tokenService = tokenService;
     }
 
     @Override
@@ -42,8 +40,6 @@ public class OnlyTextMessageType implements MessageType {
 
     @Override
     public BotApiMethod createSendMessage(Message message) {
-//        List<String> tokens = tokenService.findByUserId(message.getFrom().getId());
-        tudaSudaTelegramBot.checkMembership(message);
         Request request = requestService.findRequestByUserIdForSave(message);
         if (request == null) {
             getUnknownMessage(message);

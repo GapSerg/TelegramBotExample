@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
-import static com.godeltech.springgodelbot.util.ConstantUtil.OFFERS_OF_DRIVERS_PATTERN;
 
 @Component
 @RequiredArgsConstructor
@@ -63,7 +63,7 @@ public class MyOffersCallbackType implements CallbackType {
     private EditMessageText makeSendMessage(List<ChangeOfferRequest> requests, CallbackQuery callbackQuery, String token) {
         List<List<InlineKeyboardButton>> buttons = requests.stream()
                 .map(request -> List.of(InlineKeyboardButton.builder()
-                        .text(String.format(OFFERS_OF_DRIVERS_PATTERN, String.join("➖", request.getCities())))
+                        .text(getCurrentRoute(request.getCities(),request.getActivity()))
                         .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token + SPLITTER + request.getOfferId())
                         .build()))
                 .collect(Collectors.toList());

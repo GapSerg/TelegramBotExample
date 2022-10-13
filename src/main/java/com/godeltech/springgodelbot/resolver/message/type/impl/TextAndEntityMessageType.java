@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.resolver.message.type.impl;
 
+import com.godeltech.springgodelbot.exception.MessageFromGroupException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.message.Messages;

@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.util;
 
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
+import com.godeltech.springgodelbot.model.entity.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.entity.Offer;
 import com.godeltech.springgodelbot.model.entity.Request;
@@ -35,7 +36,6 @@ public class CallbackUtil {
     public static final String HAVE_NO_USERNAME = "You don't have a username, please add it in your personal settings.When you deal with it,  just press the button";
     public static final String USERNAME_IS_ADDED = "I've added my username";
     public static final String EMPTY = " ";
-
 
 
     public static class RouteUtil {
@@ -92,12 +92,28 @@ public class CallbackUtil {
         public static String getCurrentRoute(List<String> reservedCities) {
             return String.join("➡", reservedCities);
         }
-
+        public static String getCurrentRoute(List<String> reservedCities,Activity activity) {
+            String textMessage = String.join("➡", reservedCities);
+            return activity.equals(Activity.DRIVER) ?
+                    textMessage+" \uD83D\uDE99" :
+                    textMessage+ " \uD83D\uDCBA";
+        }
         public static String getCurrentRouteFromCities(List<City> reservedCities) {
             return reservedCities
                     .stream()
                     .map(City::getName)
                     .collect(Collectors.joining("➡"));
+        }
+
+        public static String getCurrentRouteFromCities(List<City> reservedCities, Activity activity) {
+            String textMessage = reservedCities
+                    .stream()
+                    .map(City::getName)
+                    .collect(Collectors.joining("➡"));
+            return activity.equals(Activity.DRIVER) ?
+                textMessage+" \uD83D\uDE99" :
+                textMessage+ " \uD83D\uDCBA";
+
         }
 
         private static String getChoseDateCallback(Integer callback, String token) {
@@ -587,21 +603,21 @@ public class CallbackUtil {
     public static String getOffersView(Request request) {
         return request.getDescription() != null ?
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN, request.getActivity(),
-                        getCurrentRoute(request.getCities()), getDatesInf(request.getFirstDate(), request.getSecondDate()),
+                        getCurrentRoute(request.getCities(),request.getActivity()), getDatesInf(request.getFirstDate(), request.getSecondDate()),
                         request.getDescription()) :
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, request.getActivity(),
-                        getCurrentRoute(request.getCities()), getDatesInf(request.getFirstDate(),
+                        getCurrentRoute(request.getCities(),request.getActivity()), getDatesInf(request.getFirstDate(),
                                 request.getSecondDate()));
     }
 
     public static String getOffersViewForRequest(Offer offer) {
         return offer.getDescription() != null ?
                 String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(offer.getUserEntity().getFirstName()),
-                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities()),
+                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities(), offer.getActivity()),
                         getDatesInf(offer.getFirstDate(), offer.getSecondDate()),
                         offer.getDescription(), offer.getUserEntity().getUserName()) :
                 String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(offer.getUserEntity().getFirstName()),
-                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities()),
+                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities(), offer.getActivity()),
                         getDatesInf(offer.getFirstDate(), offer.getSecondDate()), offer.getUserEntity().getUserName());
     }
 
@@ -665,7 +681,7 @@ public class CallbackUtil {
         return offers.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
                 request.getActivity(),
                 getCurrentRoute(request.getCities()),
-                getDatesInf(request.getFirstDate(), request.getSecondDate()),descriptionInf(request.getDescription())) :
+                getDatesInf(request.getFirstDate(), request.getSecondDate()), descriptionInf(request.getDescription())) :
                 String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
                         getCurrentRoute(request.getCities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
@@ -680,7 +696,7 @@ public class CallbackUtil {
     }
 
     public static SendMessage showSavedRequestWithDescription(Message message, Request request, List<Offer> offers,
-                                                              Callbacks callback,String messageText) {
+                                                              Callbacks callback, String messageText) {
         return SendMessage.builder()
                 .text(getCompletedMessageAnswer(offers, request, messageText))
                 .chatId(message.getChatId().toString())
@@ -697,7 +713,7 @@ public class CallbackUtil {
 
     public static EditMessageText showSavedRequestWithoutDescription(CallbackQuery callbackQuery, Request request,
                                                                      Callbacks callback,
-                                                                     List<Offer> offers,String messageText) {
+                                                                     List<Offer> offers, String messageText) {
         return EditMessageText.builder()
                 .text(getCompletedMessageAnswer(offers, request, messageText))
                 .chatId(callbackQuery.getMessage().getChatId().toString())
@@ -712,6 +728,7 @@ public class CallbackUtil {
                         .build())
                 .build();
     }
+
     private static String getCancelText(Integer cancelRequestCallback) {
         return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?
                 "Back" : "Back to menu";
