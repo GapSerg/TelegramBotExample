@@ -44,9 +44,8 @@ public class ConstantUtil {
     public static final String CURRENT_ROUTE_OF_OFFER = "Please select a place of arrival or a stopping point.\nYour current route : %s\nIf you pressed on reserved button we'll cancel it";
 
     public static final String SELECTED_ROUTE = "Selected route : %s";
-    public static final String FINISH = "FINISH";
     public static final String ROUTE_CHANGED = "You've successfully changed route of offer \n";
     public static final String SAVE = "SAVE";
-
+    public static final String NEXT = "Next";
     public static final String DATE_FORMAT="%s-%s";
 }

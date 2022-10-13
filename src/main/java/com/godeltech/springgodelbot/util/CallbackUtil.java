@@ -37,6 +37,7 @@ public class CallbackUtil {
     public static final String EMPTY = " ";
 
 
+
     public static class RouteUtil {
 
         public static EditMessageText createRouteSendMessage(List<City> cities, Integer callback, Integer cancelRequestCallback,
@@ -79,7 +80,7 @@ public class CallbackUtil {
             if (reservedCities.size() >= 2) {
                 buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
                         InlineKeyboardButton.builder()
-                                .text(FINISH)
+                                .text(NEXT)
                                 .callbackData(getChoseDateCallback(callback, token))
                                 .build()));
             } else {
@@ -243,7 +244,7 @@ public class CallbackUtil {
 
         private static InlineKeyboardButton getFinishDateButton(Integer callback, String token) {
             return InlineKeyboardButton.builder()
-                    .text("Finish")
+                    .text(NEXT)
                     .callbackData(getFinishCallback(callback) + SPLITTER + token)
                     .build();
         }
