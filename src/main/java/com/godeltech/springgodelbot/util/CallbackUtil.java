@@ -676,7 +676,7 @@ public class CallbackUtil {
     private static String descriptionInf(String description) {
         return description == null ?
                 "" :
-                "\nDescription: " + description;
+                "Description: " + description;
     }
 
     public static SendMessage showSavedRequestWithDescription(Message message, Request request, List<Offer> offers,
