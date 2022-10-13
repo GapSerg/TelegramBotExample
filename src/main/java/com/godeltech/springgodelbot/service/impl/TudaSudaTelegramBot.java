@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.service.impl;
 
 import com.godeltech.springgodelbot.exception.MembershipException;
+import com.godeltech.springgodelbot.exception.MessageFromGroupException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
@@ -76,6 +77,9 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
 
     public void checkMembership(Message message) {
         try {
+            if (message.getChat().getId().toString().equals(chmokiId)){
+                throw new MessageFromGroupException();
+            }
             log.info("Is he member of group? user : {}", message.getFrom().getUserName());
             ChatMember chatMember = execute(GetChatMember.builder()
                     .chatId(chmokiId)

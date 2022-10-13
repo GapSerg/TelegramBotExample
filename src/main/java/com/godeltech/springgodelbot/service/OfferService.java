@@ -20,7 +20,7 @@ public interface OfferService {
     List<Offer> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
             (LocalDate secondDate, LocalDate firstDate, List<String> cities);
 
-    List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity);
+    List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user);
 
     ChangeOfferRequest getById(Long offerId, Message message, User user);
 

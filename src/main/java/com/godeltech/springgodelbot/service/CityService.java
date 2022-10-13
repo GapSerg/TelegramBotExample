@@ -16,4 +16,6 @@ public interface CityService {
     City save(City city);
 
     List<City> findCitiesByName(List<String> cities, Message message, User user);
+
+    List<City> findCitiesByOfferId(Long id);
 }

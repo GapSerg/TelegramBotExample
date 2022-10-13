@@ -11,7 +11,9 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -30,7 +32,7 @@ public class Offer {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "offer_city",
             joinColumns = @JoinColumn(name = "offer_id"),

@@ -4,11 +4,9 @@ import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
 import com.godeltech.springgodelbot.model.entity.Offer;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.Activity;
-import com.godeltech.springgodelbot.model.entity.Token;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RequestService {
@@ -19,7 +17,7 @@ public interface RequestService {
     void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message, User user);
 
 
-    void updateDescriptionOfOffer(Request request, Message message);
+    void updateDescriptionOfOffer(Request request, Message message, User user);
 
 
 
@@ -30,7 +28,7 @@ public interface RequestService {
 
     void deleteOffer(Message message, String token, User user);
 
-    List<ChangeOfferRequest> findUsersOffersByActivity(Long id, Activity activity);
+    List<ChangeOfferRequest> findUsersOffersByActivity(Long id, Activity activity, Message message, User user);
 
 
     List<Offer> findPassengersByRequestData(Request request);

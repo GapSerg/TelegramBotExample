@@ -1,13 +1,8 @@
 package com.godeltech.springgodelbot.service.impl;
 
-import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
-import com.godeltech.springgodelbot.model.entity.DriverRequest;
-import com.godeltech.springgodelbot.model.entity.PassengerRequest;
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.mapper.OfferMapper;
-import com.godeltech.springgodelbot.model.entity.Activity;
-import com.godeltech.springgodelbot.model.entity.City;
-import com.godeltech.springgodelbot.model.entity.Offer;
+import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.model.repository.OfferRepository;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.OfferService;
@@ -19,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +44,11 @@ public class OfferServiceImpl implements OfferService {
 
         return secondDate == null ?
                 offerRepository.findByFirstDateAndCitiesAndActivity(firstDate, Activity.PASSENGER.name(), cities).stream()
+                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
                 offerRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, Activity.PASSENGER.name(), cities).stream()
+                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
     }
@@ -61,27 +59,36 @@ public class OfferServiceImpl implements OfferService {
         log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         return secondDate == null ?
                 offerRepository.findByFirstDateAndCitiesAndActivity(firstDate, Activity.DRIVER.name(), cities).stream()
+                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
                 offerRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), cities).stream()
+                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
     }
 
 
     @Override
-    public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity) {
+    public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user) {
         log.info("Find offers by id:{} and activity :{}", id, activity);
-        return offerRepository.findByUserEntityIdAndActivity(id, activity)
-                .stream().map(offerMapper::mapToChangeOfferRequest)
+        var list = offerRepository.findByUserEntityIdAndActivity(id, activity);
+
+        return list.stream()
+                .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                .map(offerMapper::mapToChangeOfferRequest)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ChangeOfferRequest getById(Long offerId, Message message, User user) {
         log.info("Find offer by id : {}", offerId);
-        return offerRepository.findById(offerId)
-                .map(offerMapper::mapToChangeOfferRequest)
+       return offerRepository.findById(offerId)
+                .map(offer -> {
+                    List<City> cities = cityService.findCitiesByOfferId(offerId);
+                    offer.setCities(cities);
+                    return offerMapper.mapToChangeOfferRequest(offer);
+                })
                 .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, message, user));
     }
 
@@ -89,15 +96,16 @@ public class OfferServiceImpl implements OfferService {
     @Transactional
     public void deleteById(Long offerId, Message message, User user) {
         log.info("Delete offer by id : {}", offerId);
-        Offer offer = getOfferById(offerId, message,user );
+        Offer offer = getOfferById(offerId, message, user);
         offerRepository.delete(offer);
     }
 
     private Offer getOfferById(Long offerId, Message message, User user) {
         log.info("Get offer by id: {}", offerId);
-        return offerRepository.findById(offerId)
+        Offer offer = offerRepository.findById(offerId)
                 .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", offerId, message, user));
-
+        offer.setCities(cityService.findCitiesByOfferId(offerId));
+        return offer;
     }
 
     @Override
@@ -128,7 +136,7 @@ public class OfferServiceImpl implements OfferService {
     @Transactional
     public void updateDescriptionOfOffer(ChangeOfferRequest changeOfferRequest, Message message, User user) {
         log.info("Update description of offer with id : {}", changeOfferRequest.getOfferId());
-        Offer offer = getOfferById(changeOfferRequest.getOfferId(), message,user );
+        Offer offer = getOfferById(changeOfferRequest.getOfferId(), message, user);
         offer.setDescription(changeOfferRequest.getDescription());
         offerRepository.save(offer);
     }

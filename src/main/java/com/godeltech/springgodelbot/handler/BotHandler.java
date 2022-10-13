@@ -98,6 +98,11 @@ public class BotHandler {
         }
     }
 
+    @ExceptionHandler(value = MessageFromGroupException.class)
+    public void handleMessageFromGroupException(MessageFromGroupException message){
+//        Do nothing
+    }
+
     private SendMessage createSendMessage(Message message) {
         return SendMessage.builder()
                 .chatId(message.getChatId().toString())

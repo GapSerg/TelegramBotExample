@@ -16,9 +16,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_THE_ROUTE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE_OF_OFFER;
 
@@ -49,9 +49,7 @@ public class CancelRouteOfOfferCallbackType implements CallbackType {
                 .orElseThrow(() -> new ResourceNotFoundException(City.class, callbackQuery.getMessage(), callbackQuery.getFrom()));
         List<String> reservedCities = changeOfferRequest.getCities();
         reservedCities.remove(reservedRoute.getName());
-        String textMessage = reservedCities.isEmpty() ?
-                CHOSE_THE_ROUTE_OF_OFFER :
-                String.format(CURRENT_ROUTE_OF_OFFER, getCurrentRoute(reservedCities));
+        changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 CHANGE_ROUTE_OF_OFFER.ordinal(), CANCEL_ROUTE_OF_OFFER.ordinal(),
                 RETURN_TO_CHANGE_OF_OFFER.ordinal(), token, getOffersView(changeOfferRequest));

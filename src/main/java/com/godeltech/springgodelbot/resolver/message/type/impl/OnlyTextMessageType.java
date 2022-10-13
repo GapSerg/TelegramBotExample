@@ -64,7 +64,7 @@ public class OnlyTextMessageType implements MessageType {
         tudaSudaTelegramBot.deleteMessage(request.getToken().getChatId(), request.getToken().getMessageId());
         request.setDescription(message.getText());
         request.getToken().setMessageId(null);
-        requestService.updateDescriptionOfOffer(request, message);
+        requestService.updateDescriptionOfOffer(request, message,message.getFrom());
         List<Offer> requests = request.getActivity() == Activity.DRIVER ?
                 requestService.findPassengersByRequestData(request) :
                 requestService.findDriversByRequestData(request);

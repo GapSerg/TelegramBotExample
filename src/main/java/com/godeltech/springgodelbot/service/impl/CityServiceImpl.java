@@ -62,4 +62,10 @@ public class CityServiceImpl implements CityService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<City> findCitiesByOfferId(Long id) {
+        log.info("Get ordered cities");
+        return cityRepository.findCitiesByOfferId(id);
+    }
+
 }
