@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.*;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createRouteSendMessage;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createRouteEditMessageText;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_ROLE;
@@ -54,13 +54,13 @@ public class ActivityCallbackType implements CallbackType {
                 requestService.saveRequest(DriverRequest.builder()
                         .cities(new ArrayList<>())
                         .build(), token, callbackQuery.getMessage(),callbackQuery.getFrom() );
-                return createRouteSendMessage(cities, DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
+                return createRouteEditMessageText(cities, DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
                         callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType));
             case PASSENGER:
                 requestService.saveRequest(PassengerRequest.builder()
                         .cities(new ArrayList<>())
                         .build(), token, callbackQuery.getMessage(),callbackQuery.getFrom() );
-                return createRouteSendMessage(cities, PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(),
+                return createRouteEditMessageText(cities, PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(),
                         callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType));
             default:
                 throw new RuntimeException("There is no such activity");

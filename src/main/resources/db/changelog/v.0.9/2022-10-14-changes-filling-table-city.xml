@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-14-changes-filling-table-city" author="a.miachyn">
+        <insert tableName="city">
+            <column name="name" value="WARSAW"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="GOMEL"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="KRAKOW"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="LODZ"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="MOGILEV"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="SOFIA"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="TBILISI"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="VILNIUS"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="VITEBSK"/>
+        </insert>
+        <insert tableName="city">
+            <column name="name" value="POZNAN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

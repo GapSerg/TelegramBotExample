@@ -40,16 +40,18 @@ public class CallbackUtil {
 
     public static class RouteUtil {
 
-        public static EditMessageText createRouteSendMessage(List<City> cities, Integer callback, Integer cancelRequestCallback,
-                                                             Message message, String token, String messageText) {
+        public static EditMessageText createRouteEditMessageText(List<City> cities, Integer callback, Integer cancelRequestCallback,
+                                                                 Message message, String token, String messageText) {
             List<List<InlineKeyboardButton>> buttons = getButtonsList();
-
-            cities.forEach(route -> buttons.add(List.of(
-                    InlineKeyboardButton.builder()
-                            .text(route.getName())
-                            .callbackData(callback + SPLITTER + token + SPLITTER + route.getId())
-                            .build()
-            )));
+            for (int i = 0; i < cities.size(); ) {
+                i = addCitiesToButtons(cities, callback, token, buttons, i);
+            }
+//            cities.forEach(route -> buttons.add(List.of(
+//                    InlineKeyboardButton.builder()
+//                            .text(route.getName())
+//                            .callbackData(callback + SPLITTER + token + SPLITTER + route.getId())
+//                            .build()
+//            )));
             buttons.add(List.of(getCancelButton(cancelRequestCallback, token, "Back to menu")));
             return getEditTextMessageForRoute(message, buttons, messageText);
         }
@@ -72,11 +74,10 @@ public class CallbackUtil {
         }
 
         private static List<List<InlineKeyboardButton>> getRouteButtons(List<City> cities, List<String> reservedCities, Integer callback, Integer cancelRouteCallback, Integer cancelRequestCallback, String token) {
-            List<List<InlineKeyboardButton>> buttons = cities.stream()
-                    .map(route -> reservedCities.contains(route.getName()) ?
-                            makeMarkedRouteButton(route, cancelRouteCallback, token, reservedCities.lastIndexOf(route.getName())) :
-                            makeUnmarkedRouteButton(route, callback, token))
-                    .collect(Collectors.toList());
+            List<List<InlineKeyboardButton>> buttons = getButtonsList();
+            for (int i = 0; i < cities.size(); ) {
+                i = addCitiesToButtons(cities, reservedCities, callback, cancelRouteCallback, token, buttons, i);
+            }
             if (reservedCities.size() >= 2) {
                 buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
                         InlineKeyboardButton.builder()
@@ -89,20 +90,61 @@ public class CallbackUtil {
             return buttons;
         }
 
+        private static int addCitiesToButtons(List<City> cities, Integer callback, String token, List<List<InlineKeyboardButton>> buttons, int i) {
+            if (i % 2 == 0) {
+                buttons.add(List.of(makeUnmarkedRouteButton(cities.get(i++), callback, token),
+                        makeUnmarkedRouteButton(cities.get(i++), callback, token)));
+            } else {
+                buttons.add(List.of(makeUnmarkedRouteButton(cities.get(i++), callback, token)));
+            }
+            return i;
+        }
+
+        private static int addCitiesToButtons(List<City> cities,
+                                              List<String> reservedCities,
+                                              Integer routeCallback, Integer cancelRouteCallback,
+                                              String token,
+                                              List<List<InlineKeyboardButton>> buttons, int i) {
+            if (i % 2 == 0) {
+                buttons.add(List.of(makeSuitableRouteButton(cities.get(i++), reservedCities, routeCallback, cancelRouteCallback, token),
+                        makeSuitableRouteButton(cities.get(i++), reservedCities, routeCallback, cancelRouteCallback, token)));
+            } else {
+                buttons.add(List.of(makeSuitableRouteButton(cities.get(i++), reservedCities, routeCallback, cancelRouteCallback, token)));
+            }
+            return i;
+        }
+
+        private static InlineKeyboardButton makeSuitableRouteButton(City city, List<String> reservedCities,
+                                                                    Integer routeCallback, Integer cancelRouteCallback,
+                                                                    String token) {
+            return reservedCities.contains(city.getName()) ?
+                    makeMarkedRouteButton(city, cancelRouteCallback, token, reservedCities.lastIndexOf(city.getName())) :
+                    makeUnmarkedRouteButton(city, routeCallback, token);
+        }
+
         public static String getCurrentRoute(List<String> reservedCities) {
             return String.join("➡", reservedCities);
         }
-        public static String getCurrentRoute(List<String> reservedCities,Activity activity) {
+
+        private static InlineKeyboardButton makeUnmarkedRouteButton(City city, Integer callback, String token) {
+            return InlineKeyboardButton.builder()
+                    .text(city.getName())
+                    .callbackData(callback + SPLITTER + token + SPLITTER + city.getId())
+                    .build();
+        }
+
+        private static InlineKeyboardButton makeMarkedRouteButton(City city, Integer cancelCallback, String token, int index) {
+            return InlineKeyboardButton.builder()
+                    .text(getStartPhrase(index) + city.getName() + MARKER)
+                    .callbackData(cancelCallback + SPLITTER + token + SPLITTER + city.getId())
+                    .build();
+        }
+
+        public static String getCurrentRoute(List<String> reservedCities, Activity activity) {
             String textMessage = String.join("➡", reservedCities);
             return activity.equals(Activity.DRIVER) ?
-                    textMessage+" \uD83D\uDE99" :
-                    textMessage+ " \uD83D\uDCBA";
-        }
-        public static String getCurrentRouteFromCities(List<City> reservedCities) {
-            return reservedCities
-                    .stream()
-                    .map(City::getName)
-                    .collect(Collectors.joining("➡"));
+                    textMessage + " \uD83D\uDE99" :
+                    textMessage + " \uD83D\uDCBA";
         }
 
         public static String getCurrentRouteFromCities(List<City> reservedCities, Activity activity) {
@@ -111,8 +153,8 @@ public class CallbackUtil {
                     .map(City::getName)
                     .collect(Collectors.joining("➡"));
             return activity.equals(Activity.DRIVER) ?
-                textMessage+" \uD83D\uDE99" :
-                textMessage+ " \uD83D\uDCBA";
+                    textMessage + " \uD83D\uDE99" :
+                    textMessage + " \uD83D\uDCBA";
 
         }
 
@@ -129,19 +171,6 @@ public class CallbackUtil {
             }
         }
 
-        private static List<InlineKeyboardButton> makeUnmarkedRouteButton(City city, Integer callback, String token) {
-            return List.of(InlineKeyboardButton.builder()
-                    .text(city.getName())
-                    .callbackData(callback + SPLITTER + token + SPLITTER + city.getId())
-                    .build());
-        }
-
-        private static List<InlineKeyboardButton> makeMarkedRouteButton(City city, Integer cancelCallback, String token, int index) {
-            return List.of(InlineKeyboardButton.builder()
-                    .text(getStartPhrase(index) + city.getName() + MARKER)
-                    .callbackData(cancelCallback + SPLITTER + token + SPLITTER + city.getId())
-                    .build());
-        }
 
         private static String getStartPhrase(int index) {
             return index > 0 ?
@@ -603,10 +632,10 @@ public class CallbackUtil {
     public static String getOffersView(Request request) {
         return request.getDescription() != null ?
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN, request.getActivity(),
-                        getCurrentRoute(request.getCities(),request.getActivity()), getDatesInf(request.getFirstDate(), request.getSecondDate()),
+                        getCurrentRoute(request.getCities(), request.getActivity()), getDatesInf(request.getFirstDate(), request.getSecondDate()),
                         request.getDescription()) :
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, request.getActivity(),
-                        getCurrentRoute(request.getCities(),request.getActivity()), getDatesInf(request.getFirstDate(),
+                        getCurrentRoute(request.getCities(), request.getActivity()), getDatesInf(request.getFirstDate(),
                                 request.getSecondDate()));
     }
 

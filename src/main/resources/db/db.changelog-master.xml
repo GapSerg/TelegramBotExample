@@ -15,4 +15,6 @@
     <include file="classpath:db/changelog/v.0.7/2022-10-11-changes-create-type-request_type.xml"/>
     <include file="classpath:db/changelog/v.0.7/2022-10-11-changes-create-table-request.xml"/>
     <include file="classpath:db/changelog/v.0.8/2022-10-12-changes-alter-table-telegram_user.xml"/>
+    <include file="classpath:db/changelog/v.0.9/2022-10-14-changes-filling-table-city.xml"/>
+    <include file="classpath:db/changelog/v.0.9/2022-10-14-changes-correct-name-city.xml"/>
 </databaseChangeLog>
