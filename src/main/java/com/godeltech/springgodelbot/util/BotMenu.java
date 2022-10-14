@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
+
 
 public class BotMenu {
 

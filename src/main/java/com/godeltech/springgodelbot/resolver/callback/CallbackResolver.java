@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
+
 
 @Component
 public class CallbackResolver {

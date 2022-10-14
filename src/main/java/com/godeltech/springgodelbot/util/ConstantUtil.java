@@ -32,6 +32,7 @@ public class ConstantUtil {
     public static final String OFFER_WAS_DELETED = "The offer was deleted";
     public static final String WRITE_ADDITIONAL_DESCRIPTION_FOR_CHANGE = "Please write additional description and press enter";
     public static final String DATES_WERE_CHANGED = "The dates were changed \n";
+    public static final String NO_CHOSEN_DATE = "Date :";
     public static final String CHOSEN_DATE = "Date : %s";
     public static final String CHOSEN_DATES ="Date : %s - %s";
     public static final String CHOSEN_ROLE = "Role : %s \nChose the place of departure that you are interested in";
@@ -39,8 +40,15 @@ public class ConstantUtil {
     public static final String CURRENT_ROUTE = "Role : %s \nPlease select a place of arrival or a stopping point.\nYour current route : %s\nIf you pressed the selected button we'll cancel it";
     public static final String CHOSE_THE_ROUTE_OF_OFFER = "Chose the place of departure that you are interested in";
     public static final String CURRENT_ROUTE_OF_OFFER = "Please select a place of arrival or a stopping point.\nYour current route : %s\nIf you pressed the selected  button we'll cancel it";
-
+    public static final String HAVE_NO_USERNAME = "You don't have a username, please add it in your personal settings.When you deal with it,  just press the button";
+    public static final String USERNAME_IS_ADDED = "I've added my username";
     public static final String SAVE = "SAVE";
     public static final String NEXT = "Next";
     public static final String DATE_FORMAT="%s-%s";
+
+    public static final String SPLITTER = "&";
+    public static final String INCORRECT_MARKER = "❌";
+    public static final String CORRECT_MARKER = "✅";
+    public static final String MENU = "MENU";
+    public static final String EMPTY = " ";
 }
