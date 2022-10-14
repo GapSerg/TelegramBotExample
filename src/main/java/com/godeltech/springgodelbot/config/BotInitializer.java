@@ -22,19 +22,12 @@ public class BotInitializer {
 
     private final BotProp botProp;
     private final RestService restService;
-    private final TudaSudaTelegramBot tudaSudaTelegramBot;
 
     @SneakyThrows
     @EventListener({ContextRefreshedEvent.class})
     public void init() {
         log.info("Set web hook with path :{}", botProp.getWebHookPath());
         restService.setWebHook(botProp.getWebHookPath(), botProp.getToken());
-
-        try {
-            tudaSudaTelegramBot.execute(new SetMyCommands(BotMenu.getCommands(), new BotCommandScopeDefault(), null));
-        } catch (TelegramApiException e) {
-            throw new UnknownCommandException();
-        }
     }
 }
 

@@ -8,14 +8,19 @@ import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.UserService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
+import com.godeltech.springgodelbot.util.BotMenu;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChat;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChatMember;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 
 import java.util.Optional;
 
@@ -81,6 +86,8 @@ public class TextAndEntityMessageType implements MessageType {
     private BotApiMethod makeSendMessageForUser(Message message) {
         tudaSudaTelegramBot.checkMembership(message);
         userService.userAuthorization(message.getFrom(),message,true);
+        tudaSudaTelegramBot.execute(new SetMyCommands(BotMenu.getCommands(),
+                new BotCommandScopeChat(message.getChat().getId().toString()),null));
         Token createdToken = tokenService.createToken(message.getFrom().getId(), message.getChatId());
         return getStartMenu(message.getChatId(), START_MESSAGE, createdToken.getId());
     }
