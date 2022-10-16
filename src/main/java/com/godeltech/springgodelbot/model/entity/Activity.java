@@ -1,5 +1,5 @@
 package com.godeltech.springgodelbot.model.entity;
 
 public enum Activity {
-    DRIVER, PASSENGER;
+    DRIVER, PASSENGER, PARCEL
 }
