@@ -15,15 +15,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 
 public class BotMenu {
 
-    public static final String START = "/start";
-    public static final String HELP = "/help";
-    public static final String START_DESCRIPTION = "get a welcome message";
-    public static final String HELP_DESCRIPTION = "info how to use this bot";
 
     public static List<BotCommand> getCommands() {
         List<BotCommand> listOfCommands = new ArrayList<>();
@@ -44,7 +40,7 @@ public class BotMenu {
         return EditMessageText.builder()
                 .chatId(message.getChatId().toString())
                 .messageId(message.getMessageId())
-                .text(text + "\nChoose the option you are interested in")
+                .text(text + CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())
@@ -56,7 +52,7 @@ public class BotMenu {
         return EditMessageText.builder()
                 .chatId(changeOfferRequest.getToken().getChatId().toString())
                 .messageId(changeOfferRequest.getToken().getMessageId())
-                .text(text + "\nChoose the option you are interested in")
+                .text(text + CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())
@@ -68,7 +64,7 @@ public class BotMenu {
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
-                .text("Choose the role you are interested in")
+                .text(CHOOSE_THE_OPTION)
 
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
@@ -80,7 +76,7 @@ public class BotMenu {
         List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return SendMessage.builder()
                 .chatId(chatId.toString())
-                .text(text + "\n" + "Choose the option you are interested in")
+                .text(text + CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())
@@ -91,7 +87,7 @@ public class BotMenu {
         List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return SendMessage.builder()
                 .chatId(chatId.toString())
-                .text("Choose the option you are interested in")
+                .text(CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())
@@ -109,7 +105,7 @@ public class BotMenu {
                 .forEach(buttons::add);
         buttons.add(List.of(
                 InlineKeyboardButton.builder()
-                        .text("List of my offers")
+                        .text(OFFERS_LIST)
                         .callbackData(Callbacks.OFFERS_ACTIVITY.ordinal()+SPLITTER+token)
                         .build()));
         return buttons;

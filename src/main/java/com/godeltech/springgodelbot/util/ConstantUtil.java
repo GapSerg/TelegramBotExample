@@ -2,10 +2,10 @@ package com.godeltech.springgodelbot.util;
 
 public class ConstantUtil {
 
-    public static final String START_MESSAGE = "You can choose several options. \n\nIf you press 'DRIVER'" +
-            " button, you'll get opportunities to create a request as a driver and a find passengers for the route and dates you are interested in.\n\n" +
-            "If you press 'Passenger' button, you'll get opportunities to create a request as a passenger and find a driver for the route and dates you are interested in\n\n" +
-            "If you press 'List of my offers' button, you'll get opportunities to check your already created offers as 'DRIVER' or as 'PASSENGER' and if you want to change some data in them";
+    public static final String START_MESSAGE = "Welcome aboard! \n If you press  the 'DRIVER'" +
+            "button, you'll get the opportunity to create a request as a driver and  find passengers for the route and dates you are interested in.\n\n" +
+            "If you press the 'Passenger' button, you'll get the opportunity to create a request as a passenger and find a driver for the route and dates you are interested in\n\n" +
+            "If you press the 'List of my offers' button, you'll have the possibility to check your already created offers as a 'DRIVER' or as 'PASSENGER' and change some data if necessary";
     public final static String NO_UNIQUE_PATTERN = "%s already exists with %s=%s";
     public final static String NO_FOUND_PATTERN = "%s wasn't found by %s=%s";
     public final static String NO_FOUND_PATTERN_WITHOUT_VALUES = "%s wasn't found";
@@ -35,11 +35,11 @@ public class ConstantUtil {
     public static final String NO_CHOSEN_DATE = "Date :";
     public static final String CHOSEN_DATE = "Date : %s";
     public static final String CHOSEN_DATES ="Date : %s - %s";
-    public static final String CHOSEN_ROLE = "Role : %s \nChose the place of departure that you are interested in";
-    public static final String CHOSE_THE_ROUTE = "Role : %s \nChose the place of departure that you are interested in";
-    public static final String CURRENT_ROUTE = "Role : %s \nPlease select a place of arrival or a stopping point.\nYour current route : %s\nIf you pressed the selected button we'll cancel it";
-    public static final String CHOSE_THE_ROUTE_OF_OFFER = "Chose the place of departure that you are interested in";
-    public static final String CURRENT_ROUTE_OF_OFFER = "Please select a place of arrival or a stopping point.\nYour current route : %s\nIf you pressed the selected  button we'll cancel it";
+    public static final String CHOSEN_ROLE = "Role : %s \nChose the place FROM";
+    public static final String CHOSE_THE_ROUTE = "Role : %s \nChose the place TO";
+    public static final String CURRENT_ROUTE = "Role : %s \nChose the place TO or a stopping point.\nYour current route : %s\nIf you pressed the selected button we'll cancel it";
+    public static final String CHOSE_THE_ROUTE_OF_OFFER = "Chose the place FROM";
+    public static final String CURRENT_ROUTE_OF_OFFER = "Chose the place TO.\nYour current route : %s\nIf you pressed the selected  button we'll cancel it";
     public static final String HAVE_NO_USERNAME = "You don't have a username, please add it in your personal settings.When you deal with it,  just press the button";
     public static final String USERNAME_IS_ADDED = "I've added my username";
     public static final String SAVE = "SAVE";
@@ -51,4 +51,16 @@ public class ConstantUtil {
     public static final String CORRECT_MARKER = "✅";
     public static final String MENU = "MENU";
     public static final String EMPTY = " ";
+
+    public static final String START = "/start";
+    public static final String HELP = "/help";
+    public static final String START_DESCRIPTION = "Info to start using this bot";
+    public static final String HELP_DESCRIPTION = "What is this bot for";
+    public static final String CHOOSE_THE_OPTION = "\nChoose the option you are interested in";
+    public static final String OFFERS_LIST = "List of my offers";
+    public static final String HELP_MESSAGE = "This bot was created for people who need help moving to some place or deliver a pack or a bag and for those who can offer this help";
+    public static final String BOT_COMMAND = "bot_command";
+    public static final String START_ENTITY = "/start";
+    public static final String HELP_ENTITY = "/help";
+
 }

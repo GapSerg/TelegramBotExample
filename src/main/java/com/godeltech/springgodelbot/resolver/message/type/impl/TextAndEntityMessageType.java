@@ -1,6 +1,5 @@
 package com.godeltech.springgodelbot.resolver.message.type.impl;
 
-import com.godeltech.springgodelbot.exception.MessageFromGroupException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.message.Messages;
@@ -19,17 +18,17 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChat;
-import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChatMember;
-import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 
 import java.util.Optional;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
-import static com.godeltech.springgodelbot.util.ConstantUtil.START_MESSAGE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @Slf4j
 public class TextAndEntityMessageType implements MessageType {
+
+
     private final UserService userService;
     private final TokenService tokenService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
@@ -55,15 +54,15 @@ public class TextAndEntityMessageType implements MessageType {
 
     private BotApiMethod getSendMessage(Message message) {
         Optional<MessageEntity> commandEntity = message.getEntities().stream()
-                .filter(entity -> "bot_command".equals(entity.getType()))
+                .filter(entity -> BOT_COMMAND.equals(entity.getType()))
                 .findFirst();
         if (commandEntity.isPresent()) {
             String command = message.getText().substring(commandEntity.get().getOffset(), commandEntity.get().getLength());
             switch (command) {
-                case "/start":
+                case START_ENTITY:
                     log.info("Got /start message");
                     return makeSendMessageForUser(message);
-                case "/help":
+                case HELP_ENTITY:
                     log.info("Got /help message");
                     return makeHelpSendMessage(message);
                 default:
@@ -75,10 +74,14 @@ public class TextAndEntityMessageType implements MessageType {
         }
     }
 
+    private String getBot_command() {
+        return "bot_command";
+    }
+
     private SendMessage makeHelpSendMessage(Message message) {
         return SendMessage.builder()
                 .chatId(message.getChatId().toString())
-                .text("This bot was created for people who need help moving to some place or for those who can offer this help")
+                .text(HELP_MESSAGE)
                 .build();
     }
 
