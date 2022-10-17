@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-17-changes-rename-table-offer_city-to-trip_entry_city" author="a.miachyn">
+        <renameTable oldTableName="offer_city" newTableName="transfer_item_city"/>
+        <renameColumn tableName="transfer_item_city" oldColumnName="offer_id" newColumnName="transfer_item_id"/>
+        <dropAllForeignKeyConstraints baseTableName="transfer_item_city"/>
+        <addForeignKeyConstraint baseTableName="transfer_item_city" baseColumnNames="transfer_item_id"
+                                 constraintName="fk_transfer_item_city_transfer_item_id" referencedTableName="transfer_item"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="transfer_item_city" baseColumnNames="city_id"
+                                 constraintName="fk_transfer_item_city_city_id" referencedTableName="city"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

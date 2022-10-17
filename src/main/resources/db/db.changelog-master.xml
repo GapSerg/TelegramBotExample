@@ -18,7 +18,13 @@
     <include file="classpath:db/changelog/v.0.9/2022-10-14-changes-filling-table-city.xml"/>
     <include file="classpath:db/changelog/v.0.9/2022-10-14-changes-correct-name-city.xml"/>
     <include file="classpath:db/changelog/v.1.0/2022-10-14-changes-alter-type-activity_type.xml"/>
-<!--    <include file="classpath:db/changelog/v.1.0/2022-10-14-changes-alter-type-request_type.xml"/>-->
-<!--    <include file="classpath:db/changelog/v.1.0/2022-10-14-changes-update-table-offer.xml"/>-->
-<!--    <include file="classpath:db/changelog/v.1.0/2022-10-14-changes-update-table-request.xml"/>-->
+    <include file="classpath:db/changelog/v.1.0/2022-10-14-changes-alter-type-request_type.xml"/>
+    <include file="classpath:db/changelog/v.1.0/2022-10-14-changes-update-table-request.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-create-table-activity.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-alter-table-offer-to-table-transfer_item.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-create-table-trip_offer.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-alter-table-offer_city-to-transfer_item_city.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-create-table-trip_offer_activity.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-create-table-trip_offer_city.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-clear-transfer_item-and-transfer_item_city-from-drivers.xml"/>
 </databaseChangeLog>

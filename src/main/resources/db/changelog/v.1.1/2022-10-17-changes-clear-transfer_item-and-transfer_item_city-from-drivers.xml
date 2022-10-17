@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-17-changes-clear-transfer_item-and-transfer_item_city-from-drivers" author="a.miachyn">
+        <delete tableName="transfer_item_city">
+            <where>transfer_item_city.id IN (SELECT tic2.id FROM
+                transfer_item_city tic2 JOIN transfer_item ti ON tic2.transfer_item_id=ti.id
+                JOIN activity a ON ti.activity_id = a.id WHERE a.name = 'DRIVER') </where>
+        </delete>
+        <delete tableName="transfer_item">
+            <where>transfer_item.id IN (SELECT ti2.id FROM
+                transfer_item ti2
+                JOIN activity a ON ti2.activity_id = a.id WHERE a.name = 'DRIVER')</where>
+        </delete>
+    </changeSet>
+</databaseChangeLog>

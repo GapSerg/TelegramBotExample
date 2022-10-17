@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-17-changes-create-table-activity" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="activity"/>
+            </not>
+        </preConditions>
+        <createTable tableName="activity">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="activity_type">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="activity">
+            <column name="name">DRIVER</column>
+        </insert>
+        <insert tableName="activity">
+            <column name="name">PASSENGER</column>
+        </insert>
+        <insert tableName="activity">
+            <column name="name">PARCEL</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

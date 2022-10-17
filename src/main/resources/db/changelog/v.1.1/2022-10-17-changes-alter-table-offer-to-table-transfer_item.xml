@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-17-changes-rename-table-offer" author="a.miachyn">
+        <renameTable oldTableName="offer" newTableName="transfer_item"/>
+        <addColumn tableName="transfer_item">
+            <column name="activity_id" type="SERIAL" defaultValue="2">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <update tableName="transfer_item">
+            <column name="activity_id"
+                    valueComputed="(SELECT a.id FROM transfer_item ti2  JOIN activity a ON transfer_item.activity
+                     = a.name WHERE ti2.id=transfer_item.id)"/>
+        </update>
+        <dropColumn tableName="transfer_item" columnName="activity"/>
+        <dropAllForeignKeyConstraints baseTableName="transfer_item"/>
+        <addForeignKeyConstraint baseTableName="transfer_item" baseColumnNames="user_id"
+                                 constraintName="fr_transfer_item_user" referencedTableName="telegram_user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="transfer_item" baseColumnNames="activity_id"
+                                 constraintName="fk_transfer_item_activity" referencedTableName="activity"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+</databaseChangeLog>

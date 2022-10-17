@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-17-changes-create-table-trip_offer_city" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="trip_offer_city"/>
+            </not>
+        </preConditions>
+        <sql>SELECT tic.id, tic.transfer_item_id, tic.city_id
+             INTO trip_offer_city
+             FROM transfer_item_city tic
+             WHERE tic.transfer_item_id IN (SELECT trip_offer.id FROM trip_offer)</sql>
+        <renameColumn tableName="trip_offer_city" oldColumnName="transfer_item_id" newColumnName="trip_offer_id"/>
+        <addAutoIncrement tableName="trip_offer_city" columnName="id"/>
+        <addPrimaryKey tableName="trip_offer_city" columnNames="id"/>
+        <addForeignKeyConstraint baseTableName="trip_offer_city" baseColumnNames="trip_offer_id"
+                                 constraintName="fk_trip_offer_trip_offer_city" referencedTableName="trip_offer"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="trip_offer_city" baseColumnNames="city_id"
+                                 constraintName="fk_city_trip_offer_city" referencedTableName="city"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

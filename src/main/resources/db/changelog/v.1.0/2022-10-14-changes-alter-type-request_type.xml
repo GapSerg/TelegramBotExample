@@ -14,11 +14,11 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
-        <update tableName="offer">
+        <update tableName="request">
             <column name="request_type"
-                    valueComputed="(select cast(cast(o2.request_type_ as VARCHAR(20)) as type_of_request) FROM requ o2 where o2.id=offer.id)"/>
+                    valueComputed="(select cast(cast(r2.request_type_ as VARCHAR(20)) as type_of_request) FROM request r2 where r2.id=request.id)"/>
         </update>
-        <dropColumn tableName="request" columnName="activity_"/>
-        <sql>DROP TYPE activity_type_;</sql>
+        <dropColumn tableName="request" columnName="request_type_"/>
+        <sql>DROP TYPE type_of_request_;</sql>
     </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-11-changes-create-table-trip_offer_activity" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="trip_offer_activity"/>
+            </not>
+        </preConditions>
+        <createTable tableName="trip_offer_activity">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="trip_offer_id" type="BIGSERIAL">
+                <constraints foreignKeyName="fk_trip_offer_id_trip_offer_activity" references="trip_offer(id)"/>
+            </column>
+            <column name="activity_id" type="SERIAL">
+                <constraints foreignKeyName="fk_activity_id_trip_offer_activity" references="activity(id)"/>
+            </column>
+        </createTable>
+        <sql>INSERT INTO trip_offer_activity (trip_offer_id, activity_id)
+             SELECT trip_offer.id, (SELECT activity.id FROM activity WHERE name = 'PASSENGER')
+             FROM trip_offer</sql>
+        <sql>INSERT INTO trip_offer_activity (trip_offer_id, activity_id)
+             SELECT trip_offer.id, (SELECT activity.id FROM activity WHERE name = 'PARCEL')
+             FROM trip_offer</sql>
+    </changeSet>
+</databaseChangeLog>
