@@ -13,13 +13,13 @@ public interface DriverItemService {
     List<DriverItem> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
             (LocalDate secondDate, LocalDate firstDate, List<String> cities);
 
-    List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user);
+    List<ChangeOfferRequest> findByUserEntityId(Long id, Message message, User user);
 
     ChangeOfferRequest getById(Long offerId, Message message, User user);
 
     void deleteById(Long offerId, Message message, User user);
 
-    void updateCities(ChangeOfferRequest changeOfferRequest, Message message, User user);
+    void updateCitiesOfDriverItem(ChangeOfferRequest changeOfferRequest, Message message, User user);
 
     void updateDatesOfTripOffer(ChangeOfferRequest changeOfferRequest, Message message, User user);
 

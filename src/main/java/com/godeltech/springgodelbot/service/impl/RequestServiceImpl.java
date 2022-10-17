@@ -4,9 +4,10 @@ import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.model.repository.RequestRepository;
-import com.godeltech.springgodelbot.service.OfferService;
+import com.godeltech.springgodelbot.service.DriverItemService;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.TokenService;
+import com.godeltech.springgodelbot.service.TransferItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class RequestServiceImpl implements RequestService {
 
-
-    private final OfferService offerService;
-
+    //
+//    private final OfferService offerService;
+    private final TransferItemService transferItemService;
+    private final DriverItemService driverItemService;
     private final TokenService tokenService;
 
     private final RequestRepository requestRepository;
@@ -35,7 +37,7 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public void saveDriver(Request request, Message message, User user) {
         log.debug("Saving driver request with token: {}", message);
-        offerService.save((DriverRequest) request, user, message);
+        driverItemService.save((DriverRequest) request, user, message);
         request.setNeedForDescription(false);
         updateRequest(request, message, user);
     }
@@ -44,7 +46,11 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public void updateDates(ChangeOfferRequest changeOfferRequest, String token, Message message, User user) {
         log.debug("Update dates of offer with id: {} and token: {}", changeOfferRequest.getOfferId(), token);
-        offerService.updateDatesOfOffer(changeOfferRequest, message, user);
+        if (changeOfferRequest.getActivity() == Activity.DRIVER) {
+            driverItemService.updateDatesOfTripOffer(changeOfferRequest, message, user);
+        } else {
+            transferItemService.updateDatesOfTransferItem(changeOfferRequest, message, user);
+        }
     }
 
 
@@ -52,7 +58,11 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public void updateDescriptionOfOffer(Request request, Message message, User user) {
         log.debug("Update description of offer with offer id: {} and token: {}", request.getOfferId(), request.getToken().getId());
-        offerService.updateDescriptionOfOffer((ChangeOfferRequest) request, message, message.getFrom());
+        if (request.getActivity() == Activity.DRIVER) {
+            driverItemService.updateDescriptionOfTripOffer((ChangeOfferRequest) request, message, user);
+        } else {
+            transferItemService.updateDescriptionOfTransferItem((ChangeOfferRequest) request, message, user);
+        }
         request.setNeedForDescription(false);
         updateRequest(request, message, user);
     }
@@ -61,7 +71,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void savePassenger(Request request, Message message, User user) {
         log.debug("Save passenger request : {} and token: {}", request, message);
-        offerService.save((PassengerRequest) request, user, message);
+        transferItemService.save((PassengerRequest) request, user, message);
         request.setNeedForDescription(false);
         updateRequest(request, message, user);
     }
@@ -70,14 +80,22 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public void updateRouteOfOffer(Request changeOfferRequest, String token, Message message, User user) {
         log.info("Update route of offer with id :{}", changeOfferRequest.getOfferId());
-        offerService.updateCities((ChangeOfferRequest) changeOfferRequest, message, user);
+        if (changeOfferRequest.getActivity() == Activity.DRIVER) {
+            driverItemService.updateCitiesOfDriverItem((ChangeOfferRequest) changeOfferRequest, message, user);
+        } else {
+            transferItemService.updateCitiesOfTransferItem((ChangeOfferRequest) changeOfferRequest, message, user);
+        }
     }
 
     @Override
     public void deleteOffer(Message message, String token, User user) {
         Request request = getRequest(message, token, user);
         log.debug("Delete offer with id : {} and token: {}", request.getOfferId(), token);
-        offerService.deleteById(request.getOfferId(), message, user);
+        if (request.getActivity() == Activity.DRIVER) {
+            driverItemService.deleteById(request.getOfferId(), message, user);
+        } else {
+            transferItemService.deleteById(request.getOfferId(), message, user);
+        }
         deleteRequest(request, message);
 
     }
@@ -85,23 +103,30 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<ChangeOfferRequest> findUsersOffersByActivity(Long id, Activity activity, Message message, User user) {
         log.debug("Find offers by id:{} and activity :{}", id, activity);
-        return offerService.findByUserEntityIdAndActivity(id, activity, message, user);
+        if (activity == Activity.DRIVER) {
+            return driverItemService.findByUserEntityId(id, message, user);
+        } else {
+            return transferItemService.findByUserEntityIdAndActivity(id, activity, message, user);
+        }
     }
 
 
     @Override
-    public List<Offer> findPassengersByRequestData(Request request) {
+    public List<TransferItem> findPassengersByRequestData(Request request) {
         log.debug("Find passengers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
-        return offerService.findPassengersByFirstDateBeforeAndSecondDateAfterAndCities(request.getSecondDate(),
-                request.getFirstDate(), request.getCities());
+        return request.getSuitableActivities().size() == 2 ?
+                transferItemService.findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCities(request.getSecondDate(),
+                        request.getFirstDate(), request.getCities()) :
+                transferItemService.findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCitiesAndActivity(request.getSecondDate(),
+                        request.getFirstDate(), request.getCities(), request.getSuitableActivities().get(0));
     }
 
     @Override
-    public List<Offer> findDriversByRequestData(Request request) {
+    public List<DriverItem> findDriversByRequestData(Request request) {
         log.debug("Find drivers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
-        return offerService.findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes(request.getSecondDate(),
+        return driverItemService.findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes(request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
     }
 
@@ -162,12 +187,17 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     @Transactional
-    public ChangeOfferRequest refreshChangeOfferRequest(Request changeOfferRequest, Message message, User user) {
-        log.info("Refresh change offer request with id : {}", changeOfferRequest.getOfferId());
-        ChangeOfferRequest refreshedRequest = offerService.getById(changeOfferRequest.getOfferId(), message, user);
-        refreshedRequest.setId(changeOfferRequest.getId());
-        refreshedRequest.setToken(changeOfferRequest.getToken());
-        return requestRepository.save(refreshedRequest);
+    public ChangeOfferRequest refreshChangeOfferRequest(Request request, Message message, User user) {
+        log.info("Refresh change offer request with id : {}", request.getOfferId());
+        ChangeOfferRequest changeOffer;
+        if (request.getActivity() == Activity.DRIVER) {
+            changeOffer = driverItemService.getById(request.getOfferId(), message, user);
+        } else {
+            changeOffer = transferItemService.getById(request.getOfferId(), message, user);
+        }
+        changeOffer.setId(request.getId());
+        changeOffer.setToken(request.getToken());
+        return requestRepository.save(changeOffer);
     }
 
     @Override
@@ -175,7 +205,12 @@ public class RequestServiceImpl implements RequestService {
     public Request setOfferToRequest(long offerId, Request request, Message message, User user) {
         log.debug("Set offer  with id :{} to change offer request with id : {}  and token: {}",
                 offerId, request.getId(), request.getToken().getId());
-        ChangeOfferRequest changeOffer = offerService.getById(offerId, message, user);
+        ChangeOfferRequest changeOffer;
+        if (request.getActivity() == Activity.DRIVER) {
+            changeOffer = driverItemService.getById(offerId, message, user);
+        } else {
+            changeOffer = transferItemService.getById(offerId, message, user);
+        }
         changeOffer.setToken(request.getToken());
         changeOffer.setId(request.getId());
         return requestRepository.save(changeOffer);

@@ -1,13 +1,10 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
-import com.godeltech.springgodelbot.model.entity.Offer;
 import com.godeltech.springgodelbot.model.entity.Request;
-import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
-import com.godeltech.springgodelbot.util.BotMenu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;

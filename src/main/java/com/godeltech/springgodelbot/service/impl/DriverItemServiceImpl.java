@@ -42,11 +42,11 @@ public class DriverItemServiceImpl implements DriverItemService {
             (LocalDate secondDate, LocalDate firstDate, List<String> cities) {
         log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         return secondDate == null ?
-                driverItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, Activity.DRIVER.name(), cities).stream()
+                driverItemRepository.findByFirstDateAndCities(firstDate, cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
-                driverItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), cities).stream()
+                driverItemRepository.findByDatesAndCities(secondDate, firstDate, cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
@@ -54,11 +54,9 @@ public class DriverItemServiceImpl implements DriverItemService {
 
 
     @Override
-    public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user) {
-        log.info("Find offers by id:{} and activity :{}", id, activity);
-        var list = driverItemRepository.findByUserEntityId(id);
-
-        return list.stream()
+    public List<ChangeOfferRequest> findByUserEntityId(Long id, Message message, User user) {
+        log.info("Find driver items by id:{}", id);
+        return driverItemRepository.findByUserEntityId(id).stream()
                 .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                 .map(driverItemMapper::mapToChangeOfferRequest)
                 .collect(Collectors.toList());
@@ -94,7 +92,7 @@ public class DriverItemServiceImpl implements DriverItemService {
 
     @Override
     @Transactional
-    public void updateCities(ChangeOfferRequest changeOfferRequest, Message message, User user) {
+    public void updateCitiesOfDriverItem(ChangeOfferRequest changeOfferRequest, Message message, User user) {
         log.info("Update cities of tripOffer with id : {} and cities : {} ", changeOfferRequest.getOfferId(),
                 changeOfferRequest.getCities());
         DriverItem driverItem = getTripOfferById(changeOfferRequest.getOfferId(), message, user);

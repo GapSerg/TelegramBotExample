@@ -1,9 +1,6 @@
 package com.godeltech.springgodelbot.service;
 
-import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
-import com.godeltech.springgodelbot.model.entity.Offer;
-import com.godeltech.springgodelbot.model.entity.Request;
-import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.*;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -31,9 +28,9 @@ public interface RequestService {
     List<ChangeOfferRequest> findUsersOffersByActivity(Long id, Activity activity, Message message, User user);
 
 
-    List<Offer> findPassengersByRequestData(Request request);
+    List<TransferItem> findPassengersByRequestData(Request request);
 
-    List<Offer> findDriversByRequestData(Request request);
+    List<DriverItem> findDriversByRequestData(Request request);
 
     Request findRequestByUserIdForSave(Message message);
 

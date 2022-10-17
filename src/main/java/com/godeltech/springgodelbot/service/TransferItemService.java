@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TransferItemService {
-    List<TransferItem> findPassengersByFirstDateBeforeAndSecondDateAfterAndCities
+    List<TransferItem> findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCities
             (LocalDate secondDate, LocalDate firstDate, List<String> cities);
 
     List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user);
@@ -28,4 +28,6 @@ public interface TransferItemService {
     void deleteByFirstDateAfterWhereSecondDateIsNull(LocalDate date);
 
     TransferItem save(PassengerRequest passengerRequest, User user, Message message);
+
+    List<TransferItem> findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCitiesAndActivity(LocalDate secondDate, LocalDate firstDate, List<String> cities, Activity activity);
 }

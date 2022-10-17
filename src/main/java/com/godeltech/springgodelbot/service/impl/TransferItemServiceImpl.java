@@ -29,16 +29,16 @@ public class TransferItemServiceImpl implements TransferItemService {
 
 
     @Override
-    public List<TransferItem> findPassengersByFirstDateBeforeAndSecondDateAfterAndCities
+    public List<TransferItem> findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCities
             (LocalDate secondDate, LocalDate firstDate, List<String> cities) {
         log.info("Find transfer items by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
 
         return secondDate == null ?
-                transferItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, Activity.PASSENGER.name(), cities).stream()
+                transferItemRepository.findByFirstDateAndCities(firstDate,cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
-                transferItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, Activity.PASSENGER.name(), cities).stream()
+                transferItemRepository.findByDatesAndCities(secondDate, firstDate, cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
@@ -63,7 +63,7 @@ public class TransferItemServiceImpl implements TransferItemService {
                     item.setCities(cities);
                     return transferItemMapper.mapToChangeOfferRequest(item);
                 })
-                .orElseThrow(() -> new ResourceNotFoundException(Offer.class, "id", itemId, message, user));
+                .orElseThrow(() -> new ResourceNotFoundException(TransferItem.class, "id", itemId, message, user));
     }
 
     @Override
@@ -136,6 +136,22 @@ public class TransferItemServiceImpl implements TransferItemService {
         List<City> cities = cityService.findCitiesByName(passengerRequest.getCities(), message, user);
         TransferItem transferItem = transferItemMapper.mapToTransferItem(passengerRequest, user, cities);
         return transferItemRepository.save(transferItem);
+    }
+
+    @Override
+    public List<TransferItem> findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCitiesAndActivity
+            (LocalDate secondDate, LocalDate firstDate, List<String> cities, Activity activity) {
+        log.info("Find transfer items by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
+
+        return secondDate == null ?
+                transferItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, activity.name(), cities).stream()
+                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .filter(offer -> checkRoute(cities, offer))
+                        .collect(Collectors.toList()) :
+                transferItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, activity.name(), cities).stream()
+                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .filter(offer -> checkRoute(cities, offer))
+                        .collect(Collectors.toList());
     }
 
     private boolean checkRoute(List<String> cities, TransferItem transferItem) {

@@ -5,7 +5,6 @@ import com.godeltech.springgodelbot.model.entity.DriverRequest;
 import com.godeltech.springgodelbot.model.entity.PassengerRequest;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.entity.Request;
-import com.godeltech.springgodelbot.model.entity.Offer;
 import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
