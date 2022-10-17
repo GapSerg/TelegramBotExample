@@ -1,8 +1,5 @@
 package com.godeltech.springgodelbot.model.entity;
 
-import com.godeltech.springgodelbot.model.entity.Activity;
-import com.godeltech.springgodelbot.model.entity.Request;
-import com.godeltech.springgodelbot.model.entity.Token;
 import lombok.Builder;
 
 import javax.persistence.DiscriminatorValue;
@@ -14,10 +11,14 @@ import java.util.List;
 public class DriverRequest extends Request {
     @Builder
     public DriverRequest(Long id, Long offerId, List<String> cities, LocalDate firstDate,
-                         LocalDate secondDate, Boolean needForDescription, Token token, String description) {
-        super(id, offerId, cities, firstDate, secondDate, needForDescription, token,
-                Activity.DRIVER,  description);
+                         LocalDate secondDate, Boolean needForDescription, Token token,
+                         List<Activity> suitableActivities, Activity activity,
+                         String description) {
+        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, suitableActivities, activity, description);
     }
+
+
+
 
     public DriverRequest() {
         super(Activity.DRIVER);

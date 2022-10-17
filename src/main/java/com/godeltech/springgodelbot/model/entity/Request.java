@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -43,6 +42,9 @@ public abstract class Request {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "token_id", referencedColumnName = "id")
     private Token token;
+    @Column(columnDefinition = "type_of_reqst[]")
+    @Type(type = "postgreSqlListType")
+    private List<Activity> suitableActivities;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "activity_type")

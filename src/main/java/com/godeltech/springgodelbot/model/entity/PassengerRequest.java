@@ -9,10 +9,14 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("PASSENGER_REQUEST")
 public class PassengerRequest extends Request {
-    @Builder
-    public PassengerRequest(Long id, Long offerId, List<String> cities, LocalDate firstDate, LocalDate secondDate, Boolean needForDescription, Token token, String description) {
-        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, Activity.PASSENGER, description);
+    public PassengerRequest(Long id, Long offerId, List<String> cities, LocalDate firstDate,
+                            LocalDate secondDate, Boolean needForDescription, Token token,
+                            List<Activity> suitableActivities, Activity activity, String description) {
+        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, suitableActivities, activity, description);
     }
+
+    @Builder
+
 
     public PassengerRequest() {
         super(Activity.PASSENGER);
