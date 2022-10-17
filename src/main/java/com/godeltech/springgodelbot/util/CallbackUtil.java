@@ -1,9 +1,7 @@
 package com.godeltech.springgodelbot.util;
 
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
-import com.godeltech.springgodelbot.model.entity.Activity;
-import com.godeltech.springgodelbot.model.entity.City;
-import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -598,26 +596,18 @@ public class CallbackUtil {
                                 .build())).build())
                 .build();
     }
+    
 
-    public static EditMessageText makeEditMessageForUserWithoutUsername(Message message) {
-        return EditMessageText.builder()
-                .text(HAVE_NO_USERNAME)
-                .chatId(message.getChatId().toString())
-                .messageId(message.getMessageId())
-                .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboardRow(List.of(InlineKeyboardButton.builder()
-                                .text(USERNAME_IS_ADDED)
-                                .callbackData(String.valueOf(MAIN_MENU.ordinal()))
-                                .build())).build())
-                .build();
-    }
-
-    public static String getListOfOffersForRequest(List<Offer> offers) {
-        return offers.stream()
-                .map(CallbackUtil::getOffersViewForRequest)
+    public static String getListOfDriverItemsForRequest(List<DriverItem> driverItems) {
+        return driverItems.stream()
+                .map(CallbackUtil::getDriverItemsViewForRequest)
                 .collect(Collectors.joining("\n\n"));
     }
-
+    public static String getListOfTransferItemsForRequest(List<TransferItem> transferItems) {
+        return transferItems.stream()
+                .map(CallbackUtil::getTransferItemsViewForRequest)
+                .collect(Collectors.joining("\n\n"));
+    }
     public static String getOffersView(Request request) {
         return request.getDescription() != null ?
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN, request.getActivity(),
@@ -628,32 +618,32 @@ public class CallbackUtil {
                                 request.getSecondDate()));
     }
 
-    public static String getOffersViewForRequest(Offer offer) {
-        return offer.getDescription() != null ?
-                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(offer.getUserEntity().getFirstName()),
-                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities(), offer.getActivity()),
-                        getDatesInf(offer.getFirstDate(), offer.getSecondDate()),
-                        offer.getDescription(), offer.getUserEntity().getUserName()) :
-                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(offer.getUserEntity().getFirstName()),
-                        getCorrectName(offer.getUserEntity().getLastName()), offer.getActivity(), getCurrentRouteFromCities(offer.getCities(), offer.getActivity()),
-                        getDatesInf(offer.getFirstDate(), offer.getSecondDate()), offer.getUserEntity().getUserName());
+    public static String getDriverItemsViewForRequest(DriverItem driverItem) {
+        return driverItem.getDescription() != null ?
+                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(driverItem.getUserEntity().getFirstName()),
+                        getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER, getCurrentRouteFromCities(driverItem.getCities(), Activity.DRIVER),
+                        getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()),
+                        driverItem.getDescription(), driverItem.getUserEntity().getUserName()) :
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(driverItem.getUserEntity().getFirstName()),
+                        getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER, getCurrentRouteFromCities(driverItem.getCities(), Activity.DRIVER),
+                        getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()), driverItem.getUserEntity().getUserName());
     }
-
+    public static String getTransferItemsViewForRequest(TransferItem transferItem) {
+        return transferItem.getDescription() != null ?
+                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(transferItem.getUserEntity().getFirstName()),
+                        getCorrectName(transferItem.getUserEntity().getLastName()), transferItem.getActivityType().getName(),
+                        getCurrentRouteFromCities(transferItem.getCities(), transferItem.getActivityType().getName()),
+                        getDatesInf(transferItem.getFirstDate(), transferItem.getSecondDate()),
+                        transferItem.getDescription(), transferItem.getUserEntity().getUserName()) :
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(transferItem.getUserEntity().getFirstName()),
+                        getCorrectName(transferItem.getUserEntity().getLastName()), transferItem.getActivityType().getName(),
+                        getCurrentRouteFromCities(transferItem.getCities(), transferItem.getActivityType().getName()),
+                        getDatesInf(transferItem.getFirstDate(), transferItem.getSecondDate()), transferItem.getUserEntity().getUserName());
+    }
     private static String getCorrectName(String name) {
         return name == null ?
                 EMPTY :
                 name;
-    }
-
-    public static EditMessageText getAvailableOffersList(List<Offer> requests, CallbackQuery callbackQuery, String message, String token) {
-        return EditMessageText.builder()
-                .messageId(callbackQuery.getMessage().getMessageId())
-                .chatId(callbackQuery.getMessage().getChatId().toString())
-                .text(message)
-                .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboard(List.of(List.of(getCancelButton(MAIN_MENU.ordinal(), token, "Back to main menu"))))
-                        .build())
-                .build();
     }
 
     public static EditMessageText getEditTextMessageForOffer(CallbackQuery callbackQuery, String token, Request request, String messageText) {
@@ -695,7 +685,18 @@ public class CallbackUtil {
                         .build()));
     }
 
-    public static String getCompletedMessageAnswer(List<Offer> offers, Request request, String completedMessage) {
+    public static String getCompletedMessageAnswerWithDriverItems(List<DriverItem> driverItems, Request request, String completedMessage) {
+        return driverItems.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
+                request.getActivity(),
+                getCurrentRoute(request.getCities()),
+                getDatesInf(request.getFirstDate(), request.getSecondDate()), descriptionInf(request.getDescription())) :
+                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
+                        getCurrentRoute(request.getCities()),
+                        getDatesInf(request.getFirstDate(), request.getSecondDate()),
+                        descriptionInf(request.getDescription()),
+                        getListOfDriverItemsForRequest(driverItems));
+    }
+    public static String getCompletedMessageAnswerWithTransferItems(List<TransferItem> offers, Request request, String completedMessage) {
         return offers.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
                 request.getActivity(),
                 getCurrentRoute(request.getCities()),
@@ -704,7 +705,7 @@ public class CallbackUtil {
                         getCurrentRoute(request.getCities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
                         descriptionInf(request.getDescription()),
-                        getListOfOffersForRequest(offers));
+                        getListOfTransferItemsForRequest(offers));
     }
 
     private static String descriptionInf(String description) {
@@ -713,10 +714,25 @@ public class CallbackUtil {
                 "Description: " + description;
     }
 
-    public static SendMessage showSavedRequestWithDescription(Message message, Request request, List<Offer> offers,
+    public static SendMessage showSavedRequestWithDescriptionWithDriverItems(Message message, Request request, List<DriverItem> driverItems,
+                                                                             Callbacks callback, String messageText) {
+        return SendMessage.builder()
+                .text(getCompletedMessageAnswerWithDriverItems(driverItems, request, messageText))
+                .chatId(message.getChatId().toString())
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("Main menu")
+                                        .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
+                                        .build()
+                        )))
+                        .build())
+                .build();
+    }
+    public static SendMessage showSavedRequestWithDescriptionWithTransferItems(Message message, Request request, List<TransferItem> transferItems,
                                                               Callbacks callback, String messageText) {
         return SendMessage.builder()
-                .text(getCompletedMessageAnswer(offers, request, messageText))
+                .text(getCompletedMessageAnswerWithTransferItems(transferItems, request, messageText))
                 .chatId(message.getChatId().toString())
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
@@ -729,11 +745,11 @@ public class CallbackUtil {
                 .build();
     }
 
-    public static EditMessageText showSavedRequestWithoutDescription(CallbackQuery callbackQuery, Request request,
-                                                                     Callbacks callback,
-                                                                     List<Offer> offers, String messageText) {
+    public static EditMessageText showSavedRequestWithoutDescriptionWithTransferItems(CallbackQuery callbackQuery, Request request,
+                                                                                      Callbacks callback,
+                                                                                      List<TransferItem> transferItems, String messageText) {
         return EditMessageText.builder()
-                .text(getCompletedMessageAnswer(offers, request, messageText))
+                .text(getCompletedMessageAnswerWithTransferItems(transferItems, request, messageText))
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .replyMarkup(InlineKeyboardMarkup.builder()
@@ -746,7 +762,23 @@ public class CallbackUtil {
                         .build())
                 .build();
     }
-
+    public static EditMessageText showSavedRequestWithoutDescriptionWithDriverItems(CallbackQuery callbackQuery, Request request,
+                                                                                    Callbacks callback,
+                                                                                    List<DriverItem> driverItems, String messageText) {
+        return EditMessageText.builder()
+                .text(getCompletedMessageAnswerWithDriverItems(driverItems, request, messageText))
+                .chatId(callbackQuery.getMessage().getChatId().toString())
+                .messageId(callbackQuery.getMessage().getMessageId())
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(List.of(List.of(
+                                InlineKeyboardButton.builder()
+                                        .text("Main menu")
+                                        .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
+                                        .build()
+                        )))
+                        .build())
+                .build();
+    }
     private static String getCancelText(Integer cancelRequestCallback) {
         return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?
                 "Back" : "Back to menu";

@@ -5,7 +5,6 @@ import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.resolver.message.Messages;
 import com.godeltech.springgodelbot.resolver.message.type.MessageType;
 import com.godeltech.springgodelbot.service.RequestService;
-import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -17,7 +16,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.showSavedRequestWithDescription;
+import static com.godeltech.springgodelbot.util.CallbackUtil.showSavedRequestWithDescriptionWithDriverItems;
+import static com.godeltech.springgodelbot.util.CallbackUtil.showSavedRequestWithDescriptionWithTransferItems;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SUCCESSFUL_REQUEST_SAVING;
 
 @Component
@@ -61,10 +61,13 @@ public class OnlyTextMessageType implements MessageType {
         request.setDescription(message.getText());
         request.getToken().setMessageId(null);
         requestService.updateDescriptionOfOffer(request, message,message.getFrom());
-        List<Offer> requests = request.getActivity() == Activity.DRIVER ?
-                requestService.findPassengersByRequestData(request) :
-                requestService.findDriversByRequestData(request);
-        return showSavedRequestWithDescription(message, request, requests, CANCEL_CHANGE_OFFER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
+        if(request.getActivity() == Activity.DRIVER) {
+            List<TransferItem> transferItems = requestService.findPassengersByRequestData(request);
+            return showSavedRequestWithDescriptionWithTransferItems(message,request,transferItems,CANCEL_CHANGE_OFFER_REQUEST,SUCCESSFUL_REQUEST_SAVING);
+        }else {
+            List<DriverItem> driverItems = requestService.findDriversByRequestData(request);
+            return showSavedRequestWithDescriptionWithDriverItems(message, request, driverItems, CANCEL_CHANGE_OFFER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
+        }
     }
 
     private SendMessage savePassengerRequest(Message message, Request request) {
@@ -72,8 +75,8 @@ public class OnlyTextMessageType implements MessageType {
         request.setDescription(message.getText());
         request.getToken().setMessageId(null);
         requestService.savePassenger(request, message, message.getFrom());
-        List<Offer> offers = requestService.findDriversByRequestData(request);
-        return showSavedRequestWithDescription(message, request, offers, CANCEL_PASSENGER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
+        List<DriverItem> driverItems = requestService.findDriversByRequestData(request);
+        return showSavedRequestWithDescriptionWithDriverItems(message, request, driverItems, CANCEL_PASSENGER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
     }
 
     private SendMessage saveDriverRequest(Message message, Request request) {
@@ -81,8 +84,8 @@ public class OnlyTextMessageType implements MessageType {
         request.setDescription(message.getText());
         request.getToken().setMessageId(null);
         requestService.saveDriver(request, message, message.getFrom());
-        List<Offer> offers = requestService.findPassengersByRequestData(request);
-        return showSavedRequestWithDescription(message, request, offers, CANCEL_DRIVER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
+        List<TransferItem> transferItems = requestService.findPassengersByRequestData(request);
+        return showSavedRequestWithDescriptionWithTransferItems(message, request, transferItems, CANCEL_DRIVER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
     }
 
 

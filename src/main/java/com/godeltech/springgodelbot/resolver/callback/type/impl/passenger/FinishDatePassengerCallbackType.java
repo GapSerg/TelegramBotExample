@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
+import com.godeltech.springgodelbot.model.entity.DriverItem;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -35,9 +36,9 @@ public class FinishDatePassengerCallbackType implements CallbackType {
                 FINISH_CHOSE_DATE_PASSENGER, token, callbackQuery.getFrom().getUserName());
         Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
 
-        List<Offer> drivers = requestService.findDriversByRequestData(passengerRequest);
+        List<DriverItem> drivers = requestService.findDriversByRequestData(passengerRequest);
 
-        String textMessage = getCompletedMessageAnswer(drivers, passengerRequest, CREATED_REQUEST);
+        String textMessage = getCompletedMessageAnswerWithDriverItems(drivers, passengerRequest, CREATED_REQUEST);
         return createSendMessageWithDoubleCheckOffer(callbackQuery, textMessage, CHECK_PASSENGER_REQUEST.ordinal(),
                 CANCEL_PASSENGER_REQUEST.ordinal(), passengerRequest.getToken().getId());
     }

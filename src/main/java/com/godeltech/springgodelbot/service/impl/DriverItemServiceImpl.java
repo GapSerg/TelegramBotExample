@@ -4,6 +4,7 @@ import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.mapper.DriverItemMapper;
 import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.model.repository.DriverItemRepository;
+import com.godeltech.springgodelbot.service.ActivityTypeService;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.DriverItemService;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,16 @@ public class DriverItemServiceImpl implements DriverItemService {
     private final DriverItemRepository driverItemRepository;
     private final DriverItemMapper driverItemMapper;
     private final CityService cityService;
+    private final ActivityTypeService activityTypeService;
 
     @Override
     @Transactional
     public DriverItem save(DriverRequest driverRequest, User user, Message message) {
         log.info("Save supplier by: {}", driverRequest);
         List<City> cities = cityService.findCitiesByName(driverRequest.getCities(), message, user);
-        DriverItem offer = driverItemMapper.mapToOffer(driverRequest, user, cities);
+        List<ActivityType> suitableActivities = activityTypeService
+                .getActivities(driverRequest.getSuitableActivities(),message ,user );
+        DriverItem offer = driverItemMapper.mapToOffer(driverRequest, user, cities, suitableActivities);
         return driverItemRepository.save(offer);
     }
 
@@ -65,7 +69,7 @@ public class DriverItemServiceImpl implements DriverItemService {
     @Override
     public ChangeOfferRequest getById(Long offerId, Message message, User user) {
         log.info("Find offer by id : {}", offerId);
-       return driverItemRepository.findById(offerId)
+        return driverItemRepository.findById(offerId)
                 .map(offer -> {
                     List<City> cities = cityService.findCitiesByOfferId(offerId);
                     offer.setCities(cities);

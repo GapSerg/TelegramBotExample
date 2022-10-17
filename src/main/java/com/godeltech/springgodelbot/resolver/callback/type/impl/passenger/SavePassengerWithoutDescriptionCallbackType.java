@@ -1,10 +1,12 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.passenger;
 
+import com.godeltech.springgodelbot.model.entity.DriverItem;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
+import com.godeltech.springgodelbot.util.CallbackUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -14,8 +16,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.CallbackUtil.showSavedRequestWithoutDescription;
 import static com.godeltech.springgodelbot.util.ConstantUtil.SUCCESSFUL_REQUEST_SAVING;
 
 @Component
@@ -23,15 +25,10 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.SUCCESSFUL_REQUEST_
 public class SavePassengerWithoutDescriptionCallbackType implements CallbackType {
 
     private final RequestService requestService;
-    private final TudaSudaTelegramBot tudaSudaTelegramBot;
-    private final TokenService tokenService;
 
 
-    public SavePassengerWithoutDescriptionCallbackType(RequestService requestService,
-                                                       @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, TokenService tokenService) {
+    public SavePassengerWithoutDescriptionCallbackType(RequestService requestService) {
         this.requestService = requestService;
-        this.tudaSudaTelegramBot = tudaSudaTelegramBot;
-        this.tokenService = tokenService;
     }
 
     @Override
@@ -46,7 +43,8 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
                 SAVE_PASSENGER_WITHOUT_DESCRIPTION, token, callbackQuery.getFrom().getUserName());
         Request passengerRequest =requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
         requestService.savePassenger(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
-        List<Offer> offers = requestService.findDriversByRequestData(passengerRequest);
-        return showSavedRequestWithoutDescription(callbackQuery, passengerRequest,CANCEL_PASSENGER_REQUEST, offers,SUCCESSFUL_REQUEST_SAVING);
+        List<DriverItem> driverItems = requestService.findDriversByRequestData(passengerRequest);
+        return showSavedRequestWithoutDescriptionWithDriverItems(callbackQuery, passengerRequest,CANCEL_PASSENGER_REQUEST,
+                driverItems,SUCCESSFUL_REQUEST_SAVING);
     }
 }

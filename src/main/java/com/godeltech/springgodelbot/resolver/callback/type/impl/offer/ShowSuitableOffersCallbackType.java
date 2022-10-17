@@ -1,7 +1,9 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.DriverItem;
 import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.TransferItem;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -37,22 +39,37 @@ public class ShowSuitableOffersCallbackType implements CallbackType {
         log.info("Get callback : {} type with token : {} by user : {}",
                 Callbacks.SHOW_SUITABLE_OFFERS, token, callbackQuery.getFrom().getUserName());
         Request changeOfferRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
-        List<Offer> requests = changeOfferRequest.getActivity() == Activity.DRIVER ?
-                requestService.findPassengersByRequestData(changeOfferRequest) :
-                requestService.findDriversByRequestData(changeOfferRequest);
+        if(changeOfferRequest.getActivity() == Activity.DRIVER){
+            List<TransferItem> requests = requestService.findPassengersByRequestData(changeOfferRequest);
+            return EditMessageText.builder()
+                    .chatId(callbackQuery.getMessage().getChatId().toString())
+                    .messageId(callbackQuery.getMessage().getMessageId())
+                    .text(getCompletedMessageAnswerWithTransferItems(requests, changeOfferRequest, ""))
+                    .replyMarkup(InlineKeyboardMarkup.builder()
+                            .keyboard(List.of(List.of(
+                                    InlineKeyboardButton.builder()
+                                            .text("Back")
+                                            .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token+SPLITTER+changeOfferRequest.getOfferId())
+                                            .build()
+                            )))
+                            .build())
+                    .build();
+        }else {
+            List<DriverItem> requests =requestService.findDriversByRequestData(changeOfferRequest);
+            return EditMessageText.builder()
+                    .chatId(callbackQuery.getMessage().getChatId().toString())
+                    .messageId(callbackQuery.getMessage().getMessageId())
+                    .text(getCompletedMessageAnswerWithDriverItems(requests, changeOfferRequest, ""))
+                    .replyMarkup(InlineKeyboardMarkup.builder()
+                            .keyboard(List.of(List.of(
+                                    InlineKeyboardButton.builder()
+                                            .text("Back")
+                                            .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token+SPLITTER+changeOfferRequest.getOfferId())
+                                            .build()
+                            )))
+                            .build())
+                    .build();
+        }
 
-        return EditMessageText.builder()
-                .chatId(callbackQuery.getMessage().getChatId().toString())
-                .messageId(callbackQuery.getMessage().getMessageId())
-                .text(getCompletedMessageAnswer(requests, changeOfferRequest, ""))
-                .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboard(List.of(List.of(
-                                InlineKeyboardButton.builder()
-                                        .text("Back")
-                                        .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token+SPLITTER+changeOfferRequest.getOfferId())
-                                        .build()
-                        )))
-                        .build())
-                .build();
     }
 }

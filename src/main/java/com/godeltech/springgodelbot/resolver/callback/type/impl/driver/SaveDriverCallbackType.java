@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.driver;
 
 import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.TransferItem;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.TokenService;
@@ -46,7 +47,7 @@ public class SaveDriverCallbackType implements CallbackType {
                 SAVE_DRIVER_WITHOUT_DESCRIPTION, token, callbackQuery.getFrom().getUserName());
         Request driverRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         requestService.saveDriver(driverRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
-        List<Offer> offers = requestService.findPassengersByRequestData(driverRequest);
-        return showSavedRequestWithoutDescription(callbackQuery, driverRequest,CANCEL_DRIVER_REQUEST, offers,SUCCESSFUL_REQUEST_SAVING);
+        List<TransferItem> offers = requestService.findPassengersByRequestData(driverRequest);
+        return showSavedRequestWithoutDescriptionWithTransferItems(callbackQuery, driverRequest,CANCEL_DRIVER_REQUEST, offers,SUCCESSFUL_REQUEST_SAVING);
     }
 }

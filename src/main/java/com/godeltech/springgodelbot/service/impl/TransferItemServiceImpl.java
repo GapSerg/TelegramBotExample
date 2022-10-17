@@ -4,6 +4,7 @@ import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.mapper.TransferItemMapper;
 import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.model.repository.TransferItemRepository;
+import com.godeltech.springgodelbot.service.ActivityTypeService;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.TransferItemService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class TransferItemServiceImpl implements TransferItemService {
     private final TransferItemRepository transferItemRepository;
     private final TransferItemMapper transferItemMapper;
     private final CityService cityService;
+    private final ActivityTypeService activityTypeService;
 
 
     @Override
@@ -34,7 +36,7 @@ public class TransferItemServiceImpl implements TransferItemService {
         log.info("Find transfer items by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
 
         return secondDate == null ?
-                transferItemRepository.findByFirstDateAndCities(firstDate,cities).stream()
+                transferItemRepository.findByFirstDateAndCities(firstDate, cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
@@ -134,7 +136,8 @@ public class TransferItemServiceImpl implements TransferItemService {
     public TransferItem save(PassengerRequest passengerRequest, User user, Message message) {
         log.info("Save passenger request : {}", passengerRequest);
         List<City> cities = cityService.findCitiesByName(passengerRequest.getCities(), message, user);
-        TransferItem transferItem = transferItemMapper.mapToTransferItem(passengerRequest, user, cities);
+        ActivityType activityType = activityTypeService.getActivityType(passengerRequest.getActivity(), message, user);
+        TransferItem transferItem = transferItemMapper.mapToTransferItem(passengerRequest, user, cities, activityType);
         return transferItemRepository.save(transferItem);
     }
 
