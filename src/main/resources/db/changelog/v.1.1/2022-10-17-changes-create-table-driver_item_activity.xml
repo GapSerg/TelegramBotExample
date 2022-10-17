@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="2022-10-11-changes-create-table-driver_item_activity" author="a.miachyn">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="driver_item_activity"/>
+            </not>
+        </preConditions>
+        <createTable tableName="driver_item_activity">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="driver_item_id" type="BIGSERIAL">
+                <constraints foreignKeyName="fk_driver_item_id_driver_item_activity" references="driver_item(id)"/>
+            </column>
+            <column name="activity_id" type="SERIAL">
+                <constraints foreignKeyName="fk_activity_id_driver_item_activity" references="activity(id)"/>
+            </column>
+        </createTable>
+        <sql>INSERT INTO driver_item_activity (driver_item_id, activity_id)
+             SELECT driver_item.id, (SELECT activity.id FROM activity WHERE name = 'PASSENGER')
+             FROM driver_item</sql>
+        <sql>INSERT INTO driver_item_activity (driver_item_id, activity_id)
+             SELECT driver_item.id, (SELECT activity.id FROM activity WHERE name = 'PARCEL')
+             FROM driver_item</sql>
+    </changeSet>
+</databaseChangeLog>

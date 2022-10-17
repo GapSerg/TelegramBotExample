@@ -1,8 +1,6 @@
 package com.godeltech.springgodelbot.model.repository;
 
-import com.godeltech.springgodelbot.model.entity.Activity;
-import com.godeltech.springgodelbot.model.entity.Offer;
-import com.godeltech.springgodelbot.model.entity.TripOffer;
+import com.godeltech.springgodelbot.model.entity.DriverItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface TripOfferRepository extends JpaRepository<TripOffer, Long> {
+public interface DriverItemRepository extends JpaRepository<DriverItem, Long> {
 
-    List<TripOffer> findByUserEntityId(Long id);
+    List<DriverItem> findByUserEntityId(Long id);
 
     @Query(value = "SELECT * FROM trip_offer o1 JOIN trip_offer_activity toa on o1.id = toa.trip_offer_id " +
             "JOIN activity a on a.id = toa.activity_id" +
@@ -26,8 +24,8 @@ public interface TripOfferRepository extends JpaRepository<TripOffer, Long> {
             "oc.trip_offer_id JOIN city c ON oc.city_id=c.id WHERE c.name IN :cities " +
             "GROUP BY o2.id " +
             "HAVING COUNT(o2.id)>= 2)", nativeQuery = true)
-    Set<TripOffer> findByDatesAndCitiesAndActivity(LocalDate secondDate, LocalDate firstDate, String activity,
-                                               List<String> cities);
+    Set<DriverItem> findByDatesAndCitiesAndActivity(LocalDate secondDate, LocalDate firstDate, String activity,
+                                                    List<String> cities);
 
     @Query(value = "SELECT * FROM trip_offer o1 JOIN trip_offer_activity toa on o1.id = toa.trip_offer_id" +
             " JOIN activity a on a.id = toa.activity_id" +
@@ -39,8 +37,8 @@ public interface TripOfferRepository extends JpaRepository<TripOffer, Long> {
             "oc.trip_offer_id JOIN city c ON oc.city_id=c.id WHERE c.name IN :cities " +
             "GROUP BY o2.id " +
             "HAVING COUNT(o2.id)>= 2)", nativeQuery = true)
-    Set<TripOffer> findByFirstDateAndCitiesAndActivity(LocalDate firstDate, String activity,
-                                                   List<String> cities);
+    Set<DriverItem> findByFirstDateAndCitiesAndActivity(LocalDate firstDate, String activity,
+                                                        List<String> cities);
 
     void deleteOffersBySecondDateBeforeAndSecondDateIsNotNull(LocalDate date);
 

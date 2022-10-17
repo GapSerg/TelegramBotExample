@@ -7,10 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface TripOfferService {
-    TripOffer save(DriverRequest driverRequest, User user, Message message);
+public interface DriverItemService {
+    DriverItem save(DriverRequest driverRequest, User user, Message message);
 
-    List<TripOffer> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
+    List<DriverItem> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
             (LocalDate secondDate, LocalDate firstDate, List<String> cities);
 
     List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user);

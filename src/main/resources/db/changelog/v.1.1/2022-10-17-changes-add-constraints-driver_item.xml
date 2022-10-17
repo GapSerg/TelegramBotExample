@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <changeSet id="2022-10-17-changes-create-table-trip_offer" author="a.miachyn">
-        <addNotNullConstraint tableName="trip_offer" columnName="user_id"/>
-        <addNotNullConstraint tableName="trip_offer" columnName="first_date"/>
+        <addNotNullConstraint tableName="driver_item" columnName="user_id"/>
+        <addNotNullConstraint tableName="driver_item" columnName="first_date"/>
     </changeSet>
 </databaseChangeLog>

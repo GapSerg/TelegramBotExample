@@ -3,22 +3,22 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
-    <changeSet id="2022-10-17-changes-create-table-trip_offer" author="a.miachyn">
+    <changeSet id="2022-10-17-changes-create-table-driver_item" author="a.miachyn">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="trip_offer"/>
+                <tableExists tableName="driver_item"/>
             </not>
         </preConditions>
         <sql>SELECT ti.id, ti.user_id, ti.first_date, ti.second_date, ti.description
-             INTO trip_offer
+             INTO driver_item
              FROM transfer_item ti
                       JOIN activity a
                            ON ti.activity_id = a.id
              WHERE a.name = 'DRIVER'</sql>
-        <addAutoIncrement tableName="trip_offer" columnName="id"/>
-        <addPrimaryKey tableName="trip_offer" columnNames="id"/>
-        <addForeignKeyConstraint baseTableName="trip_offer" baseColumnNames="user_id"
-                                 constraintName="fk_trip_offer_user"
+        <addAutoIncrement tableName="driver_item" columnName="id"/>
+        <addPrimaryKey tableName="driver_item" columnNames="id"/>
+        <addForeignKeyConstraint baseTableName="driver_item" baseColumnNames="user_id"
+                                 constraintName="fk_driver_item_user"
                                  referencedTableName="telegram_user"
                                  referencedColumnNames="id"/>
     </changeSet>

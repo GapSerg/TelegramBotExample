@@ -14,7 +14,7 @@ import java.util.Set;
 @Repository
 public interface TransferItemRepository extends JpaRepository<TransferItem, Long> {
 
-    List<TransferItem> findByUserEntityIdAndActivity(Long id, Activity activity);
+    List<TransferItem> findByUserEntityIdAndActivityType_Name(Long id, Activity activity);
 
     @Query(value = "SELECT * FROM transfer_item o1 JOIN activity a on a.id = o1.activity_id" +
             " WHERE o1.user_id IN (SELECT id from telegram_user WHERE is_valid = true)" +

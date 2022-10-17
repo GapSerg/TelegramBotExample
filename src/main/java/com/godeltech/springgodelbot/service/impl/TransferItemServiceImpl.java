@@ -48,7 +48,7 @@ public class TransferItemServiceImpl implements TransferItemService {
     @Override
     public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user) {
         log.info("Find transfer item by id:{} and activity :{}", id, activity);
-        return transferItemRepository.findByUserEntityIdAndActivity(id, activity).stream()
+        return transferItemRepository.findByUserEntityIdAndActivityType_Name(id, activity).stream()
                 .peek(item -> item.setCities(cityService.findCitiesByOfferId(item.getId())))
                 .map(transferItemMapper::mapToChangeOfferRequest)
                 .collect(Collectors.toList());

@@ -20,7 +20,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TripOffer {
+public class DriverItem {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;

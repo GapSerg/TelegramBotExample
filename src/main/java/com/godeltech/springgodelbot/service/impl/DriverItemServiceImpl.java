@@ -1,11 +1,11 @@
 package com.godeltech.springgodelbot.service.impl;
 
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
-import com.godeltech.springgodelbot.mapper.TripOfferMapper;
+import com.godeltech.springgodelbot.mapper.DriverItemMapper;
 import com.godeltech.springgodelbot.model.entity.*;
-import com.godeltech.springgodelbot.model.repository.TripOfferRepository;
+import com.godeltech.springgodelbot.model.repository.DriverItemRepository;
 import com.godeltech.springgodelbot.service.CityService;
-import com.godeltech.springgodelbot.service.TripOfferService;
+import com.godeltech.springgodelbot.service.DriverItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,32 +21,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional(readOnly = true)
-public class TripOfferServiceImpl implements TripOfferService {
+public class DriverItemServiceImpl implements DriverItemService {
 
-    private final TripOfferRepository tripOfferRepository;
-    private final TripOfferMapper tripOfferMapper;
+    private final DriverItemRepository driverItemRepository;
+    private final DriverItemMapper driverItemMapper;
     private final CityService cityService;
 
     @Override
     @Transactional
-    public TripOffer save(DriverRequest driverRequest, User user, Message message) {
+    public DriverItem save(DriverRequest driverRequest, User user, Message message) {
         log.info("Save supplier by: {}", driverRequest);
         List<City> cities = cityService.findCitiesByName(driverRequest.getCities(), message, user);
-        TripOffer offer = tripOfferMapper.mapToOffer(driverRequest, user, cities);
-        return tripOfferRepository.save(offer);
+        DriverItem offer = driverItemMapper.mapToOffer(driverRequest, user, cities);
+        return driverItemRepository.save(offer);
     }
 
 
     @Override
-    public List<TripOffer> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
+    public List<DriverItem> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
             (LocalDate secondDate, LocalDate firstDate, List<String> cities) {
         log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         return secondDate == null ?
-                tripOfferRepository.findByFirstDateAndCitiesAndActivity(firstDate, Activity.DRIVER.name(), cities).stream()
+                driverItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, Activity.DRIVER.name(), cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
-                tripOfferRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), cities).stream()
+                driverItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, Activity.DRIVER.name(), cities).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
@@ -56,40 +56,40 @@ public class TripOfferServiceImpl implements TripOfferService {
     @Override
     public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user) {
         log.info("Find offers by id:{} and activity :{}", id, activity);
-        var list = tripOfferRepository.findByUserEntityId(id);
+        var list = driverItemRepository.findByUserEntityId(id);
 
         return list.stream()
                 .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
-                .map(tripOfferMapper::mapToChangeOfferRequest)
+                .map(driverItemMapper::mapToChangeOfferRequest)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ChangeOfferRequest getById(Long offerId, Message message, User user) {
         log.info("Find offer by id : {}", offerId);
-       return tripOfferRepository.findById(offerId)
+       return driverItemRepository.findById(offerId)
                 .map(offer -> {
                     List<City> cities = cityService.findCitiesByOfferId(offerId);
                     offer.setCities(cities);
-                    return tripOfferMapper.mapToChangeOfferRequest(offer);
+                    return driverItemMapper.mapToChangeOfferRequest(offer);
                 })
-                .orElseThrow(() -> new ResourceNotFoundException(TripOffer.class, "id", offerId, message, user));
+                .orElseThrow(() -> new ResourceNotFoundException(DriverItem.class, "id", offerId, message, user));
     }
 
     @Override
     @Transactional
     public void deleteById(Long offerId, Message message, User user) {
         log.info("Delete driver by id : {}", offerId);
-        TripOffer tripOffer = getTripOfferById(offerId, message, user);
-        tripOfferRepository.delete(tripOffer);
+        DriverItem driverItem = getTripOfferById(offerId, message, user);
+        driverItemRepository.delete(driverItem);
     }
 
-    private TripOffer getTripOfferById(Long offerId, Message message, User user) {
+    private DriverItem getTripOfferById(Long offerId, Message message, User user) {
         log.info("Get offer by id: {}", offerId);
-        TripOffer tripOffer = tripOfferRepository.findById(offerId)
-                .orElseThrow(() -> new ResourceNotFoundException(TripOffer.class, "id", offerId, message, user));
-        tripOffer.setCities(cityService.findCitiesByOfferId(offerId));
-        return tripOffer;
+        DriverItem driverItem = driverItemRepository.findById(offerId)
+                .orElseThrow(() -> new ResourceNotFoundException(DriverItem.class, "id", offerId, message, user));
+        driverItem.setCities(cityService.findCitiesByOfferId(offerId));
+        return driverItem;
     }
 
     @Override
@@ -97,10 +97,10 @@ public class TripOfferServiceImpl implements TripOfferService {
     public void updateCities(ChangeOfferRequest changeOfferRequest, Message message, User user) {
         log.info("Update cities of tripOffer with id : {} and cities : {} ", changeOfferRequest.getOfferId(),
                 changeOfferRequest.getCities());
-        TripOffer tripOffer = getTripOfferById(changeOfferRequest.getOfferId(), message, user);
+        DriverItem driverItem = getTripOfferById(changeOfferRequest.getOfferId(), message, user);
         List<City> cities = cityService.findCitiesByName(changeOfferRequest.getCities(), message, user);
-        tripOffer.setCities(cities);
-        tripOfferRepository.save(tripOffer);
+        driverItem.setCities(cities);
+        driverItemRepository.save(driverItem);
     }
 
     @Override
@@ -108,39 +108,39 @@ public class TripOfferServiceImpl implements TripOfferService {
     public void updateDatesOfTripOffer(ChangeOfferRequest changeOfferRequest, Message message, User user) {
         log.info("Update date of driver with first date : {} , and second date : {} ", changeOfferRequest.getFirstDate()
                 , changeOfferRequest.getSecondDate());
-        TripOffer tripOffer= getTripOfferById(changeOfferRequest.getOfferId(), message, user);
-        tripOffer.setFirstDate(changeOfferRequest.getFirstDate());
-        tripOffer.setSecondDate(changeOfferRequest.getSecondDate() == null ?
+        DriverItem driverItem = getTripOfferById(changeOfferRequest.getOfferId(), message, user);
+        driverItem.setFirstDate(changeOfferRequest.getFirstDate());
+        driverItem.setSecondDate(changeOfferRequest.getSecondDate() == null ?
                 null :
                 changeOfferRequest.getSecondDate());
-        tripOfferRepository.save(tripOffer);
+        driverItemRepository.save(driverItem);
     }
 
     @Override
     @Transactional
     public void updateDescriptionOfTripOffer(ChangeOfferRequest changeOfferRequest, Message message, User user) {
         log.info("Update description of driver with id : {}", changeOfferRequest.getOfferId());
-        TripOffer tripOffer = getTripOfferById(changeOfferRequest.getOfferId(), message, user);
-        tripOffer.setDescription(changeOfferRequest.getDescription());
-        tripOfferRepository.save(tripOffer);
+        DriverItem driverItem = getTripOfferById(changeOfferRequest.getOfferId(), message, user);
+        driverItem.setDescription(changeOfferRequest.getDescription());
+        driverItemRepository.save(driverItem);
     }
 
     @Override
     @Transactional
     public void deleteBySecondDateAfter(LocalDate date) {
         log.info("Delete drivers whose second date is earlier than : {}", date);
-        tripOfferRepository.deleteOffersBySecondDateBeforeAndSecondDateIsNotNull(date);
+        driverItemRepository.deleteOffersBySecondDateBeforeAndSecondDateIsNotNull(date);
     }
 
     @Override
     @Transactional
     public void deleteByFirstDateAfterWhereSecondDateIsNull(LocalDate date) {
         log.info("Delete offers whose first date is earlier than :{} and second date is null", date);
-        tripOfferRepository.deleteOffersByFirstDateBeforeAndSecondDateIsNull(date);
+        driverItemRepository.deleteOffersByFirstDateBeforeAndSecondDateIsNull(date);
     }
 
 
-    private boolean checkRoute(List<String> cities, TripOffer offer) {
+    private boolean checkRoute(List<String> cities, DriverItem offer) {
         boolean result = false;
 
         int difference = cities.size() < offer.getCities().size() ?
