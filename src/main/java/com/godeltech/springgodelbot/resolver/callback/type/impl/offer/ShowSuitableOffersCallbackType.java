@@ -20,6 +20,7 @@ import java.util.List;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_OFFER;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_ROUTE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
 
 @Component
 @RequiredArgsConstructor

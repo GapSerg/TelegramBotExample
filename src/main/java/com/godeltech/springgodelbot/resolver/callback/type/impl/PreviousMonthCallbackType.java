@@ -17,8 +17,7 @@ import java.time.LocalDate;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createCalendar;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @Slf4j
@@ -47,7 +46,8 @@ public class PreviousMonthCallbackType implements CallbackType {
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(chosenDate == null ?
                                 createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), token) :
-                                createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), chosenDate, YES, token))
+                                createCalendar(localDate, callback.ordinal(), cancelCallback.ordinal(), chosenDate,
+                                        CORRECT_MARKER, token))
                         .build())
                 .build();
 

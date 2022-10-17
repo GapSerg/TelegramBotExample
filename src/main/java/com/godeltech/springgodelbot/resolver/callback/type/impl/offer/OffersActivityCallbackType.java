@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.OFFERS_ACTIVITY;
-import static com.godeltech.springgodelbot.util.CallbackUtil.SPLITTER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
 
 @Component
 @Slf4j

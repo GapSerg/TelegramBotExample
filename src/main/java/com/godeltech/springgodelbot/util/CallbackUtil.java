@@ -28,16 +28,6 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 public class CallbackUtil {
 
-    public static final String SPLITTER = "&";
-    public static final String KRESTIK = "❌";
-    public static final String MARKER = "✅";
-    public static final String YES = "✅";
-    public static final String MENU = "MENU";
-    public static final String HAVE_NO_USERNAME = "You don't have a username, please add it in your personal settings.When you deal with it,  just press the button";
-    public static final String USERNAME_IS_ADDED = "I've added my username";
-    public static final String EMPTY = " ";
-
-
     public static class RouteUtil {
 
         public static EditMessageText createRouteEditMessageText(List<City> cities, Integer callback, Integer cancelRequestCallback,
@@ -46,12 +36,6 @@ public class CallbackUtil {
             for (int i = 0; i < cities.size(); ) {
                 i = addCitiesToButtons(cities, callback, token, buttons, i);
             }
-//            cities.forEach(route -> buttons.add(List.of(
-//                    InlineKeyboardButton.builder()
-//                            .text(route.getName())
-//                            .callbackData(callback + SPLITTER + token + SPLITTER + route.getId())
-//                            .build()
-//            )));
             buttons.add(List.of(getCancelButton(cancelRequestCallback, token, "Back to menu")));
             return getEditTextMessageForRoute(message, buttons, messageText);
         }
@@ -135,7 +119,7 @@ public class CallbackUtil {
 
         private static InlineKeyboardButton makeMarkedRouteButton(City city, Integer cancelCallback, String token, int index) {
             return InlineKeyboardButton.builder()
-                    .text(getStartPhrase(index) + city.getName() + MARKER)
+                    .text(getStartPhrase(index) + city.getName() + CORRECT_MARKER)
                     .callbackData(cancelCallback + SPLITTER + token + SPLITTER + city.getId())
                     .build();
         }
@@ -183,7 +167,8 @@ public class CallbackUtil {
     public static class DateUtil {
         public static EditMessageText createEditMessageForSecondDate(CallbackQuery callbackQuery, LocalDate firstDate,
                                                                      String text, Integer callback, Integer cancelRequestCallback, String token) {
-            List<List<InlineKeyboardButton>> buttons = createCalendar(firstDate, callback, cancelRequestCallback, firstDate, YES, token);
+            List<List<InlineKeyboardButton>> buttons = createCalendar(firstDate, callback, cancelRequestCallback,
+                    firstDate, CORRECT_MARKER, token);
             return EditMessageText.builder()
                     .text(text)
                     .messageId(callbackQuery.getMessage().getMessageId())
@@ -198,7 +183,8 @@ public class CallbackUtil {
                                                                      String textMessage, Integer callback, Integer cancelRequestCallback,
                                                                      LocalDate secondDate, String token) {
             LocalDate date = LocalDate.now();
-            List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback, firstDate, YES, secondDate, YES, token);
+            List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback,
+                    firstDate, CORRECT_MARKER, secondDate, CORRECT_MARKER, token);
             return EditMessageText.builder()
                     .text(textMessage)
                     .messageId(callbackQuery.getMessage().getMessageId())
@@ -260,7 +246,7 @@ public class CallbackUtil {
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
-                            .keyboard(createCalendar(date, callback, cancelRequestCallback, incorrectDate, KRESTIK, token))
+                            .keyboard(createCalendar(date, callback, cancelRequestCallback, incorrectDate, INCORRECT_MARKER, token))
                             .build())
                     .build();
         }
@@ -538,9 +524,13 @@ public class CallbackUtil {
         }
 
         public static String getDatesInf(LocalDate firstDate, LocalDate secondDate) {
-            return secondDate == null ?
-                    String.format(CHOSEN_DATE, firstDate) :
-                    String.format(CHOSEN_DATES, firstDate, secondDate);
+            if (firstDate == null) {
+                return NO_CHOSEN_DATE;
+            } else if (secondDate == null) {
+                return String.format(CHOSEN_DATE, firstDate);
+            } else {
+                return String.format(CHOSEN_DATES, firstDate, secondDate);
+            }
         }
     }
 

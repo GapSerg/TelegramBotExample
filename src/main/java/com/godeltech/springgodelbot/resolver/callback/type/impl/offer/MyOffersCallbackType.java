@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
 
 @Component
 @RequiredArgsConstructor

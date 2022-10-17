@@ -17,10 +17,10 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createEditSendMessageForRoutes;
-import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CURRENT_ROUTE_OF_OFFER;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getOffersView;
+import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
 
 @Component
 @RequiredArgsConstructor
