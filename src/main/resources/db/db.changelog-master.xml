@@ -27,4 +27,5 @@
     <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-create-table-trip_offer_activity.xml"/>
     <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-create-table-trip_offer_city.xml"/>
     <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-clear-transfer_item-and-transfer_item_city-from-drivers.xml"/>
+    <include file="classpath:db/changelog/v.1.1/2022-10-17-changes-add-constraints-trip_offer.xml"/>
 </databaseChangeLog>
