@@ -1,6 +1,6 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.entity.DriverItem;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.model.entity.TransferItem;

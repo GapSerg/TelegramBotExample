@@ -1,7 +1,7 @@
 package com.godeltech.springgodelbot.util;
 
 import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
-import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;

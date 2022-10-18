@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.service.impl;
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.mapper.TransferItemMapper;
 import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.repository.TransferItemRepository;
 import com.godeltech.springgodelbot.service.ActivityTypeService;
 import com.godeltech.springgodelbot.service.CityService;

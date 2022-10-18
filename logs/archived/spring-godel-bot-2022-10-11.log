@@ -2035,7 +2035,7 @@ Caused by: liquibase.exception.ValidationFailedException: Validation Failed:
 2022-10-11 20:00:34,453 ERROR org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-2] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.NullPointerException] with root cause
 java.lang.NullPointerException: null
 	at java.base/java.util.Optional.orElseGet(Optional.java:369)
-	at com.godeltech.springgodelbot.model.entity.PostgreSqlEnumType.nullSafeSet(PostgreSqlEnumType.java:19)
+	at com.godeltech.springgodelbot.model.entity.types.PostgreSqlEnumType.nullSafeSet(PostgreSqlEnumType.java:19)
 	at org.hibernate.type.CustomType.nullSafeSet(CustomType.java:160)
 	at org.hibernate.persister.entity.AbstractEntityPersister.dehydrate(AbstractEntityPersister.java:3073)
 	at org.hibernate.persister.entity.AbstractEntityPersister.dehydrate(AbstractEntityPersister.java:3048)

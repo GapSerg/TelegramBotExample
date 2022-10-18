@@ -12,7 +12,7 @@
         <sql>SELECT tic.id, tic.transfer_item_id, tic.city_id
              INTO driver_item_city
              FROM transfer_item_city tic
-             WHERE tic.transfer_item_id IN (SELECT trip_offer.id FROM trip_offer)</sql>
+             WHERE tic.transfer_item_id IN (SELECT driver_item.id FROM driver_item)</sql>
         <renameColumn tableName="driver_item_city" oldColumnName="transfer_item_id" newColumnName="driver_item_id"/>
         <addAutoIncrement tableName="driver_item_city" columnName="id"/>
         <addPrimaryKey tableName="driver_item_city" columnNames="id"/>

@@ -2,6 +2,7 @@ package com.godeltech.springgodelbot.util;
 
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -596,7 +597,7 @@ public class CallbackUtil {
                                 .build())).build())
                 .build();
     }
-    
+
 
     public static String getListOfDriverItemsForRequest(List<DriverItem> driverItems) {
         return driverItems.stream()

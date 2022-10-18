@@ -8,7 +8,7 @@
 //import com.github.database.rider.junit5.api.DBRider;
 //import com.godeltech.springgodelbot.SpringGodelBotApplication;
 //import com.godeltech.springgodelbot.initializer.DatabaseContainerInitializer;
-//import com.godeltech.springgodelbot.model.entity.Activity;
+//import com.godeltech.springgodelbot.model.entity.enums.Activity;
 //import com.godeltech.springgodelbot.model.request.ChangeSupplierRequest;
 //import com.godeltech.springgodelbot.model.request.ConsumerRequest;
 //import com.godeltech.springgodelbot.model.request.SupplierRequest;

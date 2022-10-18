@@ -6,7 +6,7 @@
     <changeSet id="2022-10-14-changes-update-table-request" author="a.miachyn">
        <addColumn tableName="request">
            <column name = "suitable_activities"
-                   type="type_of_request[]"/>
+                   type="activity_type[]"/>
        </addColumn>
     </changeSet>
 </databaseChangeLog>

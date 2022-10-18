@@ -1,4 +1,4 @@
-package com.godeltech.springgodelbot.model.entity;
+package com.godeltech.springgodelbot.model.entity.types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

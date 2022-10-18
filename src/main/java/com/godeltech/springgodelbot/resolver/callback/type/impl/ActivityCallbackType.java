@@ -2,7 +2,7 @@ package com.godeltech.springgodelbot.resolver.callback.type.impl;
 
 import com.godeltech.springgodelbot.model.entity.DriverRequest;
 import com.godeltech.springgodelbot.model.entity.PassengerRequest;
-import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;

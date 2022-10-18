@@ -1,6 +1,6 @@
 //package com.godeltech.springgodelbot.unit.resolver.callback.type.impl;
 //
-//import com.godeltech.springgodelbot.model.entity.Activity;
+//import com.godeltech.springgodelbot.model.entity.enums.Activity;
 //import com.godeltech.springgodelbot.model.entity.Route;
 //import com.godeltech.springgodelbot.model.request.ConsumerRequest;
 //import com.godeltech.springgodelbot.model.request.SupplierRequest;

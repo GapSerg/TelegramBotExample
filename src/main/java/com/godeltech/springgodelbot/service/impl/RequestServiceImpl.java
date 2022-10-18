@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.service.impl;
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
 import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.repository.RequestRepository;
 import com.godeltech.springgodelbot.service.DriverItemService;
 import com.godeltech.springgodelbot.service.RequestService;

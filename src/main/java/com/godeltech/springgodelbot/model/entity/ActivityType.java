@@ -1,5 +1,6 @@
 package com.godeltech.springgodelbot.model.entity;
 
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

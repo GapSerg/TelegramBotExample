@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.service;
 
 import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 

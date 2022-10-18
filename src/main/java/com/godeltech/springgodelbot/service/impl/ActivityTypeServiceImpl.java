@@ -1,7 +1,7 @@
 package com.godeltech.springgodelbot.service.impl;
 
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
-import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.entity.ActivityType;
 import com.godeltech.springgodelbot.model.repository.ActivityTypeRepository;
 import com.godeltech.springgodelbot.service.ActivityTypeService;

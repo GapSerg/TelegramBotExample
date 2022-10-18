@@ -1,7 +1,7 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
-import com.godeltech.springgodelbot.model.entity.Activity;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;

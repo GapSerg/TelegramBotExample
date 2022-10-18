@@ -1,9 +1,13 @@
 package com.godeltech.springgodelbot.model.entity;
 
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
+import com.godeltech.springgodelbot.model.entity.types.PostgreSqlEnumType;
+import com.vladmihalcea.hibernate.type.array.EnumArrayType;
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.*;
 
 import javax.persistence.CascadeType;
@@ -16,11 +20,15 @@ import java.util.List;
 @Entity
 @TypeDefs({
         @TypeDef(name = "postgreSqlEnumType", typeClass = PostgreSqlEnumType.class),
-        @TypeDef(name = "postgreSqlListType", typeClass = ListArrayType.class)
+        @TypeDef(name = "postgreSqlListType", typeClass = ListArrayType.class),
+        @TypeDef(name= "postgreSqlEnumArrayType",typeClass = EnumArrayType.class, parameters = {
+                @Parameter(name = EnumArrayType.SQL_ARRAY_TYPE,
+                        value = "activity_type")
+        })
 })
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorColumn(name = "request_type",columnDefinition = "type_of_Request")
+@DiscriminatorColumn(name = "request_type", columnDefinition = "type_of_Request")
 public abstract class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +50,8 @@ public abstract class Request {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "token_id", referencedColumnName = "id")
     private Token token;
-    @Column(columnDefinition = "type_of_reqst[]")
-    @Type(type = "postgreSqlListType")
+    @Column(columnDefinition = "activity_type[]")
+    @Type(type = "postgreSqlEnumArrayType")
     private List<Activity> suitableActivities;
 
     @Enumerated(EnumType.STRING)
