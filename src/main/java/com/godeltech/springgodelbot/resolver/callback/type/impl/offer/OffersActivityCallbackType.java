@@ -17,13 +17,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.MAIN_MENU_WITHOUT_REQUEST;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.OFFERS_ACTIVITY;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
-import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @Slf4j
 public class OffersActivityCallbackType implements CallbackType {
+
     private final TokenService tokenService;
     private final UserService userService;
 
@@ -50,12 +52,16 @@ public class OffersActivityCallbackType implements CallbackType {
                         .callbackData(Callbacks.MY_OFFERS.ordinal() + SPLITTER + token + SPLITTER + activity)
                         .build())
                 .collect(Collectors.toList());
+        List<InlineKeyboardButton> menuButton = List.of(InlineKeyboardButton.builder()
+                .text(MENU)
+                .callbackData(MAIN_MENU_WITHOUT_REQUEST.ordinal() + SPLITTER + token)
+                .build());
         return EditMessageText.builder()
-                .text("Choose the role you are interested in")
+                .text(CHOOSE_THE_ROLE)
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .replyMarkup(InlineKeyboardMarkup.builder()
-                        .keyboard(List.of(buttons))
+                        .keyboard(List.of(buttons, menuButton))
                         .build())
                 .build();
     }

@@ -37,7 +37,7 @@ public class ConstantUtil {
     public static final String CHOOSE_THE_SUITABLE_ACTIVITIES = "Role : %s \nSelected route : %s \nPlease choose the activities you are ready to take.\n";
     public static final String CHOSE_ONE_MORE_SUITABLE_ACTIVITY = "Role : %s \nSelected route : %s \nYou can take : %s \nPlease choose the activities you are ready to take.\n If you press the reserved button, we'll cancel it";
     public static final String WRITE_ADD_DESCRIPTION_FOR_PASSENGER = "Post the description or save the request without description";
-
+    public static final String CHOOSE_THE_ROLE = "Choose the role you are interested in";
     public static final String WRITE_ADD_DESCRIPTION_FOR_PARCEL = "Post the description of parcel or press the button and cancel saving request";
     public static final String WRITE_ADD_DESCRIPTION_FOR_DRIVER = "Post the description or save the trip without description";
     public static final String SUCCESSFUL_REQUEST_SAVING = "We successful saved your request\uD83D\uDC4D.\n";

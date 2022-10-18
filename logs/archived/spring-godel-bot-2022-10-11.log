@@ -167,7 +167,7 @@
 2022-10-11 11:37:31,106 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-10] Income message with token :d74c7893dad42e6464a928
 2022-10-11 11:37:31,995 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-1] Callback with type :MY_OFFERS and activity : DRIVER and token: d74c7893dad42e6464a928
 2022-10-11 11:37:32,002 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-1] Find offers by id:834450967 and activity :DRIVER
-2022-10-11 11:37:33,034 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type
+2022-10-11 11:37:33,034 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type
 2022-10-11 11:37:33,035 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group?
 2022-10-11 11:37:33,112 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check existing of user by id: 834450967
 2022-10-11 11:37:33,119 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Delete token from messages : d74c7893dad42e6464a928
@@ -1849,7 +1849,7 @@ Caused by: liquibase.exception.ValidationFailedException: Validation Failed:
 2022-10-11 19:44:05,580 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Update date of offer with first date : 2022-11-02 , and second date : 2022-11-05 
 2022-10-11 19:44:05,580 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Get offer by id: 5
 2022-10-11 19:44:05,595 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Find drivers by first date :2022-11-02 and second date:2022-11-05 with cities:[GDANSK, BREST]
-2022-10-11 19:44:09,366 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type
+2022-10-11 19:44:09,366 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type
 2022-10-11 19:44:09,367 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group?
 2022-10-11 19:44:09,461 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
 2022-10-11 19:44:09,469 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-1] Delete token from messages : 494982ac36743f5fb07dc9
@@ -1858,7 +1858,7 @@ Caused by: liquibase.exception.ValidationFailedException: Validation Failed:
   Detail: Key (id)=(494982ac36743f5fb07dc9) is still referenced from table "request".
 2022-10-11 19:44:09,483 INFO org.hibernate.engine.jdbc.batch.internal.AbstractBatchImpl [http-nio-5000-exec-1] HHH000010: On release of batch it still contained JDBC statements
 2022-10-11 19:44:09,489 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] could not execute statement; SQL [n/a]; constraint [fk_request_token]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
-2022-10-11 19:44:24,768 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type
+2022-10-11 19:44:24,768 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type
 2022-10-11 19:44:24,770 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group?
 2022-10-11 19:44:24,857 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check existing of user by id: 834450967
 2022-10-11 19:44:24,864 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Delete token from messages : 494982ac36743f5fb07dc9
@@ -1908,7 +1908,7 @@ Caused by: liquibase.exception.ValidationFailedException: Validation Failed:
 2022-10-11 19:46:33,310 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-10-11 19:46:33,310 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
 2022-10-11 19:46:33,313 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 3 ms
-2022-10-11 19:46:33,489 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type
+2022-10-11 19:46:33,489 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type
 2022-10-11 19:46:33,501 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group?
 2022-10-11 19:46:33,631 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
 2022-10-11 19:46:33,667 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Get request by token id : 494982ac36743f5fb07dc9
@@ -4379,7 +4379,7 @@ org.postgresql.util.PSQLException: ERROR: relation "request" does not exist
 2022-10-11 20:20:04,471 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-3] Callback with type :MY_OFFERS and activity : PASSENGER and token: d04975a19dba843ff1375f
 2022-10-11 20:20:04,476 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-3] Check request by tokenId :d04975a19dba843ff1375f
 2022-10-11 20:20:04,517 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-3] Find offers by id:834450967 and activity :PASSENGER
-2022-10-11 20:20:06,506 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type
+2022-10-11 20:20:06,506 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type
 2022-10-11 20:20:06,517 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-4] Is he member of group?
 2022-10-11 20:20:06,647 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Check existing of user by id: 834450967
 2022-10-11 20:20:06,688 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97)
@@ -5506,7 +5506,7 @@ org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique co
 2022-10-11 20:23:05,508 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Get offer by id: 1
 2022-10-11 20:23:05,530 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Find passengers by first date :2022-11-02 and second date:null with cities:[WROCLAW, BREST, GRODNO]
 2022-10-11 20:23:05,560 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-7] Delete token from messages : 3a486d9051a0d50f0bb149
-2022-10-11 20:23:15,329 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type
+2022-10-11 20:23:15,329 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type
 2022-10-11 20:23:15,341 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group?
 2022-10-11 20:23:15,446 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Check existing of user by id: 834450967
 2022-10-11 20:23:15,458 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Get request by token id : 3a486d9051a0d50f0bb149
@@ -5517,7 +5517,7 @@ org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique co
 2022-10-11 20:23:18,345 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-10] Callback with type :MY_OFFERS and activity : PASSENGER and token: a3470bafae387d27d6b18d
 2022-10-11 20:23:18,350 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Check request by tokenId :a3470bafae387d27d6b18d
 2022-10-11 20:23:18,383 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Find offers by id:834450967 and activity :PASSENGER
-2022-10-11 20:23:19,644 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type
+2022-10-11 20:23:19,644 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type
 2022-10-11 20:23:19,645 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group?
 2022-10-11 20:23:19,738 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
 2022-10-11 20:23:19,746 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Get request by token id : a3470bafae387d27d6b18d
@@ -5549,7 +5549,7 @@ org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique co
 2022-10-11 20:23:31,696 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-9] Update date of offer with first date : 2022-11-02 , and second date : 2022-11-03 
 2022-10-11 20:23:31,697 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-9] Get offer by id: 1
 2022-10-11 20:23:31,722 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-9] Find passengers by first date :2022-11-02 and second date:2022-11-03 with cities:[WROCLAW, BREST, GRODNO]
-2022-10-11 20:23:34,886 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type
+2022-10-11 20:23:34,886 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type
 2022-10-11 20:23:34,887 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Is he member of group?
 2022-10-11 20:23:34,960 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-10] Check existing of user by id: 834450967
 2022-10-11 20:23:34,966 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Get request by token id : 3b4c1c90a10b0f51923cb0
@@ -5560,7 +5560,7 @@ org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique co
 2022-10-11 20:23:44,566 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-2] Callback with type :MY_OFFERS and activity : PASSENGER and token: 7b447383ed9474541d7650
 2022-10-11 20:23:44,570 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Check request by tokenId :7b447383ed9474541d7650
 2022-10-11 20:23:44,620 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-2] Find offers by id:834450967 and activity :PASSENGER
-2022-10-11 20:23:45,943 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type
+2022-10-11 20:23:45,943 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type
 2022-10-11 20:23:45,943 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-4] Is he member of group?
 2022-10-11 20:23:46,314 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Check existing of user by id: 834450967
 2022-10-11 20:23:46,341 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Get request by token id : 7b447383ed9474541d7650
@@ -5789,7 +5789,7 @@ org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique co
 2022-10-11 20:32:56,533 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-9] Update date of offer with first date : 2022-10-30 , and second date : 2022-11-03 
 2022-10-11 20:32:56,533 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-9] Get offer by id: 2
 2022-10-11 20:32:56,546 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-9] Find drivers by first date :2022-10-30 and second date:2022-11-03 with cities:[WROCLAW, BREST]
-2022-10-11 20:32:58,976 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type
+2022-10-11 20:32:58,976 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type
 2022-10-11 20:32:58,976 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Is he member of group?
 2022-10-11 20:32:59,123 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-10] Check existing of user by id: 834450967
 2022-10-11 20:32:59,138 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Get request by token id : 3140ffb03a3970bbd78099

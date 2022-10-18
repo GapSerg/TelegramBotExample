@@ -505,7 +505,7 @@ com.godeltech.springgodelbot.exception.MembershipException: User with id = 83445
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-13 09:04:21,484 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:04:21,484 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 09:04:21,487 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Is he member of group? user : Myachin97
 2022-10-13 09:04:21,565 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-10] User with id = 834450967, and username = Myachin97 isn't a member of chmoki group
 2022-10-13 09:04:21,933 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
@@ -2312,10 +2312,10 @@ com.godeltech.springgodelbot.exception.MembershipException: User with id = 83445
 2022-10-13 09:24:50,660 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-9] Prepare request with id :99 and user id : 834450967 for save with description
 2022-10-13 09:24:54,667 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Is he member of group? user : Myachin97
 2022-10-13 09:24:54,911 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-10] User with id = 834450967, and username = Myachin97 isn't a member of chmoki group
-2022-10-13 09:25:07,472 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:25:07,472 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 09:25:07,472 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
 2022-10-13 09:25:07,546 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] User with id = 834450967, and username = Myachin97 isn't a member of chmoki group
-2022-10-13 09:25:29,864 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:25:29,864 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 09:25:29,865 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : Myachin97
 2022-10-13 09:25:29,937 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-2] User with id = 834450967, and username = Myachin97 isn't a member of chmoki group
 2022-10-13 09:26:46,466 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
@@ -2359,11 +2359,11 @@ com.godeltech.springgodelbot.exception.MembershipException: User with id = 83445
 2022-10-13 09:27:01,261 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-10-13 09:27:01,261 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
 2022-10-13 09:27:01,261 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 0 ms
-2022-10-13 09:27:01,547 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:27:01,547 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 09:27:08,792 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
 2022-10-13 09:33:34,478 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m5s370ms257µs800ns).
-2022-10-13 09:33:34,483 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-3] Got MAIN_MENU callback type by user : Myachin97
-2022-10-13 09:33:34,511 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:33:34,483 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-3] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:33:34,511 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 09:34:45,592 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-6] Is he member of group? user : Myachin97
 2022-10-13 09:34:45,592 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m11s114ms507µs400ns).
 2022-10-13 09:34:45,597 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-3] Is he member of group? user : Myachin97
@@ -2413,7 +2413,7 @@ com.godeltech.springgodelbot.exception.MembershipException: User with id = 83445
 2022-10-13 09:34:56,422 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
 2022-10-13 09:34:56,431 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Delete tokens : []
 2022-10-13 09:34:56,979 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 7.914 seconds (JVM running for 8.691)
-2022-10-13 09:35:05,598 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 09:35:05,598 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 09:35:05,599 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : Myachin97
 2022-10-13 09:35:05,832 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check and save user with id: 834450967 username : Myachin97
 2022-10-13 09:35:05,875 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97, isValid=true)
@@ -3251,7 +3251,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 10:08:14,976 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-1] Callback with type :MY_OFFERS and activity : PASSENGER and token: 3246f485c80c54c5e3df5c
 2022-10-13 10:08:15,003 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Check request by tokenId :3246f485c80c54c5e3df5c
 2022-10-13 10:08:15,177 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-1] Find offers by id:834450967 and activity :PASSENGER
-2022-10-13 10:08:19,463 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 10:08:19,463 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 10:08:19,481 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : Myachin97
 2022-10-13 10:08:19,679 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check and save user with id: 834450967 username : Myachin97
 2022-10-13 10:08:19,702 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97, isValid=true)
@@ -3265,7 +3265,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 10:08:22,711 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-4] Callback with type :MY_OFFERS and activity : DRIVER and token: 10418a9d985365670a082d
 2022-10-13 10:08:22,715 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Check request by tokenId :10418a9d985365670a082d
 2022-10-13 10:08:22,760 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-4] Find offers by id:834450967 and activity :DRIVER
-2022-10-13 10:08:23,625 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-5] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 10:08:23,625 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-5] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 10:08:23,626 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-5] Is he member of group? user : Myachin97
 2022-10-13 10:08:23,731 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-5] Check and save user with id: 834450967 username : Myachin97
 2022-10-13 10:08:23,732 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-5] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97, isValid=true)
@@ -3279,7 +3279,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 10:09:05,215 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-7] Callback with type :MY_OFFERS and activity : PASSENGER and token: 944fa89d7c2c5d6e8ba326
 2022-10-13 10:09:05,219 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Check request by tokenId :944fa89d7c2c5d6e8ba326
 2022-10-13 10:09:05,251 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Find offers by id:834450967 and activity :PASSENGER
-2022-10-13 10:10:36,720 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-9] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 10:10:36,720 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-9] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 10:10:36,722 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-9] Is he member of group? user : Myachin97
 2022-10-13 10:10:36,980 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-9] Check and save user with id: 834450967 username : Myachin97
 2022-10-13 10:10:36,981 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-9] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97, isValid=true)
@@ -3390,7 +3390,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 10:12:03,064 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-10-13 10:12:03,066 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
 2022-10-13 10:12:03,069 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 2 ms
-2022-10-13 10:12:03,368 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 10:12:03,368 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 10:12:03,379 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
 2022-10-13 10:12:03,518 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check and save user with id: 834450967 username : Myachin97
 2022-10-13 10:12:03,560 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97, isValid=true)
@@ -3509,7 +3509,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 10:16:55,466 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-10-13 10:16:55,467 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
 2022-10-13 10:16:55,470 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 3 ms
-2022-10-13 10:16:55,737 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 10:16:55,737 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 10:16:55,756 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
 2022-10-13 10:16:55,883 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check and save user with id: 834450967 username : Myachin97
 2022-10-13 10:16:55,909 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=Myachin97, isValid=true)
@@ -6130,7 +6130,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 13:01:50,415 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-8] Callback with type :MY_OFFERS and activity : DRIVER and token: 4b4d828653dcc028a20037
 2022-10-13 13:01:50,419 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Check request by tokenId :4b4d828653dcc028a20037
 2022-10-13 13:01:50,451 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-8] Find offers by id:345368859 and activity :DRIVER
-2022-10-13 13:01:52,653 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-9] Got MAIN_MENU callback type by user : vmaks_bel
+2022-10-13 13:01:52,653 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-9] Got MAIN_MENU callback type by user : vmaks_bel
 2022-10-13 13:01:52,655 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-9] Is he member of group? user : vmaks_bel
 2022-10-13 13:01:52,753 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-9] Check and save user with id: 345368859 username : vmaks_bel
 2022-10-13 13:01:52,754 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-9] Save a new user: UserEntity(id=345368859, firstName=Maksakov, lastName=null, userName=vmaks_bel, isValid=true)
@@ -6144,7 +6144,7 @@ Caused by: org.springframework.data.mapping.PropertyReferenceException: No prope
 2022-10-13 13:01:55,072 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.offer.MyOffersCallbackType [http-nio-5000-exec-1] Callback with type :MY_OFFERS and activity : PASSENGER and token: ca40eba049c445067df19f
 2022-10-13 13:01:55,077 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Check request by tokenId :ca40eba049c445067df19f
 2022-10-13 13:01:55,102 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-1] Find offers by id:345368859 and activity :PASSENGER
-2022-10-13 13:01:56,525 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : vmaks_bel
+2022-10-13 13:01:56,525 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : vmaks_bel
 2022-10-13 13:01:56,526 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : vmaks_bel
 2022-10-13 13:01:56,746 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check and save user with id: 345368859 username : vmaks_bel
 2022-10-13 13:01:56,747 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Save a new user: UserEntity(id=345368859, firstName=Maksakov, lastName=null, userName=vmaks_bel, isValid=true)
@@ -6341,7 +6341,7 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 Not Found:
 2022-10-13 13:08:57,184 INFO com.godeltech.springgodelbot.resolver.message.type.impl.TextAndEntityMessageType [http-nio-5000-exec-1] Got /start message
 2022-10-13 13:08:57,196 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
 2022-10-13 13:08:57,359 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] User with id = 834450967, and username = Myachin97 isn't a member of chmoki group
-2022-10-13 13:08:59,446 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
+2022-10-13 13:08:59,446 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
 2022-10-13 13:08:59,446 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : Myachin97
 2022-10-13 13:08:59,601 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-2] User with id = 834450967, and username = Myachin97 isn't a member of chmoki group
 2022-10-13 13:09:26,806 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-3] Is he member of group? user : Myachin97

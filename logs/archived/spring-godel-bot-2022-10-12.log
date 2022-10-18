@@ -757,7 +757,7 @@
 2022-10-12 09:42:14,062 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Update date of offer with first date : 2022-11-06 , and second date : 2022-11-07 
 2022-10-12 09:42:14,063 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Get offer by id: 8
 2022-10-12 09:42:14,094 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Find drivers by first date :2022-11-06 and second date:2022-11-07 with cities:[GDANSK, BREST]
-2022-10-12 09:42:20,725 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type
+2022-10-12 09:42:20,725 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type
 2022-10-12 09:42:20,726 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group?
 2022-10-12 09:42:20,825 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Check existing of user by id: 834450967
 2022-10-12 09:42:20,848 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Get request by token id : 7f41249147abf1c4f9d59b
@@ -1872,7 +1872,7 @@ Caused by: org.hibernate.AnnotationException: Unknown mappedBy in: com.godeltech
 2022-10-12 12:08:09,192 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-10-12 12:08:09,193 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
 2022-10-12 12:08:09,194 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 1 ms
-2022-10-12 12:08:09,378 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
+2022-10-12 12:08:09,378 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : Myachin97
 2022-10-12 12:08:09,393 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group?
 2022-10-12 12:08:09,493 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
 2022-10-12 12:08:09,517 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Get request by token id : 0a406abd5f4f235d9abd6e
@@ -1898,7 +1898,7 @@ Caused by: org.hibernate.AnnotationException: Unknown mappedBy in: com.godeltech
 2022-10-12 12:08:21,208 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Update date of offer with first date : 2022-10-25 , and second date : 2022-11-03 
 2022-10-12 12:08:21,209 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Get offer by id: 9
 2022-10-12 12:08:21,244 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-7] Find drivers by first date :2022-10-25 and second date:2022-11-03 with cities:[GDANSK, BREST]
-2022-10-12 12:08:25,443 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : Myachin97
+2022-10-12 12:08:25,443 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : Myachin97
 2022-10-12 12:08:25,443 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group?
 2022-10-12 12:08:25,519 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Check existing of user by id: 834450967
 2022-10-12 12:08:25,528 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Get request by token id : 6a425c933cda30df3f36be
@@ -2068,7 +2068,7 @@ Caused by: org.hibernate.AnnotationException: Unknown mappedBy in: com.godeltech
 2022-10-12 12:37:41,901 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Update date of offer with first date : 2022-10-25 , and second date : 2022-11-03 
 2022-10-12 12:37:41,901 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Get offer by id: 9
 2022-10-12 12:37:41,915 INFO com.godeltech.springgodelbot.service.impl.OfferServiceImpl [http-nio-5000-exec-10] Find drivers by first date :2022-10-25 and second date:2022-11-03 with cities:[GDANSK, BREST]
-2022-10-12 12:38:42,668 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
+2022-10-12 12:38:42,668 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : Myachin97
 2022-10-12 12:38:42,670 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group?
 2022-10-12 12:38:42,921 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check existing of user by id: 834450967
 2022-10-12 12:38:42,933 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Get request by token id : 29406eb26c19a819793ae5
@@ -5207,8 +5207,8 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 2022-10-12 16:37:26,369 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-5] Get request by id : 80
 2022-10-12 16:37:27,584 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.ChoseDatePassengerCallbackType [http-nio-5000-exec-6] Callback data with type: CHOSE_DATE_PASSENGER with token : fd4de2aa956d5305afdfae by user :null
 2022-10-12 16:37:27,589 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-6] Get request by token id : fd4de2aa956d5305afdfae
-2022-10-12 16:37:28,887 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-7] Got MAIN_MENU callback type by user : null
-2022-10-12 16:37:45,665 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : null
+2022-10-12 16:37:28,887 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-7] Got MAIN_MENU callback type by user : null
+2022-10-12 16:37:45,665 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : null
 2022-10-12 16:38:11,207 WARN com.zaxxer.hikari.pool.HikariPool$HouseKeeper [HikariPool-1 housekeeper] HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=54s366ms32µs900ns).
 2022-10-12 16:38:11,258 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.FirstDatePassengerCallbackType [http-nio-5000-exec-9] Got FIRST_DATE_PASSENGER type with first date :2022-11-06 with token: fd4de2aa956d5305afdfae by user : null
 2022-10-12 16:38:11,262 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-9] Get request by token id : fd4de2aa956d5305afdfae
@@ -5475,7 +5475,7 @@ org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException: Error edi
 2022-10-12 16:41:43,241 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.passenger.CheckPassengerCallbackType [http-nio-5000-exec-7] Got callback with type : CHECK_PASSENGER_REQUEST with token : 0a4f56b4471c715d55bd77 by user : null
 2022-10-12 16:41:43,246 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Get request by token id : 0a4f56b4471c715d55bd77
 2022-10-12 16:41:43,259 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-7] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 16:42:16,721 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : Myachin97
+2022-10-12 16:42:16,721 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : Myachin97
 2022-10-12 16:42:16,733 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group? user : Myachin97
 2022-10-12 16:42:16,836 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Check existing of user by id: 834450967
 2022-10-12 16:42:16,854 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-8] Create new token with userId :834450967, messageId: 871 and chatId :834450967
@@ -5835,7 +5835,7 @@ Caused by: org.postgresql.util.PSQLException: ERROR: column "isValid" contains n
 2022-10-12 17:42:12,894 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-3] Check existing of user by id: 834450967
 2022-10-12 17:42:12,929 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-3] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
 2022-10-12 17:42:12,961 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-3] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 17:42:22,877 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type by user : null
+2022-10-12 17:42:22,877 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type by user : null
 2022-10-12 17:42:22,878 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-4] Is he member of group? user : null
 2022-10-12 17:42:22,962 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Check existing of user by id: 834450967
 2022-10-12 17:42:22,966 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -5914,7 +5914,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -5969,7 +5969,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-12 17:42:23,238 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-5] Got MAIN_MENU callback type by user : null
+2022-10-12 17:42:23,238 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-5] Got MAIN_MENU callback type by user : null
 2022-10-12 17:42:23,238 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-5] Is he member of group? user : null
 2022-10-12 17:42:23,304 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-5] Check existing of user by id: 834450967
 2022-10-12 17:42:23,313 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-5] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -6048,7 +6048,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -6103,7 +6103,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-12 17:42:25,523 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-6] Got MAIN_MENU callback type by user : null
+2022-10-12 17:42:25,523 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-6] Got MAIN_MENU callback type by user : null
 2022-10-12 17:42:25,523 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-6] Is he member of group? user : null
 2022-10-12 17:42:25,620 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-6] Check existing of user by id: 834450967
 2022-10-12 17:42:25,625 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-6] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -6182,7 +6182,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -6237,7 +6237,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-12 17:42:29,768 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-7] Got MAIN_MENU callback type by user : null
+2022-10-12 17:42:29,768 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-7] Got MAIN_MENU callback type by user : null
 2022-10-12 17:42:29,768 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-7] Is he member of group? user : null
 2022-10-12 17:42:29,868 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-7] Check existing of user by id: 834450967
 2022-10-12 17:42:29,870 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-7] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -6316,7 +6316,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -6371,7 +6371,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-12 17:42:38,009 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : null
+2022-10-12 17:42:38,009 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-8] Got MAIN_MENU callback type by user : null
 2022-10-12 17:42:38,009 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group? user : null
 2022-10-12 17:42:38,107 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Check existing of user by id: 834450967
 2022-10-12 17:42:38,112 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-8] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -6450,7 +6450,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -6505,7 +6505,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-12 17:42:54,278 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-9] Got MAIN_MENU callback type by user : null
+2022-10-12 17:42:54,278 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-9] Got MAIN_MENU callback type by user : null
 2022-10-12 17:42:54,279 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-9] Is he member of group? user : null
 2022-10-12 17:42:54,361 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-9] Check existing of user by id: 834450967
 2022-10-12 17:42:54,364 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-9] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -6584,7 +6584,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -6639,7 +6639,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
-2022-10-12 17:43:26,527 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type by user : null
+2022-10-12 17:43:26,527 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-10] Got MAIN_MENU callback type by user : null
 2022-10-12 17:43:26,527 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Is he member of group? user : null
 2022-10-12 17:43:26,767 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-10] Check existing of user by id: 834450967
 2022-10-12 17:43:26,773 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-10] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
@@ -6718,7 +6718,7 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
 	at com.godeltech.springgodelbot.service.impl.UserServiceImpl$$EnhancerBySpringCGLIB$$7f71c6ea.checkUser(<generated>)
-	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
+	at com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType.createSendMessage(MainMenuActivityCallbackType.java:49)
 	at com.godeltech.springgodelbot.resolver.callback.CallbackResolver.getSendMessage(CallbackResolver.java:29)
 	at com.godeltech.springgodelbot.service.impl.CallbackResolverServiceImpl.handleCallBack(CallbackResolverServiceImpl.java:20)
 	at com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot.onWebhookUpdateReceived(TudaSudaTelegramBot.java:71)
@@ -6813,23 +6813,23 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 2022-10-12 17:44:27,512 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2022-10-12 17:44:27,512 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
 2022-10-12 17:44:27,512 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 0 ms
-2022-10-12 17:44:27,657 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : null
+2022-10-12 17:44:27,657 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-1] Got MAIN_MENU callback type by user : null
 2022-10-12 17:44:27,672 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : null
 2022-10-12 17:44:27,933 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
 2022-10-12 17:44:27,952 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
 2022-10-12 17:44:27,952 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 4.005 seconds (JVM running for 4.898)
 2022-10-12 17:44:27,992 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 17:44:30,830 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : null
+2022-10-12 17:44:30,830 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : null
 2022-10-12 17:44:30,832 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : null
 2022-10-12 17:44:30,922 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check existing of user by id: 834450967
 2022-10-12 17:44:30,927 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
 2022-10-12 17:44:30,931 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-2] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 17:44:32,479 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-3] Got MAIN_MENU callback type by user : null
+2022-10-12 17:44:32,479 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-3] Got MAIN_MENU callback type by user : null
 2022-10-12 17:44:32,479 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-3] Is he member of group? user : null
 2022-10-12 17:44:32,549 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-3] Check existing of user by id: 834450967
 2022-10-12 17:44:32,554 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-3] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
 2022-10-12 17:44:32,558 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-3] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 17:44:51,004 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type by user : Myachin97
+2022-10-12 17:44:51,004 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-4] Got MAIN_MENU callback type by user : Myachin97
 2022-10-12 17:44:51,005 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-4] Is he member of group? user : Myachin97
 2022-10-12 17:44:51,088 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-4] Check existing of user by id: 834450967
 2022-10-12 17:44:51,094 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-4] Create new token with userId :834450967, messageId: 876 and chatId :834450967
@@ -6879,12 +6879,12 @@ com.godeltech.springgodelbot.exception.UserAuthorizationException: class org.tel
 2022-10-12 17:48:13,925 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Check existing of user by id: 834450967
 2022-10-12 17:48:13,949 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-1] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
 2022-10-12 17:48:13,981 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-1] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 17:48:16,629 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : null
+2022-10-12 17:48:16,629 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-2] Got MAIN_MENU callback type by user : null
 2022-10-12 17:48:16,648 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : null
 2022-10-12 17:48:16,761 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Check existing of user by id: 834450967
 2022-10-12 17:48:16,769 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-2] Save a new user: UserEntity(id=834450967, firstName=Артем, lastName=Мячин, userName=null, isValid=false)
 2022-10-12 17:48:16,772 ERROR com.godeltech.springgodelbot.handler.BotHandler [http-nio-5000-exec-2] class org.telegram.telegrambots.meta.api.objects.User wasn't authorize cause username=null
-2022-10-12 17:48:40,234 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuActivityCallbackType [http-nio-5000-exec-3] Got MAIN_MENU callback type by user : Myachin1234
+2022-10-12 17:48:40,234 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.MainMenuCallbackType [http-nio-5000-exec-3] Got MAIN_MENU callback type by user : Myachin1234
 2022-10-12 17:48:40,235 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-3] Is he member of group? user : Myachin1234
 2022-10-12 17:48:40,327 INFO com.godeltech.springgodelbot.service.impl.UserServiceImpl [http-nio-5000-exec-3] Check existing of user by id: 834450967
 2022-10-12 17:48:40,334 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-3] Create new token with userId :834450967, messageId: 878 and chatId :834450967

@@ -20,16 +20,16 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
 
 @Component
 @Slf4j
-public class MainMenuActivityCallbackType implements CallbackType {
+public class MainMenuCallbackType implements CallbackType {
 
     private final UserService userService;
     private final TokenService tokenService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
     private final RequestService requestService;
 
-    public MainMenuActivityCallbackType(UserService userService,
-                                        TokenService tokenService,
-                                        @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, RequestService requestService) {
+    public MainMenuCallbackType(UserService userService,
+                                TokenService tokenService,
+                                @Lazy TudaSudaTelegramBot tudaSudaTelegramBot, RequestService requestService) {
         this.userService = userService;
         this.tokenService = tokenService;
         this.tudaSudaTelegramBot = tudaSudaTelegramBot;
