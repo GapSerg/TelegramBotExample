@@ -1,6 +1,7 @@
 package com.godeltech.springgodelbot.service;
 
 import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -11,7 +12,7 @@ public interface DriverItemService {
     DriverItem save(DriverRequest driverRequest, User user, Message message);
 
     List<DriverItem> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
-            (LocalDate secondDate, LocalDate firstDate, List<String> cities);
+            (LocalDate secondDate, LocalDate firstDate, List<String> cities, Activity activity);
 
     List<ChangeOfferRequest> findByUserEntityId(Long id, Message message, User user);
 

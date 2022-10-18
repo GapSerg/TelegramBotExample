@@ -28,7 +28,6 @@ public class FinishChangeRouteOfOfferCallbackType implements CallbackType {
 
 
     private final RequestService requestService;
-    private final TokenService tokenService;
 
     @Override
     public Integer getCallbackName() {

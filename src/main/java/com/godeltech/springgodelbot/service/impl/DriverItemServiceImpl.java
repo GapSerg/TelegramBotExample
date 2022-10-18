@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.service.impl;
 import com.godeltech.springgodelbot.exception.ResourceNotFoundException;
 import com.godeltech.springgodelbot.mapper.DriverItemMapper;
 import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.repository.DriverItemRepository;
 import com.godeltech.springgodelbot.service.ActivityTypeService;
 import com.godeltech.springgodelbot.service.CityService;
@@ -43,14 +44,14 @@ public class DriverItemServiceImpl implements DriverItemService {
 
     @Override
     public List<DriverItem> findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes
-            (LocalDate secondDate, LocalDate firstDate, List<String> cities) {
+            (LocalDate secondDate, LocalDate firstDate, List<String> cities, Activity activity) {
         log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         return secondDate == null ?
-                driverItemRepository.findByFirstDateAndCities(firstDate, cities).stream()
+                driverItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, cities,activity.name()).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
-                driverItemRepository.findByDatesAndCities(secondDate, firstDate, cities).stream()
+                driverItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, cities,activity.name()).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());

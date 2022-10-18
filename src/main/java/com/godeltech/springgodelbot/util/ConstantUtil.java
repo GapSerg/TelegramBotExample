@@ -27,6 +27,8 @@ public class ConstantUtil {
     public static final String CHOSEN_FIRST_DATE_OF_OFFER = "Chosen date is : %s\n If you aren't sure about the date, you can choose a second date";
 
     public static final String WRITE_ADD_DESCRIPTION_FOR_PASSENGER = "Post the description or save the request without description";
+
+    public static final String WRITE_ADD_DESCRIPTION_FOR_PARCEL = "Post the description of parcel or press the button and cancel saving request";
     public static final String WRITE_ADD_DESCRIPTION_FOR_DRIVER = "Post the description or save the trip without description";
     public static final String SUCCESSFUL_REQUEST_SAVING = "We successful saved your request.\n";
     public static final String OFFER_WAS_DELETED = "The offer was deleted";
@@ -51,6 +53,7 @@ public class ConstantUtil {
     public static final String CORRECT_MARKER = "✅";
     public static final String MENU = "Menu";
     public static final String EMPTY = " ";
+    public static final String CANCEL = "Cancel";
 
     public static final String START = "/start";
     public static final String HELP = "/help";

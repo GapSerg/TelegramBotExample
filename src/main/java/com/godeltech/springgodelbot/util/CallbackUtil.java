@@ -30,6 +30,7 @@ import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 public class CallbackUtil {
 
+
     public static class RouteUtil {
 
         public static EditMessageText createRouteEditMessageText(List<City> cities, Integer callback, Integer cancelRequestCallback,
@@ -150,6 +151,8 @@ public class CallbackUtil {
                     return CHOOSE_DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token;
                 case PASSENGER_ROUTE:
                     return CHOSE_DATE_PASSENGER.ordinal() + SPLITTER + token;
+                case PARCEL_ROUTE:
+                    return CHOSE_DATE_PARCEL.ordinal() + SPLITTER + token;
                 case CHANGE_ROUTE_OF_OFFER:
                     return FINISH_CHANGING_ROUTE_OF_OFFER.ordinal() + SPLITTER + token;
                 default:
@@ -290,6 +293,9 @@ public class CallbackUtil {
                 case FIRST_DATE_PASSENGER:
                 case SECOND_DATE_PASSENGER:
                     return FINISH_CHOSE_DATE_PASSENGER.ordinal();
+                case FIRST_DATE_PARCEL:
+                case SECOND_DATE_PARCEL:
+                    return FINISH_CHOSE_DATE_PARCEL.ordinal();
                 case CHANGE_FIRST_DATE_OF_OFFER:
                 case CHANGE_SECOND_DATE_OF_OFFER:
                     return FINISH_DATE_OFFER.ordinal();
@@ -457,6 +463,9 @@ public class CallbackUtil {
                 case FIRST_DATE_PASSENGER:
                 case SECOND_DATE_PASSENGER:
                     return CANCEL_DATE_PASSENGER.ordinal();
+                case FIRST_DATE_PARCEL:
+                case SECOND_DATE_PARCEL:
+                    return CANCEL_DATE_PARCEL.ordinal();
                 case CHANGE_FIRST_DATE_OF_OFFER:
                 case CHANGE_SECOND_DATE_OF_OFFER:
                     return CANCEL_DATE_OF_OFFER.ordinal();
@@ -563,6 +572,19 @@ public class CallbackUtil {
     public static EditMessageText createEditMessageTextAfterConfirm(CallbackQuery callbackQuery, Integer callback, String message, String token) {
         List<List<InlineKeyboardButton>> buttons = List.of(List.of(
                 getCancelButton(callback, token, SAVE_WITHOUT_DESCRIPTION)));
+        return EditMessageText.builder()
+                .messageId(callbackQuery.getMessage().getMessageId())
+                .chatId(callbackQuery.getMessage().getChatId().toString())
+                .text(message)
+                .replyMarkup(InlineKeyboardMarkup.builder()
+                        .keyboard(buttons)
+                        .build())
+                .build();
+    }
+
+    public static EditMessageText createEditMessageTextAfterConfirmForParcel(CallbackQuery callbackQuery, Integer canceledCallback, String message, String token) {
+        List<List<InlineKeyboardButton>> buttons = List.of(List.of(
+                getCancelButton(canceledCallback, token, CANCEL)));
         return EditMessageText.builder()
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .chatId(callbackQuery.getMessage().getChatId().toString())

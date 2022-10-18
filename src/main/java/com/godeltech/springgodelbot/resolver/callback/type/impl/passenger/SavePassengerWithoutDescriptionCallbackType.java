@@ -4,11 +4,7 @@ import com.godeltech.springgodelbot.model.entity.DriverItem;
 import com.godeltech.springgodelbot.model.entity.Request;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
-import com.godeltech.springgodelbot.service.TokenService;
-import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
-import com.godeltech.springgodelbot.util.CallbackUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -42,7 +38,7 @@ public class SavePassengerWithoutDescriptionCallbackType implements CallbackType
         log.info("Got callback with type : {} with token : {} by user : {}",
                 SAVE_PASSENGER_WITHOUT_DESCRIPTION, token, callbackQuery.getFrom().getUserName());
         Request passengerRequest =requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
-        requestService.savePassenger(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
+        requestService.saveTransferItem(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
         List<DriverItem> driverItems = requestService.findDriversByRequestData(passengerRequest);
         return showSavedRequestWithoutDescriptionWithDriverItems(callbackQuery, passengerRequest,CANCEL_PASSENGER_REQUEST,
                 driverItems,SUCCESSFUL_REQUEST_SAVING);

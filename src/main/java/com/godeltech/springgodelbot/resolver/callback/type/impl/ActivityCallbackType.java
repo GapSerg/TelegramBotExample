@@ -1,9 +1,10 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl;
 
+import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.entity.DriverRequest;
+import com.godeltech.springgodelbot.model.entity.ParcelRequest;
 import com.godeltech.springgodelbot.model.entity.PassengerRequest;
 import com.godeltech.springgodelbot.model.entity.enums.Activity;
-import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.createRouteEditMessageText;
@@ -53,15 +55,21 @@ public class ActivityCallbackType implements CallbackType {
             case DRIVER:
                 requestService.saveRequest(DriverRequest.builder()
                         .cities(new ArrayList<>())
-                        .build(), token, callbackQuery.getMessage(),callbackQuery.getFrom() );
+                        .build(), token, callbackQuery.getMessage(), callbackQuery.getFrom());
                 return createRouteEditMessageText(cities, DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
                         callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType));
             case PASSENGER:
                 requestService.saveRequest(PassengerRequest.builder()
                         .cities(new ArrayList<>())
-                        .build(), token, callbackQuery.getMessage(),callbackQuery.getFrom() );
+                        .build(), token, callbackQuery.getMessage(), callbackQuery.getFrom());
                 return createRouteEditMessageText(cities, PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(),
                         callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType));
+            case PARCEL:
+                requestService.saveRequest(ParcelRequest.builder()
+                                .cities(new ArrayList<>())
+                                .build(), token, callbackQuery.getMessage(), callbackQuery.getFrom());
+                return createRouteEditMessageText(cities,PARCEL_ROUTE.ordinal(),CANCEL_PARCEL_REQUEST.ordinal(),
+                        callbackQuery.getMessage(),token,String.format(CHOSEN_ROLE,activityType));
             default:
                 throw new RuntimeException("There is no such activity");
         }

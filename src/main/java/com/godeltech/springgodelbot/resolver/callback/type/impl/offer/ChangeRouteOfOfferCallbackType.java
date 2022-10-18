@@ -1,9 +1,9 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
 import com.godeltech.springgodelbot.exception.UserAuthorizationException;
-import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.entity.City;
 import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.CityService;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -51,7 +51,8 @@ public class ChangeRouteOfOfferCallbackType implements CallbackType {
             cities.stream()
                     .filter(city -> city.getId().equals(routeId))
                     .forEach(city -> {
-                        if (changeOfferRequest.getActivity() == Activity.PASSENGER && reservedCities.size() > 1)
+                        if (changeOfferRequest.getActivity() == Activity.PASSENGER || changeOfferRequest.getActivity()
+                                == Activity.PARCEL && reservedCities.size() > 1)
                             checkReservedCitiesForPassenger(reservedCities);
                         reservedCities.add(city.getName());
                     });

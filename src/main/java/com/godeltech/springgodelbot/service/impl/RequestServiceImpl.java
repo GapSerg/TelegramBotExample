@@ -70,9 +70,9 @@ public class RequestServiceImpl implements RequestService {
 
     @Transactional
     @Override
-    public void savePassenger(Request request, Message message, User user) {
-        log.debug("Save passenger request : {} and token: {}", request, message);
-        transferItemService.save((PassengerRequest) request, user, message);
+    public void saveTransferItem(Request request, Message message, User user) {
+        log.debug("Save transfer item with activity: {} by user: {}", request.getActivity(), user.getUserName());
+        transferItemService.save(request, user, message);
         request.setNeedForDescription(false);
         updateRequest(request, message, user);
     }
@@ -128,7 +128,7 @@ public class RequestServiceImpl implements RequestService {
         log.debug("Find drivers by secondDate:{},firstDate:{},routes:{}", request.getSecondDate(),
                 request.getFirstDate(), request.getCities());
         return driverItemService.findDriversByFirstDateBeforeAndSecondDateAfterAndRoutes(request.getSecondDate(),
-                request.getFirstDate(), request.getCities());
+                request.getFirstDate(), request.getCities(), request.getActivity());
     }
 
     @Override

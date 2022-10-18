@@ -51,6 +51,9 @@ public class OnlyTextMessageType implements MessageType {
         } else if (request instanceof PassengerRequest) {
             log.info("Got message for saving description of passenger with token :{} ", request.getToken().getId());
             return savePassengerRequest(message, request);
+        }else if (request instanceof ParcelRequest){
+            log.info("Got message for saving description of parcel with token : {}",request.getToken().getId());
+            return saveParcelRequest(message,request);
         } else {
             log.info("Got message for changing description of offer with token ", request.getToken().getId());
             return updateDescriptionOfRequest(message, request);
@@ -72,15 +75,26 @@ public class OnlyTextMessageType implements MessageType {
     }
 
     private SendMessage savePassengerRequest(Message message, Request request) {
+        log.info("Save passenger request with description by user : {}",message.getFrom().getUserName());
         tudaSudaTelegramBot.deleteMessage(request.getToken().getChatId(), request.getToken().getMessageId());
         request.setDescription(message.getText());
         request.getToken().setMessageId(null);
-        requestService.savePassenger(request, message, message.getFrom());
+        requestService.saveTransferItem(request, message, message.getFrom());
         List<DriverItem> driverItems = requestService.findDriversByRequestData(request);
         return showSavedRequestWithDescriptionWithDriverItems(message, request, driverItems, CANCEL_PASSENGER_REQUEST, SUCCESSFUL_REQUEST_SAVING);
     }
+    private SendMessage saveParcelRequest(Message message, Request request) {
+        log.info("Save parcel request with description by user : {}",message.getFrom().getUserName());
+        tudaSudaTelegramBot.deleteMessage(request.getToken().getChatId(), request.getToken().getMessageId());
+        request.setDescription(message.getText());
+        request.getToken().setMessageId(null);
+        requestService.saveTransferItem(request, message, message.getFrom());
+        List<DriverItem> driverItems = requestService.findDriversByRequestData(request);
+        return showSavedRequestWithDescriptionWithDriverItems(message, request, driverItems, CANCEL_PARCEL_REQUEST, SUCCESSFUL_REQUEST_SAVING);
+    }
 
     private SendMessage saveDriverRequest(Message message, Request request) {
+        log.info("Save driver request with description by user : {}",message.getFrom());
         tudaSudaTelegramBot.deleteMessage(message.getChatId(), request.getToken().getMessageId());
         request.setDescription(message.getText());
         request.getToken().setMessageId(null);

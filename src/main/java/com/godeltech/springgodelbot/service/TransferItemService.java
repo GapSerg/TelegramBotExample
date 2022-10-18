@@ -28,7 +28,7 @@ public interface TransferItemService {
 
     void deleteByFirstDateAfterWhereSecondDateIsNull(LocalDate date);
 
-    TransferItem save(PassengerRequest passengerRequest, User user, Message message);
+    TransferItem save(Request request, User user, Message message);
 
     List<TransferItem> findTransferItemsByFirstDateBeforeAndSecondDateAfterAndCitiesAndActivity(LocalDate secondDate, LocalDate firstDate, List<String> cities, Activity activity);
 }

@@ -19,7 +19,7 @@ public interface RequestService {
 
 
 
-    void savePassenger(Request request, Message message, User user);
+    void saveTransferItem(Request request, Message message, User user);
 
 
     void updateRouteOfOffer(Request changeOfferRequest, String token, Message message, User user);

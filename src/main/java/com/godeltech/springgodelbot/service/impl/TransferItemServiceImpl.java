@@ -134,11 +134,11 @@ public class TransferItemServiceImpl implements TransferItemService {
 
     @Override
     @Transactional
-    public TransferItem save(PassengerRequest passengerRequest, User user, Message message) {
-        log.info("Save passenger request : {}", passengerRequest);
-        List<City> cities = cityService.findCitiesByName(passengerRequest.getCities(), message, user);
-        ActivityType activityType = activityTypeService.getActivityType(passengerRequest.getActivity(), message, user);
-        TransferItem transferItem = transferItemMapper.mapToTransferItem(passengerRequest, user, cities, activityType);
+    public TransferItem save(Request request, User user, Message message) {
+        log.info("Save transfer item with activity : {}", request.getActivity());
+        List<City> cities = cityService.findCitiesByName(request.getCities(), message, user);
+        ActivityType activityType = activityTypeService.getActivityType(request.getActivity(), message, user);
+        TransferItem transferItem = transferItemMapper.mapToTransferItem(request, user, cities, activityType);
         return transferItemRepository.save(transferItem);
     }
 
