@@ -10,14 +10,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.DRIVER_SUITABLE_ITEM;
+import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.getCurrentSuitableActivities;
 import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.makeEditMessageTextForSuitableItems;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -39,8 +38,14 @@ public class DriverSuitableItemsCallbackType implements CallbackType {
                 DRIVER_SUITABLE_ITEM, token, activity, callbackQuery.getFrom().getUserName());
         Request request = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         request.getSuitableActivities().add(activity);
+        String.format(CHOOSE_THE_SUITABLE_ACTIVITIES, request.getActivity().getTextMessage()
+                , getCurrentRoute(request.getCities()));
+        String textMessage = String.format(CHOSE_ONE_MORE_SUITABLE_ACTIVITY,request.getActivity().getTextMessage(),
+                getCurrentRoute(request.getCities()),getCurrentSuitableActivities(request.getSuitableActivities()));
         request = requestService.updateRequest(request, callbackQuery.getMessage(), callbackQuery.getFrom());
         return makeEditMessageTextForSuitableItems(callbackQuery.getMessage(), request.getSuitableActivities(),
-                Activity.DRIVER, request.getToken().getId());
+                Activity.DRIVER, request.getToken().getId(),textMessage);
     }
+
+
 }

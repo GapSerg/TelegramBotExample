@@ -1,10 +1,7 @@
 package com.godeltech.springgodelbot.util;
 
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
-import com.godeltech.springgodelbot.model.entity.City;
-import com.godeltech.springgodelbot.model.entity.DriverItem;
-import com.godeltech.springgodelbot.model.entity.Request;
-import com.godeltech.springgodelbot.model.entity.TransferItem;
+import com.godeltech.springgodelbot.model.entity.*;
 import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -15,7 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +22,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SHOW_SUITABLE_OFFERS;
+import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.getCurrentSuitableActivities;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRouteFromCities;
 import static com.godeltech.springgodelbot.util.ConstantUtil.*;
+import static com.godeltech.springgodelbot.util.ConstantUtil.DELETE_OFFER;
 
 public class CallbackUtil {
+
+
 
 
     public static class RouteUtil {
@@ -39,7 +43,7 @@ public class CallbackUtil {
             for (int i = 0; i < cities.size(); ) {
                 i = addCitiesToButtons(cities, callback, token, buttons, i);
             }
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, "Back to menu")));
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU)));
             return getEditTextMessageForRoute(message, buttons, messageText);
         }
 
@@ -66,13 +70,10 @@ public class CallbackUtil {
                 i = addCitiesToButtons(cities, reservedCities, callback, cancelRouteCallback, token, buttons, i);
             }
             if (reservedCities.size() >= 2) {
-                buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
-                        InlineKeyboardButton.builder()
-                                .text(NEXT)
-                                .callbackData(getNextCallbackType(callback, token))
-                                .build()));
+                buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU),
+                        getContinueButton(getNextCallbackType(callback), token, NEXT)));
             } else {
-                buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback))));
+                buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU)));
             }
             return buttons;
         }
@@ -128,33 +129,26 @@ public class CallbackUtil {
         }
 
         public static String getCurrentRoute(List<String> reservedCities, Activity activity) {
-            String textMessage = String.join("➡", reservedCities);
-            return activity.equals(Activity.DRIVER) ?
-                    textMessage + " \uD83D\uDE99" :
-                    textMessage + " \uD83D\uDCBA";
+            return String.join("➡", reservedCities);
         }
 
-        public static String getCurrentRouteFromCities(List<City> reservedCities, Activity activity) {
-            String textMessage = reservedCities
+        public static String getCurrentRouteFromCities(List<City> reservedCities) {
+            return reservedCities
                     .stream()
                     .map(City::getName)
                     .collect(Collectors.joining("➡"));
-            return activity.equals(Activity.DRIVER) ?
-                    textMessage + " \uD83D\uDE99" :
-                    textMessage + " \uD83D\uDCBA";
-
         }
 
-        private static String getNextCallbackType(Integer callback, String token) {
+        private static Integer getNextCallbackType(Integer callback) {
             switch (Callbacks.values()[callback]) {
                 case DRIVER_ROUTE:
-                    return CHOOSE_DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token;
+                    return CHOOSE_DRIVER_SUITABLE_ITEM.ordinal();
                 case PASSENGER_ROUTE:
-                    return CHOSE_DATE_PASSENGER.ordinal() + SPLITTER + token;
+                    return CHOSE_DATE_PASSENGER.ordinal();
                 case PARCEL_ROUTE:
-                    return CHOSE_DATE_PARCEL.ordinal() + SPLITTER + token;
+                    return CHOSE_DATE_PARCEL.ordinal();
                 case CHANGE_ROUTE_OF_OFFER:
-                    return FINISH_CHANGING_ROUTE_OF_OFFER.ordinal() + SPLITTER + token;
+                    return FINISH_CHANGING_ROUTE_OF_OFFER.ordinal();
                 default:
                     throw new UnknownCommandException();
             }
@@ -262,7 +256,7 @@ public class CallbackUtil {
                     .map(date -> addRowOfButtons(callback, numberDayInMonth, date, token))
                     .collect(Collectors.toList());
 //            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback))));
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU)));
             return buttons;
         }
 
@@ -273,8 +267,8 @@ public class CallbackUtil {
                     .map(date -> addRowOfButtonsWithReservedDate(callback, numberDayInMonth, date, chosenDate, mark, token))
                     .collect(Collectors.toList());
 //            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
-                    getFinishDateButton(callback, token)));
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU),
+                    getContinueButton(getFinishCallback(callback), token, NEXT)));
             return buttons;
         }
 
@@ -314,8 +308,8 @@ public class CallbackUtil {
                             invalidDate, invalidMark, token))
                     .collect(Collectors.toList());
 //            addLinksOnPreviousAndNextMonths(localDate.withDayOfMonth(1), callback, buttons, token);
-            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
-                    getFinishDateButton(callback, token)));
+            buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU),
+                    getContinueButton(getFinishCallback(callback), token, NEXT)));
             return buttons;
         }
 
@@ -477,7 +471,7 @@ public class CallbackUtil {
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, Integer callback, String token) {
             return InlineKeyboardButton.builder()
-                    .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)))
+                    .text(String.format(DATE_FORMAT,getCutValue(localDate.getDayOfWeek()), localDate.getDayOfMonth(), getCutValue(localDate.getMonth())))
                     .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                     .build();
         }
@@ -485,11 +479,11 @@ public class CallbackUtil {
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, LocalDate chosenDate, Integer callback, String mark, String token) {
             return chosenDate.equals(localDate) ? InlineKeyboardButton.builder()
-                    .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)) + mark)
+                    .text(String.format(CANCEL_DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()),mark))
                     .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
                     .build() :
                     InlineKeyboardButton.builder()
-                            .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)))
+                            .text(String.format(DATE_FORMAT,getCutValue(localDate.getDayOfWeek()), localDate.getDayOfMonth(), getCutValue(localDate.getMonth())))
                             .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                             .build();
         }
@@ -499,12 +493,12 @@ public class CallbackUtil {
                  LocalDate invalidDate, String invalidMark, String token) {
             if (chosenDate.equals(localDate) || invalidDate.equals(localDate)) {
                 return InlineKeyboardButton.builder()
-                        .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)) + mark)
+                        .text(String.format(CANCEL_DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()),mark))
                         .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
                         .build();
             } else {
                 return InlineKeyboardButton.builder()
-                        .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), localDate.getMonth().toString().substring(0, 3)))
+                        .text(String.format(DATE_FORMAT,getCutValue(localDate.getDayOfWeek()),localDate.getDayOfMonth(), getCutValue(localDate.getMonth())))
                         .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                         .build();
             }
@@ -534,6 +528,12 @@ public class CallbackUtil {
             }
         }
 
+        public static String getCutValue(Month value){
+            return value.toString().substring(0,3);
+        }
+        public static String getCutValue(DayOfWeek value){
+            return value.toString().substring(0,3);
+        }
         public static String getDatesInf(LocalDate firstDate, LocalDate secondDate) {
             if (firstDate == null) {
                 return NO_CHOSEN_DATE;
@@ -542,6 +542,12 @@ public class CallbackUtil {
             } else {
                 return String.format(CHOSEN_DATES, firstDate, secondDate);
             }
+        }
+        public static String getDatesInf(LocalDate firstDate) {
+                return String.format(CHOSEN_DATE, firstDate);
+        }
+        public static String getDatesInf() {
+            return NO_CHOSEN_DATE;
         }
     }
 
@@ -601,8 +607,8 @@ public class CallbackUtil {
                                                                         Integer cancelCallback, String token) {
 
         List<List<InlineKeyboardButton>> buttons = List.of(List.of(
-                getCancelButton(checkCallback, token, SAVE),
-                cancelRequest(cancelCallback, token)));
+                getCancelButton(cancelCallback, token, MENU),
+                getContinueButton(checkCallback, token, SAVE)));
 
         return getEditTextMessageForRoute(callbackQuery.getMessage(), buttons,
                 String.format(ASK_FOR_DESIRE_TO_SAVE, textMessage));
@@ -638,36 +644,66 @@ public class CallbackUtil {
     }
 
     public static String getOffersView(Request request) {
-        return request.getDescription() != null ?
-                String.format(OFFER_OF_CHANGING_OFFER_PATTERN, request.getActivity(),
-                        getCurrentRoute(request.getCities(), request.getActivity()), getDatesInf(request.getFirstDate(), request.getSecondDate()),
-                        request.getDescription()) :
-                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC, request.getActivity(),
-                        getCurrentRoute(request.getCities(), request.getActivity()), getDatesInf(request.getFirstDate(),
-                                request.getSecondDate()));
+        if (request.getActivity() == Activity.DRIVER) {
+            return makeViewWithDriver(request.getActivity(), request.getCities(), request.getSuitableActivities(),
+                    request.getFirstDate(), request.getSecondDate(), request.getDescription());
+        } else {
+            return makeViewWithTransfer(request.getActivity(), request.getCities(),
+                    request.getFirstDate(), request.getSecondDate(), request.getDescription());
+        }
+    }
+
+    private static String makeViewWithTransfer(Activity activity, List<String> cities, LocalDate firstDate, LocalDate secondDate,
+                                               String description) {
+        return description != null ?
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_TRANSFER_ITEM, activity.getTextMessage(),
+                        getCurrentRoute(cities), getDatesInf(firstDate, secondDate),
+                        description) :
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC_TRANSFER_ITEM, activity.getTextMessage(),
+                        getCurrentRoute(cities), getDatesInf(firstDate,
+                                secondDate));
+    }
+
+    private static String makeViewWithDriver(Activity activity, List<String> cities, List<Activity> suitableActivities, LocalDate firstDate, LocalDate secondDate,
+                                             String description) {
+        return description != null ?
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_DRIVER_ITEM, activity.getTextMessage(),
+                        getCurrentRoute(cities), getCurrentSuitableActivities(suitableActivities), getDatesInf(firstDate, secondDate),
+                        description) :
+                String.format(OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC_DRIVER_ITEM, activity.getTextMessage(),
+                        getCurrentRoute(cities), getCurrentSuitableActivities(suitableActivities), getDatesInf(firstDate,
+                                secondDate));
     }
 
     public static String getDriverItemsViewForRequest(DriverItem driverItem) {
         return driverItem.getDescription() != null ?
-                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(driverItem.getUserEntity().getFirstName()),
-                        getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER, getCurrentRouteFromCities(driverItem.getCities(), Activity.DRIVER),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_DRIVER_ITEM, getCorrectName(driverItem.getUserEntity().getFirstName()),
+                        getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER.getTextMessage(),
+                        getCurrentRouteFromCities(driverItem.getCities()),
+                        getCurrentSuitableActivities(driverItem.getSuitableActivities().stream()
+                                .map(ActivityType::getName)
+                                .collect(Collectors.toList())),
                         getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()),
                         driverItem.getDescription(), driverItem.getUserEntity().getUserName()) :
-                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(driverItem.getUserEntity().getFirstName()),
-                        getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER, getCurrentRouteFromCities(driverItem.getCities(), Activity.DRIVER),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_DRIVER_ITEM, getCorrectName(driverItem.getUserEntity().getFirstName()),
+                        getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER.getTextMessage(),
+                        getCurrentRouteFromCities(driverItem.getCities()),
+                        getCurrentSuitableActivities(driverItem.getSuitableActivities().stream()
+                                .map(ActivityType::getName)
+                                .collect(Collectors.toList())),
                         getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()), driverItem.getUserEntity().getUserName());
     }
 
     public static String getTransferItemsViewForRequest(TransferItem transferItem) {
         return transferItem.getDescription() != null ?
-                String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(transferItem.getUserEntity().getFirstName()),
-                        getCorrectName(transferItem.getUserEntity().getLastName()), transferItem.getActivityType().getName(),
-                        getCurrentRouteFromCities(transferItem.getCities(), transferItem.getActivityType().getName()),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_TRANSFER_ITEM, getCorrectName(transferItem.getUserEntity().getFirstName()),
+                        getCorrectName(transferItem.getUserEntity().getLastName()), transferItem.getActivityType().getName().getTextMessage(),
+                        getCurrentRouteFromCities(transferItem.getCities()),
                         getDatesInf(transferItem.getFirstDate(), transferItem.getSecondDate()),
                         transferItem.getDescription(), transferItem.getUserEntity().getUserName()) :
-                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC, getCorrectName(transferItem.getUserEntity().getFirstName()),
-                        getCorrectName(transferItem.getUserEntity().getLastName()), transferItem.getActivityType().getName(),
-                        getCurrentRouteFromCities(transferItem.getCities(), transferItem.getActivityType().getName()),
+                String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_TRANSFER_ITEM, getCorrectName(transferItem.getUserEntity().getFirstName()),
+                        getCorrectName(transferItem.getUserEntity().getLastName()), transferItem.getActivityType().getName().getTextMessage(),
+                        getCurrentRouteFromCities(transferItem.getCities()),
                         getDatesInf(transferItem.getFirstDate(), transferItem.getSecondDate()), transferItem.getUserEntity().getUserName());
     }
 
@@ -691,53 +727,53 @@ public class CallbackUtil {
     private static List<List<InlineKeyboardButton>> getChangeOfferButtons(Request request, String token) {
         return List.of(
                 List.of(InlineKeyboardButton.builder()
-                        .text("Suitable offers")
+                        .text(SHOW_OFFERS)
                         .callbackData(SHOW_SUITABLE_OFFERS.ordinal() + SPLITTER + token)
                         .build()),
                 List.of(InlineKeyboardButton.builder()
-                                .text("Change route")
+                                .text(CHANGE_ROUTE)
                                 .callbackData(CHANGE_ROUTE_OF_OFFER.ordinal() + SPLITTER + token)
                                 .build(),
                         InlineKeyboardButton.builder()
-                                .text("Change date")
+                                .text(CHANGE_DATE)
                                 .callbackData(CHANGE_DATE_OF_OFFER.ordinal() + SPLITTER + token)
                                 .build()
                 ),
                 List.of(InlineKeyboardButton.builder()
-                        .text("Change description")
+                        .text(CHANGE_DESCRIPTION)
                         .callbackData(CHANGE_DESCRIPTION_OF_OFFER.ordinal() + SPLITTER + token)
                         .build(), InlineKeyboardButton.builder()
-                        .text("Delete offer")
-                        .callbackData(DELETE_OFFER.ordinal() + SPLITTER + token + SPLITTER + request.getOfferId())
+                        .text(DELETE_OFFER)
+                        .callbackData(Callbacks.DELETE_OFFER.ordinal() + SPLITTER + token + SPLITTER + request.getOfferId())
                         .build()),
                 List.of(InlineKeyboardButton.builder()
-                        .text("Back to offer list")
+                        .text(BACK)
                         .callbackData(MY_OFFERS.ordinal() + SPLITTER + token + SPLITTER + request.getActivity())
                         .build()));
     }
 
     public static String getCompletedMessageAnswerWithDriverItems(List<DriverItem> driverItems, Request request, String completedMessage) {
         return driverItems.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
-                request.getActivity(),
+                request.getActivity().getTextMessage(),
                 getCurrentRoute(request.getCities()),
                 getDatesInf(request.getFirstDate(), request.getSecondDate()), descriptionInf(request.getDescription())) :
-                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
+                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity().getTextMessage(),
                         getCurrentRoute(request.getCities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
                         descriptionInf(request.getDescription()),
                         getListOfDriverItemsForRequest(driverItems));
     }
 
-    public static String getCompletedMessageAnswerWithTransferItems(List<TransferItem> offers, Request request, String completedMessage) {
-        return offers.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
-                request.getActivity(),
+    public static String getCompletedMessageAnswerWithTransferItems(List<TransferItem> transferItems, Request request, String completedMessage) {
+        return transferItems.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
+                request.getActivity().getTextMessage(),
                 getCurrentRoute(request.getCities()),
                 getDatesInf(request.getFirstDate(), request.getSecondDate()), descriptionInf(request.getDescription())) :
-                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity(),
+                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity().getTextMessage(),
                         getCurrentRoute(request.getCities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
                         descriptionInf(request.getDescription()),
-                        getListOfTransferItemsForRequest(offers));
+                        getListOfTransferItemsForRequest(transferItems));
     }
 
     private static String descriptionInf(String description) {
@@ -754,7 +790,7 @@ public class CallbackUtil {
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Main menu")
+                                        .text(MAIN_MENU_ANSWER)
                                         .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
                                         .build()
                         )))
@@ -770,7 +806,7 @@ public class CallbackUtil {
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Main menu")
+                                        .text(MAIN_MENU_ANSWER)
                                         .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
                                         .build()
                         )))
@@ -788,7 +824,7 @@ public class CallbackUtil {
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Main menu")
+                                        .text(MAIN_MENU_ANSWER)
                                         .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
                                         .build()
                         )))
@@ -806,7 +842,7 @@ public class CallbackUtil {
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
-                                        .text("Main menu")
+                                        .text(MAIN_MENU_ANSWER)
                                         .callbackData(callback.ordinal() + SPLITTER + request.getToken().getId())
                                         .build()
                         )))
@@ -814,10 +850,6 @@ public class CallbackUtil {
                 .build();
     }
 
-    private static String getCancelText(Integer cancelRequestCallback) {
-        return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?
-                "Back" : "Back to menu";
-    }
 
     public static InlineKeyboardButton getCancelButton(Integer cancelRequestCallback, String token, String message) {
         return InlineKeyboardButton.builder()
@@ -826,7 +858,7 @@ public class CallbackUtil {
                 .build();
     }
 
-    public static InlineKeyboardButton getContinueButtons(Integer continueRequestCallback, String token, String message) {
+    public static InlineKeyboardButton getContinueButton(Integer continueRequestCallback, String token, String message) {
         return InlineKeyboardButton.builder()
                 .text(message)
                 .callbackData(continueRequestCallback + SPLITTER + token)
@@ -835,14 +867,14 @@ public class CallbackUtil {
 
 
     public static class ActivityUtil {
-        public static EditMessageText makeEditMessageTextForSuitableItems(Message message, List<Activity> suitableActivities, Activity ignoredActivity, String token) {
+        public static EditMessageText makeEditMessageTextForSuitableItems(Message message, List<Activity> suitableActivities, Activity ignoredActivity, String token, String textMessage) {
             List<List<InlineKeyboardButton>> buttons = getButtonsList();
             List<Activity> possibleActivities = getPossibleActivities(ignoredActivity);
             buttons.add(getActivityButtons(suitableActivities, possibleActivities, token));
             if (suitableActivities.size() > 0) {
                 buttons.add(List.of(
                         getCancelButton(CANCEL_DRIVER_REQUEST.ordinal(), token, MENU),
-                        getContinueButtons(CHOSE_DATE_DRIVER.ordinal(), token, NEXT)
+                        getContinueButton(CHOSE_DATE_DRIVER.ordinal(), token, NEXT)
                 ));
             } else {
                 buttons.add(List.of(
@@ -852,7 +884,7 @@ public class CallbackUtil {
             return EditMessageText.builder()
                     .chatId(message.getChatId().toString())
                     .messageId(message.getMessageId())
-                    .text("Please choose suitable activities for you")
+                    .text(textMessage)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
                             .build())
@@ -865,7 +897,7 @@ public class CallbackUtil {
                     .collect(Collectors.toList());
         }
 
-        public static EditMessageText makeEditMessageTextForSuitableItems(Message message, Activity ignoredActivity, String token) {
+        public static EditMessageText makeEditMessageTextForSuitableItems(Message message, Activity ignoredActivity, String token, String textMessage) {
             List<List<InlineKeyboardButton>> buttons = getButtonsList();
             List<Activity> possibleActivities = getPossibleActivities(ignoredActivity);
             buttons.add(getActivityButtons(possibleActivities, token));
@@ -874,7 +906,7 @@ public class CallbackUtil {
             return EditMessageText.builder()
                     .chatId(message.getChatId().toString())
                     .messageId(message.getMessageId())
-                    .text("Please choose suitable activities for you")
+                    .text(textMessage)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
                             .build())
@@ -897,7 +929,7 @@ public class CallbackUtil {
 
         private static InlineKeyboardButton getUnreservedActivityButton(Activity activity, String token) {
             return InlineKeyboardButton.builder()
-                    .text(activity.name())
+                    .text(activity.getTextMessage())
                     .callbackData(DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token + SPLITTER + activity)
                     .build();
         }
@@ -907,6 +939,12 @@ public class CallbackUtil {
                     .text(activity.name() + CORRECT_MARKER)
                     .callbackData(CANCEL_DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token + SPLITTER + activity)
                     .build();
+        }
+
+        public static String getCurrentSuitableActivities(List<Activity> suitableActivities) {
+            return suitableActivities.stream()
+                    .map(Activity::getTextMessage)
+                    .collect(Collectors.joining(","));
         }
     }
 

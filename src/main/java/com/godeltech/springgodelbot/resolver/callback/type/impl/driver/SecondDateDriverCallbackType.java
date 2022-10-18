@@ -12,12 +12,13 @@ import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_DRIVER_REQUEST;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_DRIVER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.setDatesToRequest;
+import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.getCurrentSuitableActivities;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_SECOND_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_SECOND_DATE_DRIVER;
 
 @Component
 @Slf4j
@@ -44,10 +45,12 @@ public class SecondDateDriverCallbackType implements CallbackType {
         Request driverRequest = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         setDatesToRequest(chosenDate, driverRequest);
         driverRequest = requestService.updateRequest(driverRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
-        String textMessage = String.format(CHOSEN_SECOND_DATE, driverRequest.getActivity(), getCurrentRoute(driverRequest.getCities()),
-                driverRequest.getFirstDate(), driverRequest.getSecondDate());
+        String textMessage = String.format(CHOSEN_SECOND_DATE_DRIVER, driverRequest.getActivity().getTextMessage(),
+                getCurrentRoute(driverRequest.getCities()), getCurrentSuitableActivities(driverRequest.getSuitableActivities())
+                , getDatesInf(driverRequest.getFirstDate(), driverRequest.getSecondDate()));
         return createEditMessageForSecondDate(callbackQuery, driverRequest.getFirstDate(), textMessage,
-                SECOND_DATE_DRIVER.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(), driverRequest.getSecondDate(), driverRequest.getToken().getId());
+                SECOND_DATE_DRIVER.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(), driverRequest.getSecondDate(),
+                driverRequest.getToken().getId());
     }
 
 

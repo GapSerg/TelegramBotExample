@@ -1,8 +1,8 @@
 package com.godeltech.springgodelbot.resolver.callback.type.impl.offer;
 
-import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.model.entity.ChangeOfferRequest;
 import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
@@ -20,13 +20,15 @@ import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
-import static com.godeltech.springgodelbot.util.CallbackUtil.*;
-import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class MyOffersCallbackType implements CallbackType {
+
 
     private final RequestService requestService;
 
@@ -49,34 +51,34 @@ public class MyOffersCallbackType implements CallbackType {
                 EditMessageText.builder()
                         .chatId(callbackQuery.getMessage().getChatId().toString())
                         .messageId(callbackQuery.getMessage().getMessageId())
-                        .text("You have no offers yet")
+                        .text(No_OFFERS)
                         .replyMarkup(InlineKeyboardMarkup.builder()
                                 .keyboard(List.of(List.of(InlineKeyboardButton
                                         .builder()
-                                        .text("Back to menu")
+                                        .text(MENU)
                                         .callbackData(MAIN_MENU.ordinal() + SPLITTER + request.getToken().getId())
                                         .build())))
                                 .build())
                         .build() :
-                makeSendMessage(offerList, callbackQuery, token);
+                makeSendMessage(offerList, callbackQuery, token, activity);
     }
 
-    private EditMessageText makeSendMessage(List<ChangeOfferRequest> requests, CallbackQuery callbackQuery, String token) {
+    private EditMessageText makeSendMessage(List<ChangeOfferRequest> requests, CallbackQuery callbackQuery, String token, Activity activity) {
         List<List<InlineKeyboardButton>> buttons = requests.stream()
                 .map(request -> List.of(InlineKeyboardButton.builder()
-                        .text(getCurrentRoute(request.getCities(),request.getActivity()))
+                        .text(getCurrentRoute(request.getCities()))
                         .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token + SPLITTER + request.getOfferId())
                         .build()))
                 .collect(Collectors.toList());
         buttons.add(List.of(InlineKeyboardButton
                 .builder()
-                .text("Back to menu")
+                .text(MENU)
                 .callbackData(CANCEL_CHANGE_OFFER_REQUEST.ordinal() + SPLITTER + token)
                 .build()));
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
-                .text("Here is yours offers. If you want to change one of them, just press on the offer you are interested in ")
+                .text(String.format(USER_OFFERS, activity.getTextMessage()))
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())

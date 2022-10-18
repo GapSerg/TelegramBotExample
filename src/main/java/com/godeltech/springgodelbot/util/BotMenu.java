@@ -99,7 +99,7 @@ public class BotMenu {
         Arrays.stream(Activity.values())
                 .map(activity -> List.of(
                         InlineKeyboardButton.builder()
-                                .text(activity.name())
+                                .text(activity.getTextMessage())
                                 .callbackData(Callbacks.ACTIVITY.ordinal()+SPLITTER+token + SPLITTER + activity)
                                 .build()))
                 .forEach(buttons::add);

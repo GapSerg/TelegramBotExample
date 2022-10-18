@@ -52,7 +52,7 @@ public class ParcelRouteCallbackType implements CallbackType {
         parcelRequest = requestService.updateRequest(parcelRequest,callbackQuery.getMessage(),callbackQuery.getFrom() );
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 PARCEL_ROUTE.ordinal(), CANCEL_PARCEL_ROUTE.ordinal(), CANCEL_PARCEL_REQUEST.ordinal(), token,
-                String.format(CURRENT_ROUTE, parcelRequest.getActivity(), getCurrentRoute(reservedCities)));
+                String.format(CURRENT_ROUTE, parcelRequest.getActivity().getTextMessage(), getCurrentRoute(reservedCities)));
     }
 
     private void checkReservedCitiesForPassenger(List<String> reservedCities) {

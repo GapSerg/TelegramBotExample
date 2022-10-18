@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_DRIVER_SUITABLE_ITEM;
+import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.getCurrentSuitableActivities;
 import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.makeEditMessageTextForSuitableItems;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SUITABLE_ACTIVITIES;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSE_ONE_MORE_SUITABLE_ACTIVITY;
 
 @Component
 @RequiredArgsConstructor
@@ -39,8 +39,13 @@ public class CancelDriverSuitableItem implements CallbackType {
                 CANCEL_DRIVER_SUITABLE_ITEM, activity, token, callbackQuery.getFrom().getUserName());
         Request request = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         request.getSuitableActivities().remove(activity);
-        request = requestService.updateRequest(request,callbackQuery.getMessage(),callbackQuery.getFrom());
-        return makeEditMessageTextForSuitableItems(callbackQuery.getMessage(),request.getSuitableActivities(),
-                Activity.DRIVER,request.getToken().getId());
+        request = requestService.updateRequest(request, callbackQuery.getMessage(), callbackQuery.getFrom());
+        String textMessage = request.getSuitableActivities().size() > 0 ?
+                String.format(CHOSE_ONE_MORE_SUITABLE_ACTIVITY, request.getActivity().getTextMessage(),
+                        getCurrentRoute(request.getCities()), getCurrentSuitableActivities(request.getSuitableActivities())) :
+                String.format(CHOOSE_THE_SUITABLE_ACTIVITIES, request.getActivity().getTextMessage()
+                        , getCurrentRoute(request.getCities()));
+        return makeEditMessageTextForSuitableItems(callbackQuery.getMessage(), request.getSuitableActivities(),
+                Activity.DRIVER, request.getToken().getId(), textMessage);
     }
 }

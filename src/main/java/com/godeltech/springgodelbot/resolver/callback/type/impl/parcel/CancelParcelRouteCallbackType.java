@@ -51,8 +51,8 @@ public class CancelParcelRouteCallbackType implements CallbackType {
         reservedCities.remove(reservedRoute.getName());
         parcelRoute = requestService.updateRequest(parcelRoute, callbackQuery.getMessage(), callbackQuery.getFrom());
         String textMessage = parcelRoute.getCities().isEmpty() ?
-                String.format(CHOSE_THE_ROUTE, parcelRoute.getActivity()) :
-                String.format(CURRENT_ROUTE, parcelRoute.getActivity(), getCurrentRoute(reservedCities));
+                String.format(CHOSE_THE_ROUTE, parcelRoute.getActivity().getTextMessage()) :
+                String.format(CURRENT_ROUTE, parcelRoute.getActivity().getTextMessage(), getCurrentRoute(reservedCities));
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 PARCEL_ROUTE.ordinal(), CANCEL_PARCEL_ROUTE.ordinal(), CANCEL_PARCEL_REQUEST.ordinal(),
                 parcelRoute.getToken().getId(), textMessage);

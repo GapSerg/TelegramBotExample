@@ -12,8 +12,7 @@ import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CANCEL_PASSENGER_REQUEST;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SECOND_DATE_PASSENGER;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.setDatesToRequest;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
@@ -42,8 +41,9 @@ public class SecondDatePassengerCallbackType implements CallbackType {
         Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
         setDatesToRequest(chosenDate, passengerRequest);
         passengerRequest= requestService.updateRequest(passengerRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
-        String textMessage = String.format(CHOSEN_SECOND_DATE, passengerRequest.getActivity(), getCurrentRoute(passengerRequest.getCities()),
-                passengerRequest.getFirstDate(), passengerRequest.getSecondDate());
+        String textMessage = String.format(CHOSEN_SECOND_DATE, passengerRequest.getActivity().getTextMessage(),
+                getCurrentRoute(passengerRequest.getCities()),
+                getDatesInf(passengerRequest.getFirstDate(),passengerRequest.getSecondDate()));
         return createEditMessageForSecondDate(callbackQuery, passengerRequest.getFirstDate(), textMessage,
                 SECOND_DATE_PASSENGER.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(), passengerRequest.getSecondDate(), token);
     }

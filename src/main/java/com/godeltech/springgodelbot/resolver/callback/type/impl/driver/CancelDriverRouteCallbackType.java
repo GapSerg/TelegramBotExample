@@ -51,8 +51,8 @@ public class CancelDriverRouteCallbackType implements CallbackType {
         reservedCities.remove(reservedRoute.getName());
         driverRequest = requestService.updateRequest(driverRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
         String textMessage = reservedCities.isEmpty() ?
-                String.format(CHOSE_THE_ROUTE, driverRequest.getActivity()) :
-                String.format(CURRENT_ROUTE, driverRequest.getActivity(), getCurrentRoute(reservedCities));
+                String.format(CHOSE_THE_ROUTE, driverRequest.getActivity().getTextMessage()) :
+                String.format(CURRENT_ROUTE, driverRequest.getActivity().getTextMessage(), getCurrentRoute(reservedCities));
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
                 driverRequest.getToken().getId(), textMessage);

@@ -57,19 +57,19 @@ public class ActivityCallbackType implements CallbackType {
                         .cities(new ArrayList<>())
                         .build(), token, callbackQuery.getMessage(), callbackQuery.getFrom());
                 return createRouteEditMessageText(cities, DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
-                        callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType));
+                        callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType.getTextMessage()));
             case PASSENGER:
                 requestService.saveRequest(PassengerRequest.builder()
                         .cities(new ArrayList<>())
                         .build(), token, callbackQuery.getMessage(), callbackQuery.getFrom());
                 return createRouteEditMessageText(cities, PASSENGER_ROUTE.ordinal(), CANCEL_PASSENGER_REQUEST.ordinal(),
-                        callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType));
+                        callbackQuery.getMessage(), token, String.format(CHOSEN_ROLE, activityType.getTextMessage()));
             case PARCEL:
                 requestService.saveRequest(ParcelRequest.builder()
                                 .cities(new ArrayList<>())
                                 .build(), token, callbackQuery.getMessage(), callbackQuery.getFrom());
                 return createRouteEditMessageText(cities,PARCEL_ROUTE.ordinal(),CANCEL_PARCEL_REQUEST.ordinal(),
-                        callbackQuery.getMessage(),token,String.format(CHOSEN_ROLE,activityType));
+                        callbackQuery.getMessage(),token,String.format(CHOSEN_ROLE,activityType.getTextMessage()));
             default:
                 throw new RuntimeException("There is no such activity");
         }

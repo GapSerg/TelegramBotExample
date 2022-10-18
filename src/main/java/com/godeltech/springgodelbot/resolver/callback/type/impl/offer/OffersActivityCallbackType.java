@@ -46,7 +46,7 @@ public class OffersActivityCallbackType implements CallbackType {
         userService.userAuthorization(callbackQuery.getFrom(), callbackQuery.getMessage(), false);
         List<InlineKeyboardButton> buttons = Arrays.stream(Activity.values())
                 .map(activity -> InlineKeyboardButton.builder()
-                        .text(activity.name())
+                        .text(activity.getTextMessage())
                         .callbackData(Callbacks.MY_OFFERS.ordinal() + SPLITTER + token + SPLITTER + activity)
                         .build())
                 .collect(Collectors.toList());

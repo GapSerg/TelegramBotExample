@@ -11,13 +11,12 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHOOSE_DRIVER_SUITABLE_ITEM;
 import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.makeEditMessageTextForSuitableItems;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_SUITABLE_ACTIVITIES;
 
 @Component
 @Slf4j
@@ -39,6 +38,8 @@ public class ChooseDriverSuitableItem implements CallbackType {
         Request request = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         request.setSuitableActivities(new ArrayList<>());
         request = requestService.updateRequest(request, callbackQuery.getMessage(), callbackQuery.getFrom());
-        return makeEditMessageTextForSuitableItems(callbackQuery.getMessage(), Activity.DRIVER, request.getToken().getId());
+        String textMessage = String.format(CHOOSE_THE_SUITABLE_ACTIVITIES, request.getActivity().getTextMessage()
+                , getCurrentRoute(request.getCities()));
+        return makeEditMessageTextForSuitableItems(callbackQuery.getMessage(), Activity.DRIVER, request.getToken().getId(),textMessage);
     }
 }

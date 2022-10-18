@@ -12,11 +12,14 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
+import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.getCurrentSuitableActivities;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
 import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE_DRIVER;
 
 @Component
 @RequiredArgsConstructor
@@ -39,8 +42,9 @@ public class FirstDateParcelCallbackType implements CallbackType {
         Request parcelRequest = requestService.getRequest(callbackQuery.getMessage(), token,callbackQuery.getFrom() );
         parcelRequest.setFirstDate(firstDate);
         parcelRequest= requestService.updateRequest(parcelRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
-        String textMessage = String.format(CHOSEN_FIRST_DATE, parcelRequest.getActivity(),
-                getCurrentRoute(parcelRequest.getCities()),parcelRequest.getFirstDate());
+        String textMessage = String.format(CHOSEN_FIRST_DATE, parcelRequest.getActivity().getTextMessage(),
+                getCurrentRoute(parcelRequest.getCities()),
+                getDatesInf(parcelRequest.getFirstDate()));
         return createEditMessageForSecondDate(callbackQuery, parcelRequest.getFirstDate(),
                 textMessage, SECOND_DATE_PARCEL.ordinal(), CANCEL_PARCEL_REQUEST.ordinal(), token);
     }

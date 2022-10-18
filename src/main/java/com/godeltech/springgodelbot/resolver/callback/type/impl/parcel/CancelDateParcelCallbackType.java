@@ -12,13 +12,11 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.time.LocalDate;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageForSecondDate;
-import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.createEditMessageTextForFirstDate;
+import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.*;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackValue;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOOSE_THE_FIRST_DATE;
-import static com.godeltech.springgodelbot.util.ConstantUtil.CHOSEN_FIRST_DATE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -48,9 +46,9 @@ public class CancelDateParcelCallbackType implements CallbackType {
         parcelRequest.setSecondDate(null);
         parcelRequest = requestService.updateRequest(parcelRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
         String textMessage = String.format(CHOSEN_FIRST_DATE, parcelRequest.getActivity(), getCurrentRoute(parcelRequest.getCities()),
-                parcelRequest.getFirstDate());
+                getDatesInf(parcelRequest.getFirstDate()));
         return createEditMessageForSecondDate(callbackQuery, parcelRequest.getFirstDate(),
-                textMessage, SECOND_DATE_PARCEL.ordinal(), CANCEL_DATE_PARCEL.ordinal(), parcelRequest.getToken().getId());
+                textMessage, SECOND_DATE_PARCEL.ordinal(), CANCEL_PARCEL_REQUEST.ordinal(), parcelRequest.getToken().getId());
     }
 
     private BotApiMethod getEditMessageWithCanceledFirstDate(CallbackQuery callbackQuery, Request parcelRequest,
@@ -60,13 +58,15 @@ public class CancelDateParcelCallbackType implements CallbackType {
             parcelRequest.setSecondDate(null);
             parcelRequest = requestService.updateRequest(parcelRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
             String textMessage = String.format(CHOSEN_FIRST_DATE, parcelRequest.getActivity(), getCurrentRoute(parcelRequest.getCities()),
-                    parcelRequest.getFirstDate());
+                    getDatesInf(parcelRequest.getFirstDate()));
             return createEditMessageForSecondDate(callbackQuery, parcelRequest.getFirstDate(),
-                    textMessage, SECOND_DATE_PARCEL.ordinal(), CANCEL_DATE_PARCEL.ordinal(), parcelRequest.getToken().getId());
+                    textMessage, SECOND_DATE_PARCEL.ordinal(), CANCEL_PARCEL_REQUEST.ordinal(), parcelRequest.getToken().getId());
         }
         parcelRequest.setFirstDate(null);
         parcelRequest = requestService.updateRequest(parcelRequest, callbackQuery.getMessage(),callbackQuery.getFrom() );
-        String textMessage = String.format(CHOOSE_THE_FIRST_DATE, parcelRequest.getActivity(), getCurrentRoute(parcelRequest.getCities()));
+        String textMessage = String.format(CHOSEN_SECOND_DATE, parcelRequest.getActivity().getTextMessage(),
+                getCurrentRoute(parcelRequest.getCities()), getDatesInf(parcelRequest.getFirstDate(),
+                        parcelRequest.getSecondDate()));
         return createEditMessageTextForFirstDate(callbackQuery, FIRST_DATE_PARCEL.ordinal(),
                 CANCEL_PARCEL_REQUEST.ordinal(), textMessage, canceledDate, parcelRequest.getToken().getId());
     }

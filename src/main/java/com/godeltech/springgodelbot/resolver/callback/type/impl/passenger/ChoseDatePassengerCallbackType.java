@@ -36,7 +36,7 @@ public class ChoseDatePassengerCallbackType implements CallbackType {
         log.info("Callback data with type: {} with token : {} by user :{}",
                 CHOSE_DATE_PASSENGER, token,callbackQuery.getFrom().getUserName());
         Request passengerRequest = requestService.getRequest(callbackQuery.getMessage(),token,callbackQuery.getFrom() );
-        String textMessage = String.format(CHOOSE_THE_FIRST_DATE,passengerRequest.getActivity()
+        String textMessage = String.format(CHOOSE_THE_FIRST_DATE,passengerRequest.getActivity().getTextMessage()
                 ,getCurrentRoute(passengerRequest.getCities()));
         return createSendMessageForFirstDate(callbackQuery.getMessage(), FIRST_DATE_PASSENGER.ordinal(),
                 CANCEL_PASSENGER_REQUEST.ordinal(),textMessage, token);

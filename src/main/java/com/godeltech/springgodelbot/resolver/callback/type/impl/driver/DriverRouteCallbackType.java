@@ -50,7 +50,7 @@ public class DriverRouteCallbackType implements CallbackType {
         List<String> reservedCities = driverRequest.getCities();
         reservedCities.add(reservedRoute.getName());
         driverRequest = requestService.updateRequest(driverRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
-        String textMessage = String.format(CURRENT_ROUTE, driverRequest.getActivity(), getCurrentRoute(driverRequest.getCities()));
+        String textMessage = String.format(CURRENT_ROUTE, driverRequest.getActivity().getTextMessage(), getCurrentRoute(driverRequest.getCities()));
         return createEditSendMessageForRoutes(callbackQuery, cities, reservedCities,
                 DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_ROUTE.ordinal(), CANCEL_DRIVER_REQUEST.ordinal(),
                 driverRequest.getToken().getId(), textMessage);
