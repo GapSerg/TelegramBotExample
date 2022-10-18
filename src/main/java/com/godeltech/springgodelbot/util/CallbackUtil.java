@@ -1,7 +1,10 @@
 package com.godeltech.springgodelbot.util;
 
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
-import com.godeltech.springgodelbot.model.entity.*;
+import com.godeltech.springgodelbot.model.entity.City;
+import com.godeltech.springgodelbot.model.entity.DriverItem;
+import com.godeltech.springgodelbot.model.entity.Request;
+import com.godeltech.springgodelbot.model.entity.TransferItem;
 import com.godeltech.springgodelbot.model.entity.enums.Activity;
 import com.godeltech.springgodelbot.resolver.callback.Callbacks;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -15,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +68,7 @@ public class CallbackUtil {
                 buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback)),
                         InlineKeyboardButton.builder()
                                 .text(NEXT)
-                                .callbackData(getChoseDateCallback(callback, token))
+                                .callbackData(getNextCallbackType(callback, token))
                                 .build()));
             } else {
                 buttons.add(List.of(getCancelButton(cancelRequestCallback, token, getCancelText(cancelRequestCallback))));
@@ -140,10 +144,10 @@ public class CallbackUtil {
 
         }
 
-        private static String getChoseDateCallback(Integer callback, String token) {
+        private static String getNextCallbackType(Integer callback, String token) {
             switch (Callbacks.values()[callback]) {
                 case DRIVER_ROUTE:
-                    return CHOSE_DATE_DRIVER.ordinal() + SPLITTER + token;
+                    return CHOOSE_DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token;
                 case PASSENGER_ROUTE:
                     return CHOSE_DATE_PASSENGER.ordinal() + SPLITTER + token;
                 case CHANGE_ROUTE_OF_OFFER:
@@ -604,11 +608,13 @@ public class CallbackUtil {
                 .map(CallbackUtil::getDriverItemsViewForRequest)
                 .collect(Collectors.joining("\n\n"));
     }
+
     public static String getListOfTransferItemsForRequest(List<TransferItem> transferItems) {
         return transferItems.stream()
                 .map(CallbackUtil::getTransferItemsViewForRequest)
                 .collect(Collectors.joining("\n\n"));
     }
+
     public static String getOffersView(Request request) {
         return request.getDescription() != null ?
                 String.format(OFFER_OF_CHANGING_OFFER_PATTERN, request.getActivity(),
@@ -629,6 +635,7 @@ public class CallbackUtil {
                         getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER, getCurrentRouteFromCities(driverItem.getCities(), Activity.DRIVER),
                         getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()), driverItem.getUserEntity().getUserName());
     }
+
     public static String getTransferItemsViewForRequest(TransferItem transferItem) {
         return transferItem.getDescription() != null ?
                 String.format(OFFERS_FOR_REQUESTS_PATTERN, getCorrectName(transferItem.getUserEntity().getFirstName()),
@@ -641,6 +648,7 @@ public class CallbackUtil {
                         getCurrentRouteFromCities(transferItem.getCities(), transferItem.getActivityType().getName()),
                         getDatesInf(transferItem.getFirstDate(), transferItem.getSecondDate()), transferItem.getUserEntity().getUserName());
     }
+
     private static String getCorrectName(String name) {
         return name == null ?
                 EMPTY :
@@ -697,6 +705,7 @@ public class CallbackUtil {
                         descriptionInf(request.getDescription()),
                         getListOfDriverItemsForRequest(driverItems));
     }
+
     public static String getCompletedMessageAnswerWithTransferItems(List<TransferItem> offers, Request request, String completedMessage) {
         return offers.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
                 request.getActivity(),
@@ -730,8 +739,9 @@ public class CallbackUtil {
                         .build())
                 .build();
     }
+
     public static SendMessage showSavedRequestWithDescriptionWithTransferItems(Message message, Request request, List<TransferItem> transferItems,
-                                                              Callbacks callback, String messageText) {
+                                                                               Callbacks callback, String messageText) {
         return SendMessage.builder()
                 .text(getCompletedMessageAnswerWithTransferItems(transferItems, request, messageText))
                 .chatId(message.getChatId().toString())
@@ -763,6 +773,7 @@ public class CallbackUtil {
                         .build())
                 .build();
     }
+
     public static EditMessageText showSavedRequestWithoutDescriptionWithDriverItems(CallbackQuery callbackQuery, Request request,
                                                                                     Callbacks callback,
                                                                                     List<DriverItem> driverItems, String messageText) {
@@ -780,6 +791,7 @@ public class CallbackUtil {
                         .build())
                 .build();
     }
+
     private static String getCancelText(Integer cancelRequestCallback) {
         return cancelRequestCallback.equals(RETURN_TO_CHANGE_OF_OFFER.ordinal()) ?
                 "Back" : "Back to menu";
@@ -790,6 +802,90 @@ public class CallbackUtil {
                 .text(message)
                 .callbackData(cancelRequestCallback + SPLITTER + token)
                 .build();
+    }
+
+    public static InlineKeyboardButton getContinueButtons(Integer continueRequestCallback, String token, String message) {
+        return InlineKeyboardButton.builder()
+                .text(message)
+                .callbackData(continueRequestCallback + SPLITTER + token)
+                .build();
+    }
+
+
+    public static class ActivityUtil {
+        public static EditMessageText makeEditMessageTextForSuitableItems(Message message, List<Activity> suitableActivities, Activity ignoredActivity, String token) {
+            List<List<InlineKeyboardButton>> buttons = getButtonsList();
+            List<Activity> possibleActivities = getPossibleActivities(ignoredActivity);
+            buttons.add(getActivityButtons(suitableActivities, possibleActivities, token));
+            if (suitableActivities.size() > 0) {
+                buttons.add(List.of(
+                        getCancelButton(CANCEL_DRIVER_REQUEST.ordinal(), token, MENU),
+                        getContinueButtons(CHOSE_DATE_DRIVER.ordinal(), token, NEXT)
+                ));
+            } else {
+                buttons.add(List.of(
+                        getCancelButton(CANCEL_DRIVER_REQUEST.ordinal(), token, MENU)
+                ));
+            }
+            return EditMessageText.builder()
+                    .chatId(message.getChatId().toString())
+                    .messageId(message.getMessageId())
+                    .text("Please choose suitable activities for you")
+                    .replyMarkup(InlineKeyboardMarkup.builder()
+                            .keyboard(buttons)
+                            .build())
+                    .build();
+        }
+
+        private static List<Activity> getPossibleActivities(Activity ignoredActivity) {
+            return Arrays.stream(Activity.values())
+                    .filter(activity -> activity != ignoredActivity)
+                    .collect(Collectors.toList());
+        }
+
+        public static EditMessageText makeEditMessageTextForSuitableItems(Message message, Activity ignoredActivity, String token) {
+            List<List<InlineKeyboardButton>> buttons = getButtonsList();
+            List<Activity> possibleActivities = getPossibleActivities(ignoredActivity);
+            buttons.add(getActivityButtons(possibleActivities, token));
+            buttons.add(List.of(
+                    getCancelButton(CANCEL_DRIVER_REQUEST.ordinal(), token, MENU)));
+            return EditMessageText.builder()
+                    .chatId(message.getChatId().toString())
+                    .messageId(message.getMessageId())
+                    .text("Please choose suitable activities for you")
+                    .replyMarkup(InlineKeyboardMarkup.builder()
+                            .keyboard(buttons)
+                            .build())
+                    .build();
+        }
+
+        private static List<InlineKeyboardButton> getActivityButtons(List<Activity> suitableActivities, List<Activity> possibleActivities, String token) {
+            return possibleActivities.stream()
+                    .map(activity -> suitableActivities.contains(activity) ?
+                            getReservedActivity(activity, token) :
+                            getUnreservedActivityButton(activity, token))
+                    .collect(Collectors.toList());
+        }
+
+        private static List<InlineKeyboardButton> getActivityButtons(List<Activity> possibleActivities, String token) {
+            return possibleActivities.stream()
+                    .map(activity -> getUnreservedActivityButton(activity, token))
+                    .collect(Collectors.toList());
+        }
+
+        private static InlineKeyboardButton getUnreservedActivityButton(Activity activity, String token) {
+            return InlineKeyboardButton.builder()
+                    .text(activity.name())
+                    .callbackData(DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token + SPLITTER + activity)
+                    .build();
+        }
+
+        private static InlineKeyboardButton getReservedActivity(Activity activity, String token) {
+            return InlineKeyboardButton.builder()
+                    .text(activity.name() + CORRECT_MARKER)
+                    .callbackData(CANCEL_DRIVER_SUITABLE_ITEM.ordinal() + SPLITTER + token + SPLITTER + activity)
+                    .build();
+        }
     }
 
 }

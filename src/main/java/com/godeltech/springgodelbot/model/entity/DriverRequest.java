@@ -13,9 +13,9 @@ public class DriverRequest extends Request {
     @Builder
     public DriverRequest(Long id, Long offerId, List<String> cities, LocalDate firstDate,
                          LocalDate secondDate, Boolean needForDescription, Token token,
-                         List<Activity> suitableActivities, Activity activity,
+                         List<Activity> suitableActivities,
                          String description) {
-        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, suitableActivities, activity, description);
+        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, suitableActivities, Activity.DRIVER, description);
     }
 
 

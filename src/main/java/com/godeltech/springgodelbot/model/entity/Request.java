@@ -21,7 +21,8 @@ import java.util.List;
 @TypeDefs({
         @TypeDef(name = "postgreSqlEnumType", typeClass = PostgreSqlEnumType.class),
         @TypeDef(name = "postgreSqlListType", typeClass = ListArrayType.class),
-        @TypeDef(name= "postgreSqlEnumArrayType",typeClass = EnumArrayType.class, parameters = {
+        @TypeDef(name = "postgreSqlEnumArrayType", typeClass = ListArrayType.class,
+                parameters = {
                 @Parameter(name = EnumArrayType.SQL_ARRAY_TYPE,
                         value = "activity_type")
         })
@@ -46,10 +47,12 @@ public abstract class Request {
     private LocalDate secondDate;
     @Column
     private Boolean needForDescription;
+
     @OneToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "token_id", referencedColumnName = "id")
     private Token token;
+
     @Column(columnDefinition = "activity_type[]")
     @Type(type = "postgreSqlEnumArrayType")
     private List<Activity> suitableActivities;

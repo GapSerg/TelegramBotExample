@@ -49,7 +49,7 @@ public class ConstantUtil {
     public static final String SPLITTER = "&";
     public static final String INCORRECT_MARKER = "❌";
     public static final String CORRECT_MARKER = "✅";
-    public static final String MENU = "MENU";
+    public static final String MENU = "Menu";
     public static final String EMPTY = " ";
 
     public static final String START = "/start";

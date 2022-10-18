@@ -38,11 +38,11 @@ public class TransferItemServiceImpl implements TransferItemService {
 
         return secondDate == null ?
                 transferItemRepository.findByFirstDateAndCities(firstDate, cities).stream()
-                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .peek(offer -> offer.setCities(cityService.findCitiesForTransferItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
                 transferItemRepository.findByDatesAndCities(secondDate, firstDate, cities).stream()
-                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .peek(offer -> offer.setCities(cityService.findCitiesForTransferItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
     }
@@ -52,7 +52,7 @@ public class TransferItemServiceImpl implements TransferItemService {
     public List<ChangeOfferRequest> findByUserEntityIdAndActivity(Long id, Activity activity, Message message, User user) {
         log.info("Find transfer item by id:{} and activity :{}", id, activity);
         return transferItemRepository.findByUserEntityIdAndActivityType_Name(id, activity).stream()
-                .peek(item -> item.setCities(cityService.findCitiesByOfferId(item.getId())))
+                .peek(item -> item.setCities(cityService.findCitiesForTransferItemByOfferId(item.getId())))
                 .map(transferItemMapper::mapToChangeOfferRequest)
                 .collect(Collectors.toList());
     }
@@ -62,7 +62,7 @@ public class TransferItemServiceImpl implements TransferItemService {
         log.info("Find transfer item by id : {}", itemId);
         return transferItemRepository.findById(itemId)
                 .map(item -> {
-                    List<City> cities = cityService.findCitiesByOfferId(itemId);
+                    List<City> cities = cityService.findCitiesForTransferItemByOfferId(itemId);
                     item.setCities(cities);
                     return transferItemMapper.mapToChangeOfferRequest(item);
                 })
@@ -81,7 +81,7 @@ public class TransferItemServiceImpl implements TransferItemService {
         log.info("Get transfer item by id: {}", offerId);
         TransferItem item = transferItemRepository.findById(offerId)
                 .orElseThrow(() -> new ResourceNotFoundException(TransferItem.class, "id", offerId, message, user));
-        item.setCities(cityService.findCitiesByOfferId(offerId));
+        item.setCities(cityService.findCitiesForTransferItemByOfferId(offerId));
         return item;
     }
 
@@ -149,11 +149,11 @@ public class TransferItemServiceImpl implements TransferItemService {
 
         return secondDate == null ?
                 transferItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, activity.name(), cities).stream()
-                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .peek(offer -> offer.setCities(cityService.findCitiesForTransferItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
                 transferItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, activity.name(), cities).stream()
-                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .peek(offer -> offer.setCities(cityService.findCitiesForTransferItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
     }

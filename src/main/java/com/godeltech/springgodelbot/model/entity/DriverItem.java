@@ -31,8 +31,8 @@ public class DriverItem {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "trip_offer_city",
-            joinColumns = @JoinColumn(name = "trip_offer_id"),
+            name = "driver_item_city",
+            joinColumns = @JoinColumn(name = "driver_item_id"),
             inverseJoinColumns = @JoinColumn(name = "city_id")
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -49,8 +49,8 @@ public class DriverItem {
 
     @ManyToMany(fetch = EAGER)
     @JoinTable(
-            name = "trip_offer_activity",
-            joinColumns = @JoinColumn(name = "trip_offer_id"),
+            name = "driver_item_activity",
+            joinColumns = @JoinColumn(name = "driver_item_id"),
             inverseJoinColumns = @JoinColumn(name = "activity_id")
     )
     private List<ActivityType> suitableActivities;

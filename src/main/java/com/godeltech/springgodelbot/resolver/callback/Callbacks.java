@@ -3,6 +3,9 @@ package com.godeltech.springgodelbot.resolver.callback;
 public enum Callbacks {
     ACTIVITY,
     MAIN_MENU,
+    CHOOSE_DRIVER_SUITABLE_ITEM,
+    DRIVER_SUITABLE_ITEM,
+    CANCEL_DRIVER_SUITABLE_ITEM,
     DRIVER_ROUTE,
     CANCEL_DRIVER_ROUTE,
     CHOSE_DATE_DRIVER,

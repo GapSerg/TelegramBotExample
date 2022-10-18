@@ -17,24 +17,34 @@ import java.util.stream.Collectors;
 public class DriverItemMapperImpl implements DriverItemMapper {
     private final ObjectMapper objectMapper;
     private final UserMapper userMapper;
+
     @Override
     public DriverItem mapToOffer(DriverRequest driverRequest, User user, List<City> cities
             , List<ActivityType> suitableActivities) {
-        DriverItem driverItem= objectMapper.convertValue(driverRequest,DriverItem.class);
-        driverItem.setSuitableActivities(suitableActivities);
-        driverItem.setCities(cities);
-        driverItem.setUserEntity(userMapper.mapToUserEntity(user,true));
-        return driverItem;
+        return DriverItem.builder()
+                .firstDate(driverRequest.getFirstDate())
+                .secondDate(driverRequest.getSecondDate())
+                .suitableActivities(suitableActivities)
+                .cities(cities)
+                .userEntity(userMapper.mapToUserEntity(user, true))
+                .description(driverRequest.getDescription())
+                .build();
     }
 
     @Override
     public ChangeOfferRequest mapToChangeOfferRequest(DriverItem driverItem) {
-        ChangeOfferRequest changeOfferRequest = objectMapper.convertValue(driverItem,ChangeOfferRequest.class);
-        List<Activity> activities = driverItem.getSuitableActivities().stream()
-                .map(ActivityType::getName)
-                .collect(Collectors.toList());
-        changeOfferRequest.setSuitableActivities(activities);
-        changeOfferRequest.setActivity(Activity.DRIVER);
-        return changeOfferRequest;
+        return ChangeOfferRequest.builder()
+                .offerId(driverItem.getId())
+                .activity(Activity.DRIVER)
+                .description(driverItem.getDescription())
+                .firstDate(driverItem.getFirstDate())
+                .secondDate(driverItem.getSecondDate())
+                .cities(driverItem.getCities().stream()
+                        .map(City::getName)
+                        .collect(Collectors.toList()))
+                .suitableActivities(driverItem.getSuitableActivities().stream()
+                        .map(ActivityType::getName)
+                        .collect(Collectors.toList()))
+                .build();
     }
 }

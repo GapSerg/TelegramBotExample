@@ -47,11 +47,11 @@ public class DriverItemServiceImpl implements DriverItemService {
         log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         return secondDate == null ?
                 driverItemRepository.findByFirstDateAndCities(firstDate, cities).stream()
-                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList()) :
                 driverItemRepository.findByDatesAndCities(secondDate, firstDate, cities).stream()
-                        .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                        .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
                         .filter(offer -> checkRoute(cities, offer))
                         .collect(Collectors.toList());
     }
@@ -61,7 +61,7 @@ public class DriverItemServiceImpl implements DriverItemService {
     public List<ChangeOfferRequest> findByUserEntityId(Long id, Message message, User user) {
         log.info("Find driver items by id:{}", id);
         return driverItemRepository.findByUserEntityId(id).stream()
-                .peek(offer -> offer.setCities(cityService.findCitiesByOfferId(offer.getId())))
+                .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
                 .map(driverItemMapper::mapToChangeOfferRequest)
                 .collect(Collectors.toList());
     }
@@ -71,7 +71,7 @@ public class DriverItemServiceImpl implements DriverItemService {
         log.info("Find offer by id : {}", offerId);
         return driverItemRepository.findById(offerId)
                 .map(offer -> {
-                    List<City> cities = cityService.findCitiesByOfferId(offerId);
+                    List<City> cities = cityService.findCitiesForDriverItemByOfferId(offerId);
                     offer.setCities(cities);
                     return driverItemMapper.mapToChangeOfferRequest(offer);
                 })
@@ -90,7 +90,7 @@ public class DriverItemServiceImpl implements DriverItemService {
         log.info("Get offer by id: {}", offerId);
         DriverItem driverItem = driverItemRepository.findById(offerId)
                 .orElseThrow(() -> new ResourceNotFoundException(DriverItem.class, "id", offerId, message, user));
-        driverItem.setCities(cityService.findCitiesByOfferId(offerId));
+        driverItem.setCities(cityService.findCitiesForDriverItemByOfferId(offerId));
         return driverItem;
     }
 

@@ -18,8 +18,8 @@ public class PassengerRequest extends Request {
     @Builder
     public PassengerRequest(Long id, Long offerId, List<String> cities, LocalDate firstDate,
                             LocalDate secondDate, Boolean needForDescription, Token token,
-                            List<Activity> suitableActivities, Activity activity, String description) {
-        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, suitableActivities, activity, description);
+                            List<Activity> suitableActivities, String description) {
+        super(id, offerId, cities, firstDate, secondDate, needForDescription, token, suitableActivities,Activity.PASSENGER, description);
     }
 
 

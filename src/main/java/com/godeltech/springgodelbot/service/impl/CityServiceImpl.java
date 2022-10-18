@@ -63,9 +63,15 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<City> findCitiesByOfferId(Long id) {
-        log.info("Get ordered cities");
-        return cityRepository.findCitiesByOfferId(id);
+    public List<City> findCitiesForTransferItemByOfferId(Long id) {
+        log.info("Get ordered cities for transfer item");
+        return cityRepository.findCitiesForTransferItemByOfferId(id);
+    }
+
+    @Override
+    public List<City> findCitiesForDriverItemByOfferId(Long id) {
+        log.info("Get ordered cities for transfer item");
+        return cityRepository.findCitiesForDriverItemByOfferId(id);
     }
 
 }

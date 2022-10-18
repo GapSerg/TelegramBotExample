@@ -17,5 +17,6 @@ public interface CityService {
 
     List<City> findCitiesByName(List<String> cities, Message message, User user);
 
-    List<City> findCitiesByOfferId(Long id);
+    List<City> findCitiesForTransferItemByOfferId(Long id);
+    List<City> findCitiesForDriverItemByOfferId(Long id);
 }
