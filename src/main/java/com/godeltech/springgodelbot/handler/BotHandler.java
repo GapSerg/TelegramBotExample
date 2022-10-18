@@ -76,11 +76,11 @@ public class BotHandler {
     public void handleRepeatedTokenMessageException(RepeatedTokenMessageException exception) {
         log.error(exception.getMessage());
     }
-
-    @ExceptionHandler(value = RuntimeException.class)
-    public void handleRuntimeException(RuntimeException exception) {
-        log.error(exception.getMessage());
-    }
+//
+//    @ExceptionHandler(value = RuntimeException.class)
+//    public void handleRuntimeException(RuntimeException exception) {
+//        log.error(exception.getMessage());
+//    }
 
     @ExceptionHandler(value = ResourceNotUniqueException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
