@@ -15,8 +15,8 @@ public class ConstantUtil {
     public final static String UNKNOWN_COMMAND = "Sorry but the command is incorrect";
     public final static String OFFERS_FOR_REQUESTS_PATTERN_TRANSFER_ITEM = "\nUser : %s %s \nRole: %s \nRoute: %s \n%s  \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";
     public final static String OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_TRANSFER_ITEM = "\nUser : %s %s\nRole: %s  \nRoute: %s \n%s  \nhttps://t.me/%s";
-    public final static String OFFERS_FOR_REQUESTS_PATTERN_DRIVER_ITEM = "\nUser : %s %s \nRole: %s \nRoute: %s \nCan take :% \n%s  \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";
-    public final static String OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_DRIVER_ITEM = "\nUser : %s %s\nRole: %s  \nRoute: %s \nCan take: %s \n%s  \nhttps://t.me/%s";
+    public final static String OFFERS_FOR_REQUESTS_PATTERN_DRIVER_ITEM = "\nUser : %s %s \nRole: %s \nRoute: %s \nCan take :%s \n%s  \nDescription: %s \uD83D\uDCC4 \nhttps://t.me/%s";
+    public final static String OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_DRIVER_ITEM = "\nUser : %s %s \nRole: %s  \nRoute: %s \nCan take: %s \n %s  \nhttps://t.me/%s";
     public final static String OFFER_OF_CHANGING_OFFER_PATTERN_TRANSFER_ITEM = "Your current offer ⤵️:\nRole: %s \nRoute: %s  \n%s  \nDescription: %s \uD83D\uDCC4";
     public final static String OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC_TRANSFER_ITEM = "Your current offer ⤵️:\nRole: %s \nRoute: %s \n%s  \n";
 

@@ -683,8 +683,7 @@ public class CallbackUtil {
                         getCurrentSuitableActivities(driverItem.getSuitableActivities().stream()
                                 .map(ActivityType::getName)
                                 .collect(Collectors.toList())),
-                        getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()),
-                        driverItem.getDescription(), driverItem.getUserEntity().getUserName()) :
+                        getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()),driverItem.getDescription(),driverItem.getUserEntity().getUserName()) :
                 String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_DRIVER_ITEM, getCorrectName(driverItem.getUserEntity().getFirstName()),
                         getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER.getTextMessage(),
                         getCurrentRouteFromCities(driverItem.getCities()),

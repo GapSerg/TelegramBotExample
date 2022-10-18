@@ -1824,3 +1824,94 @@ Caused by: org.postgresql.util.PSQLException: ERROR: cannot drop type activity_t
 2022-10-18 19:26:29,837 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
 2022-10-18 19:26:29,839 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
 2022-10-18 19:26:29,845 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2022-10-18 19:33:58,108 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringGodelBotApplication using Java 11.0.12 on INV-2021-L with PID 23024 (C:\Users\a.miachyn\IdeaProjects\SpringGodelBot\target\classes started by a.miachyn in C:\Users\a.miachyn\IdeaProjects\SpringGodelBot)
+2022-10-18 19:33:58,108 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-10-18 19:33:58,664 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-18 19:33:58,727 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 62 ms. Found 7 JPA repository interfaces.
+2022-10-18 19:33:59,070 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 5000 (http)
+2022-10-18 19:33:59,074 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-5000"]
+2022-10-18 19:33:59,074 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-10-18 19:33:59,074 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.65]
+2022-10-18 19:33:59,159 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-10-18 19:33:59,159 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1012 ms
+2022-10-18 19:33:59,274 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-18 19:33:59,355 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-18 19:33:59,439 INFO liquibase.logging.core.JavaLogger [main] Set default schema name to public
+2022-10-18 19:33:59,535 INFO liquibase.logging.core.JavaLogger [main] Successfully acquired change log lock
+2022-10-18 19:33:59,937 INFO liquibase.logging.core.JavaLogger [main] Reading from public.databasechangelog
+2022-10-18 19:34:00,024 INFO liquibase.logging.core.JavaLogger [main] Successfully released change log lock
+2022-10-18 19:34:00,081 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-18 19:34:00,113 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.10.Final
+2022-10-18 19:34:00,181 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-18 19:34:00,249 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-18 19:34:00,667 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-18 19:34:00,682 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-18 19:34:01,226 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-10-18 19:34:01,416 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-5000"]
+2022-10-18 19:34:01,431 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 5000 (http) with context path ''
+2022-10-18 19:34:01,452 INFO com.godeltech.springgodelbot.config.BotInitializer [main] Set web hook with path :https://9a24-176-118-156-142.eu.ngrok.io
+2022-10-18 19:34:01,452 INFO com.godeltech.springgodelbot.service.impl.RestServiceImpl [main] Set webhook with path :https://9a24-176-118-156-142.eu.ngrok.io
+2022-10-18 19:34:01,452 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-18 19:34:01,470 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Delete non usable expired tokens
+2022-10-18 19:34:01,542 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
+2022-10-18 19:34:01,547 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Delete tokens : []
+2022-10-18 19:34:01,548 INFO com.godeltech.springgodelbot.scheduler.impl.ScheduleServiceImpl [scheduling-1] Deleting expired offers
+2022-10-18 19:34:01,551 INFO com.godeltech.springgodelbot.service.impl.TransferItemServiceImpl [scheduling-1] Delete offers whose second date is earlier than : 2022-10-18
+2022-10-18 19:34:01,559 INFO com.godeltech.springgodelbot.service.impl.DriverItemServiceImpl [scheduling-1] Delete drivers whose second date is earlier than : 2022-10-18
+2022-10-18 19:34:01,564 INFO com.godeltech.springgodelbot.service.impl.TransferItemServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-18 and second date is null
+2022-10-18 19:34:01,567 INFO com.godeltech.springgodelbot.service.impl.DriverItemServiceImpl [scheduling-1] Delete offers whose first date is earlier than :2022-10-18 and second date is null
+2022-10-18 19:34:01,953 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringGodelBotApplication in 4.185 seconds (JVM running for 4.887)
+2022-10-18 19:34:08,120 INFO org.apache.juli.logging.DirectJDKLog [http-nio-5000-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-10-18 19:34:08,120 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-10-18 19:34:08,121 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-5000-exec-1] Completed initialization in 0 ms
+2022-10-18 19:34:08,313 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-1] Is he member of group? user : Myachin97
+2022-10-18 19:34:08,673 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.SecondDateDriverCallbackType [http-nio-5000-exec-1] Got SECOND_DATE_DRIVER callback type with second date :2022-10-18 and token : 7149a89d9ed64f862226ef by user : Myachin97
+2022-10-18 19:34:08,680 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Get request by token id : 7149a89d9ed64f862226ef
+2022-10-18 19:34:08,755 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Update request with id : 146
+2022-10-18 19:34:08,755 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-1] Get request by id : 146
+2022-10-18 19:34:09,673 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-3] Is he member of group? user : Myachin97
+2022-10-18 19:34:09,779 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.driver.CancelDriverRequestCallbackType [http-nio-5000-exec-3] Got callback : CANCEL_DRIVER_REQUEST with token : 7149a89d9ed64f862226ef by user : Myachin97
+2022-10-18 19:34:09,784 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-3] Get request by token id : 7149a89d9ed64f862226ef
+2022-10-18 19:34:09,794 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-3] Delete request with id : 146
+2022-10-18 19:34:09,962 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-3] Create new token with userId :834450967, messageId: 1197 and chatId :834450967
+2022-10-18 19:34:10,974 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-2] Is he member of group? user : Myachin97
+2022-10-18 19:34:11,131 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.ActivityCallbackType [http-nio-5000-exec-2] Got ACTIVITY callback type with activity :PARCEL and token : 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:11,153 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-2] Find all routes
+2022-10-18 19:34:11,161 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-2] Save new request with tokenId: 5144d4b8c2793599b88565 with activity : PARCEL
+2022-10-18 19:34:11,162 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-2] Income message with token :5144d4b8c2793599b88565
+2022-10-18 19:34:12,043 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-4] Is he member of group? user : Myachin97
+2022-10-18 19:34:12,230 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.ParcelRouteCallbackType [http-nio-5000-exec-4] Callback data with type: PARCEL_ROUTE and routeId: 1 and with token: 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:12,235 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:12,247 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Update request with id : 147
+2022-10-18 19:34:12,247 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-4] Get request by id : 147
+2022-10-18 19:34:12,903 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-5] Is he member of group? user : Myachin97
+2022-10-18 19:34:13,059 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.ParcelRouteCallbackType [http-nio-5000-exec-5] Callback data with type: PARCEL_ROUTE and routeId: 2 and with token: 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:13,065 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-5] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:13,073 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-5] Update request with id : 147
+2022-10-18 19:34:13,074 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-5] Get request by id : 147
+2022-10-18 19:34:13,731 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-6] Is he member of group? user : Myachin97
+2022-10-18 19:34:13,903 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.ChoseDateParcelCallbackType [http-nio-5000-exec-6] Callback data with type: CHOSE_DATE_PARCEL with token : 5144d4b8c2793599b88565 by user :Myachin97
+2022-10-18 19:34:13,906 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-6] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:15,318 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-7] Is he member of group? user : Myachin97
+2022-10-18 19:34:15,451 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.FirstDateParcelCallbackType [http-nio-5000-exec-7] Got FIRST_DATE_PARCEL type with first date :2022-10-18 with token: 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:15,454 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:15,466 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Update request with id : 147
+2022-10-18 19:34:15,466 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-7] Get request by id : 147
+2022-10-18 19:34:16,353 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-8] Is he member of group? user : Myachin97
+2022-10-18 19:34:16,468 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.SecondDateParcelCallbackType [http-nio-5000-exec-8] Got SECOND_DATE_PARCEL callback type with second date :2022-11-16 and token : 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:16,473 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:16,484 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Update request with id : 147
+2022-10-18 19:34:16,485 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-8] Get request by id : 147
+2022-10-18 19:34:17,097 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-9] Is he member of group? user : Myachin97
+2022-10-18 19:34:17,227 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.FinishDateParcelCallbackType [http-nio-5000-exec-9] Callback : FINISH_CHOSE_DATE_PARCEL type with token : 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:17,232 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-9] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:17,242 INFO com.godeltech.springgodelbot.service.impl.DriverItemServiceImpl [http-nio-5000-exec-9] Find drivers by first date :2022-10-18 and second date:2022-11-16 with cities:[MINSK, BIALYSTOK]
+2022-10-18 19:34:17,283 INFO com.godeltech.springgodelbot.service.impl.CityServiceImpl [http-nio-5000-exec-9] Get ordered cities for transfer item
+2022-10-18 19:34:20,298 INFO com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot [http-nio-5000-exec-10] Is he member of group? user : Myachin97
+2022-10-18 19:34:20,454 INFO com.godeltech.springgodelbot.resolver.callback.type.impl.parcel.CancelParcelRequestCallbackType [http-nio-5000-exec-10] Got callback : CANCEL_PARCEL_REQUEST with token : 5144d4b8c2793599b88565 by user : Myachin97
+2022-10-18 19:34:20,459 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Get request by token id : 5144d4b8c2793599b88565
+2022-10-18 19:34:20,466 INFO com.godeltech.springgodelbot.service.impl.RequestServiceImpl [http-nio-5000-exec-10] Delete request with id : 147
+2022-10-18 19:34:20,601 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [http-nio-5000-exec-10] Create new token with userId :834450967, messageId: 1198 and chatId :834450967
+2022-10-18 19:34:57,894 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-18 19:34:57,894 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-18 19:34:57,905 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
