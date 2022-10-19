@@ -2,11 +2,11 @@ package com.godeltech.springgodelbot.util;
 
 public class ConstantUtil {
 
-    public static final String START_MESSAGE = "Welcome aboard!\uD83E\uDD19\uD83E\uDD19 \n If you press  the 'Driver\uD83D\uDE99'" +
+    public static final String START_MESSAGE = "Welcome aboard!\uD83E\uDD19\uD83E\uDD19 \nIf you press  the 'Driver\uD83D\uDE99'" +
             "button, you'll get the opportunity to create a request as a driver and  find passengers for the route and dates you are interested in.\n\n" +
             "If you press the 'Passenger\uD83D\uDCBA' button, you'll get the opportunity to create a request as a passenger and find a driver for the route and dates you are interested in\n\n" +
             "If you press the 'Parcel\uD83D\uDCE6' button, you'll get the opportunity to create a request for your parcel and find a driver for the route and dates you are interested in\n\n" +
-            "If you press the 'List of my offers' button, you'll have the possibility to check your already created offers as a 'DRIVER' or as 'PASSENGER' and change some data if necessary";
+            "If you press the 'List of my offers' button, you'll have the possibility to check your already created offers as a 'DRIVER' or as 'PASSENGER' and change some data if necessary\n";
     public final static String NO_UNIQUE_PATTERN = "%s already exists with %s=%s";
     public final static String NO_FOUND_PATTERN = "%s wasn't found by %s=%s";
     public final static String NO_FOUND_PATTERN_WITHOUT_VALUES = "%s wasn't found";
