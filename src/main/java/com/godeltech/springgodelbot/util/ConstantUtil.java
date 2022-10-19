@@ -24,8 +24,10 @@ public class ConstantUtil {
     public final static String OFFER_OF_CHANGING_OFFER_PATTERN_WITHOUT_DESC_DRIVER_ITEM = "Your current offer:\nRole: %s \nRoute: %s \nCan take : %s \n%s  \n";
     public static final String SAVE_WITHOUT_DESCRIPTION = "Save without description";
     public static final String SUITABLE_OFFERS = "%sYour offer ⤵️:\nRole : %s\nSelected route : %s\n%s \n%s\n\nHere are current offers, that may be suitable :\n\n%s";
+    public static final String SUITABLE_OFFERS_FOR_DRIVER = "%sYour offer ⤵️:\nRole : %s\nSelected route : %s\nCan take: %s \n%s \n%s\n\nHere are current offers, that may be suitable :\n\n%s";
     public static final String ASK_FOR_DESIRE_TO_SAVE = " Do you want to save your request ❓  \n\n%s";
-    public static final String NO_SUITABLE_OFFERS = "%sYour offer ⤵️:\nRole : %s\nSelected route : %s\n%s \n%s\nThere are no offers with these route and dates yet\uD83D\uDE15";
+    public static final String NO_SUITABLE_OFFERS_FOR_DRIVER = "%sYour offer ⤵️:\nRole : %s\nSelected route : %s\n%s \n%s \n%s\nThere are no offers with these route and dates yet\uD83D\uDE15";
+    public static final String NO_SUITABLE_OFFERS = "%sYour offer ⤵️:\nRole : %s\nSelected route : %s\nCan take: %s \n%s\nThere are no offers with these route and dates yet\uD83D\uDE15";
     public static final String CREATED_REQUEST = "The request was created \uD83D\uDC4C\n";
     public static final String CHOSEN_SECOND_DATE = "Role : %s \nSelected route : %s \n%s";
     public static final String CHOSEN_SECOND_DATE_DRIVER = "Role : %s \nSelected route : %s \n%s\n%s";

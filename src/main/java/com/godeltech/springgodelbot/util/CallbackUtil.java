@@ -160,6 +160,44 @@ public class CallbackUtil {
                     "TO:  " :
                     "FROM: ";
         }
+
+        public static boolean checkRouteForParcel(List<String> searchCities, boolean result, int difference,
+                                                  List<String> itemCities, int matches, int previousSupplierIndex) {
+            for (int i = 0; i < searchCities.size(); i++) {
+                var route = searchCities.get(i);
+                int supplierIndex = itemCities.lastIndexOf(route);
+                if (supplierIndex != -1 &&
+                        i >= difference &&
+                        previousSupplierIndex <= supplierIndex) {
+                    matches++;
+                    previousSupplierIndex = supplierIndex;
+                }
+                if (matches == 2) {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        public static boolean checkRouteForPassenger(List<String> searchCities, boolean result, int difference,
+                                                     List<String> itemCities, int matches, int previousSupplierIndex) {
+            for (int i = 0; i < searchCities.size(); i++) {
+                var city = searchCities.get(i);
+                int supplierIndex = itemCities.lastIndexOf(city);
+                if (itemCities.contains(city) &&
+                        i >= difference &&
+                        ((supplierIndex - previousSupplierIndex) == 1 || previousSupplierIndex == -1)) {
+                    matches++;
+                    previousSupplierIndex = supplierIndex;
+                }
+                if (matches == 2) {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
     }
 
 
@@ -764,12 +802,14 @@ public class CallbackUtil {
     }
 
     public static String getCompletedMessageAnswerWithTransferItems(List<TransferItem> transferItems, Request request, String completedMessage) {
-        return transferItems.isEmpty() ? String.format(NO_SUITABLE_OFFERS, completedMessage,
+        return transferItems.isEmpty() ? String.format(NO_SUITABLE_OFFERS_FOR_DRIVER, completedMessage,
                 request.getActivity().getTextMessage(),
                 getCurrentRoute(request.getCities()),
+                getCurrentSuitableActivities(request.getSuitableActivities()),
                 getDatesInf(request.getFirstDate(), request.getSecondDate()), descriptionInf(request.getDescription())) :
-                String.format(SUITABLE_OFFERS, completedMessage, request.getActivity().getTextMessage(),
+                String.format(SUITABLE_OFFERS_FOR_DRIVER, completedMessage, request.getActivity().getTextMessage(),
                         getCurrentRoute(request.getCities()),
+                        getCurrentSuitableActivities(request.getSuitableActivities()),
                         getDatesInf(request.getFirstDate(), request.getSecondDate()),
                         descriptionInf(request.getDescription()),
                         getListOfTransferItemsForRequest(transferItems));

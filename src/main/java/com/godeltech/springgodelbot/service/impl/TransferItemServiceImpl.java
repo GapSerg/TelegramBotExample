@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.checkRouteForParcel;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.checkRouteForPassenger;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -158,30 +161,20 @@ public class TransferItemServiceImpl implements TransferItemService {
                         .collect(Collectors.toList());
     }
 
-    private boolean checkRoute(List<String> cities, TransferItem transferItem) {
+    private boolean checkRoute(List<String> driverCities, TransferItem transferItem) {
         boolean result = false;
 
-        int difference = cities.size() < transferItem.getCities().size() ?
-                cities.size() - transferItem.getCities().size() :
-                transferItem.getCities().size() - cities.size();
-        List<String> offerCities = transferItem.getCities().stream()
+        int difference =
+                transferItem.getCities().size()- driverCities.size()  ;
+        List<String> transferCities = transferItem.getCities().stream()
                 .map(City::getName)
                 .collect(Collectors.toList());
         int matches = 0;
         int previousSupplierIndex = -1;
-        for (int i = 0; i < cities.size(); i++) {
-            var route = cities.get(i);
-            int supplierIndex = offerCities.lastIndexOf(route);
-            if (supplierIndex != -1 &&
-                    i >= difference &&
-                    previousSupplierIndex <= supplierIndex) {
-                matches++;
-                previousSupplierIndex = supplierIndex;
-            }
-            if (matches == 2) {
-                result = true;
-                break;
-            }
+        if (transferItem.getActivityType().getName() == Activity.PASSENGER) {
+            result = checkRouteForPassenger(transferCities, result, difference, driverCities, matches, previousSupplierIndex);
+        } else {
+            result = checkRouteForParcel(transferCities, result, difference, driverCities, matches, previousSupplierIndex);
         }
         return result;
     }

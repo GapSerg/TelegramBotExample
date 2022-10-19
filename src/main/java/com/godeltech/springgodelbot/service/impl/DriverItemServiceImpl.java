@@ -19,6 +19,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.checkRouteForParcel;
+import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.checkRouteForPassenger;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -36,7 +39,7 @@ public class DriverItemServiceImpl implements DriverItemService {
         log.info("Save supplier by: {}", driverRequest);
         List<City> cities = cityService.findCitiesByName(driverRequest.getCities(), message, user);
         List<ActivityType> suitableActivities = activityTypeService
-                .getActivities(driverRequest.getSuitableActivities(),message ,user );
+                .getActivities(driverRequest.getSuitableActivities(), message, user);
         DriverItem offer = driverItemMapper.mapToOffer(driverRequest, user, cities, suitableActivities);
         return driverItemRepository.save(offer);
     }
@@ -47,13 +50,13 @@ public class DriverItemServiceImpl implements DriverItemService {
             (LocalDate secondDate, LocalDate firstDate, List<String> cities, Activity activity) {
         log.info("Find drivers by first date :{} and second date:{} with cities:{}", firstDate, secondDate, cities);
         return secondDate == null ?
-                driverItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, cities,activity.name()).stream()
+                driverItemRepository.findByFirstDateAndCitiesAndActivity(firstDate, cities, activity.name()).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
-                        .filter(offer -> checkRoute(cities, offer))
+                        .filter(offer -> checkRoute(cities, offer, activity))
                         .collect(Collectors.toList()) :
-                driverItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, cities,activity.name()).stream()
+                driverItemRepository.findByDatesAndCitiesAndActivity(secondDate, firstDate, cities, activity.name()).stream()
                         .peek(offer -> offer.setCities(cityService.findCitiesForDriverItemByOfferId(offer.getId())))
-                        .filter(offer -> checkRoute(cities, offer))
+                        .filter(offer -> checkRoute(cities, offer, activity))
                         .collect(Collectors.toList());
     }
 
@@ -143,31 +146,23 @@ public class DriverItemServiceImpl implements DriverItemService {
     }
 
 
-    private boolean checkRoute(List<String> cities, DriverItem offer) {
+    private boolean checkRoute(List<String> driverCities, DriverItem offer, Activity activity) {
         boolean result = false;
-
-        int difference = cities.size() < offer.getCities().size() ?
-                cities.size() - offer.getCities().size() :
-                offer.getCities().size() - cities.size();
-        List<String> offerCities = offer.getCities().stream()
+        int difference = driverCities.size() < offer.getCities().size() ?
+                driverCities.size() - offer.getCities().size() :
+                offer.getCities().size() - driverCities.size();
+        List<String> transferCities = offer.getCities().stream()
                 .map(City::getName)
                 .collect(Collectors.toList());
         int matches = 0;
         int previousSupplierIndex = -1;
-        for (int i = 0; i < cities.size(); i++) {
-            var route = cities.get(i);
-            int supplierIndex = offerCities.lastIndexOf(route);
-            if (supplierIndex != -1 &&
-                    i >= difference &&
-                    previousSupplierIndex <= supplierIndex) {
-                matches++;
-                previousSupplierIndex = supplierIndex;
-            }
-            if (matches == 2) {
-                result = true;
-                break;
-            }
+        if (activity == Activity.PASSENGER) {
+            result = checkRouteForPassenger(driverCities, result, difference, transferCities, matches, previousSupplierIndex);
+        } else {
+            result = checkRouteForParcel(driverCities, result, difference, transferCities, matches, previousSupplierIndex);
         }
         return result;
     }
+
+
 }
