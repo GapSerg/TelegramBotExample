@@ -31,8 +31,8 @@ public class ConstantUtil {
     public static final String CREATED_REQUEST = "The request was created \uD83D\uDC4C\n";
     public static final String CHOSEN_SECOND_DATE = "Role : %s \nSelected route : %s \n%s";
     public static final String CHOSEN_SECOND_DATE_DRIVER = "Role : %s \nSelected route : %s \n%s\n%s";
-    public static final String CHOSEN_FIRST_DATE = "Role : %s \nSelected route : %s \n%s\n If you aren't sure about the date, you can choose a second date";
-    public static final String CHOSEN_FIRST_DATE_DRIVER = "Role : %s \nSelected route : %s\nYou can take : %s \n%s\n If you aren't sure about the date, you can choose a second date";
+    public static final String CHOSEN_FIRST_DATE = "Role : %s \nSelected route : %s \n%s\n<b>You can choose a range of dates</b>\nIf you press the selected button we'll cancel it";
+    public static final String CHOSEN_FIRST_DATE_DRIVER = "Role : %s \nSelected route : %s\nYou can take : %s \n%s\n<b>You can choose a range of dates</b>\nIf you press the selected button we'll cancel it";
     public static final String CHOOSE_THE_FIRST_DATE = "Role : %s \nSelected route : %s \n<b>Choose the date</b>\n";
     public static final String CHOOSE_THE_FIRST_DATE_DRIVER = "Role : %s \nSelected route : %s \nYou can take : %s\n<b>Choose the date</b>\n";
     public static final String CHOSEN_FIRST_DATE_OF_OFFER = "Chosen date is : %s\n You also can choose a second date";
