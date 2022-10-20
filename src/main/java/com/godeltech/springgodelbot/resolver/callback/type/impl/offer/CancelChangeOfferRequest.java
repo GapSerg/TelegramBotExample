@@ -15,10 +15,12 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.ConstantUtil.START_FROM_THE_BEGINNING;
 
 @Component
 @Slf4j
 public class CancelChangeOfferRequest implements CallbackType {
+
     private final RequestService requestService;
     private final TokenService tokenService;
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
@@ -47,6 +49,6 @@ public class CancelChangeOfferRequest implements CallbackType {
         tudaSudaTelegramBot.deleteMessage(callbackQuery.getMessage().getChatId(), callbackQuery.getMessage().getMessageId());
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning",createdToken.getId());
+        return getStartMenu(callbackQuery.getMessage().getChatId(), START_FROM_THE_BEGINNING,createdToken.getId());
     }
 }

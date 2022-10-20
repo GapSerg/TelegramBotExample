@@ -60,6 +60,7 @@ public class OffersActivityCallbackType implements CallbackType {
                 .text(CHOOSE_THE_ROLE)
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(buttons, menuButton))
                         .build())

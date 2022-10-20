@@ -19,8 +19,7 @@ import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_DE
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.RETURN_TO_CHANGE_OF_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCancelButton;
-import static com.godeltech.springgodelbot.util.ConstantUtil.BACK;
-import static com.godeltech.springgodelbot.util.ConstantUtil.WRITE_ADDITIONAL_DESCRIPTION_FOR_CHANGE;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -46,6 +45,7 @@ public class ChangeDescriptionOfOfferCallbackType implements CallbackType {
                 .text(WRITE_ADDITIONAL_DESCRIPTION_FOR_CHANGE)
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(getCancelButton(RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                                 changeOfferRequest.getToken().getId(), BACK))))

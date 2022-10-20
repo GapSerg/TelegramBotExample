@@ -40,6 +40,7 @@ public class BotMenu {
         return EditMessageText.builder()
                 .chatId(message.getChatId().toString())
                 .messageId(message.getMessageId())
+                .parseMode(HTML)
                 .text(text + CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
@@ -53,6 +54,7 @@ public class BotMenu {
                 .chatId(changeOfferRequest.getToken().getChatId().toString())
                 .messageId(changeOfferRequest.getToken().getMessageId())
                 .text(text + CHOOSE_THE_OPTION)
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
                         .build())
@@ -64,6 +66,7 @@ public class BotMenu {
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
+                .parseMode(HTML)
                 .text(CHOOSE_THE_OPTION)
 
                 .replyMarkup(InlineKeyboardMarkup.builder()
@@ -76,6 +79,7 @@ public class BotMenu {
         List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return SendMessage.builder()
                 .chatId(chatId.toString())
+                .parseMode(HTML)
                 .text(text + CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
@@ -87,6 +91,7 @@ public class BotMenu {
         List<List<InlineKeyboardButton>> buttons = getStartMenuButtons(token);
         return SendMessage.builder()
                 .chatId(chatId.toString())
+                .parseMode(HTML)
                 .text(CHOOSE_THE_OPTION)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)

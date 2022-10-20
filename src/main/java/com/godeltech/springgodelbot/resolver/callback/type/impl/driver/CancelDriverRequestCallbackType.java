@@ -7,6 +7,7 @@ import com.godeltech.springgodelbot.resolver.callback.type.CallbackType;
 import com.godeltech.springgodelbot.service.RequestService;
 import com.godeltech.springgodelbot.service.TokenService;
 import com.godeltech.springgodelbot.service.impl.TudaSudaTelegramBot;
+import com.godeltech.springgodelbot.util.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static com.godeltech.springgodelbot.util.BotMenu.getStartMenu;
 import static com.godeltech.springgodelbot.util.CallbackUtil.getCallbackToken;
+import static com.godeltech.springgodelbot.util.ConstantUtil.START_FROM_THE_BEGINNING;
 
 @Component
 @Slf4j
@@ -49,6 +51,6 @@ public class CancelDriverRequestCallbackType implements CallbackType {
         tudaSudaTelegramBot.deleteMessage(driverRequest.getToken().getChatId(), driverRequest.getToken().getMessageId());
         Token createdToken = tokenService.createToken(callbackQuery.getFrom().getId(),
                 callbackQuery.getMessage().getMessageId(), callbackQuery.getMessage().getChatId());
-        return getStartMenu(callbackQuery.getMessage().getChatId(), "You can start from the beginning", createdToken.getId());
+        return getStartMenu(callbackQuery.getMessage().getChatId(), START_FROM_THE_BEGINNING, createdToken.getId());
     }
 }

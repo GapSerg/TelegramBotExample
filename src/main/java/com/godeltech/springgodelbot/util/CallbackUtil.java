@@ -19,16 +19,16 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.*;
-import static com.godeltech.springgodelbot.resolver.callback.Callbacks.SHOW_SUITABLE_OFFERS;
 import static com.godeltech.springgodelbot.util.CallbackUtil.ActivityUtil.getCurrentSuitableActivities;
 import static com.godeltech.springgodelbot.util.CallbackUtil.DateUtil.getDatesInf;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRoute;
 import static com.godeltech.springgodelbot.util.CallbackUtil.RouteUtil.getCurrentRouteFromCities;
-import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 import static com.godeltech.springgodelbot.util.ConstantUtil.DELETE_OFFER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 public class CallbackUtil {
 
@@ -44,7 +44,7 @@ public class CallbackUtil {
                 i = addCitiesToButtons(cities, callback, token, buttons, i);
             }
             buttons.add(List.of(getCancelButton(cancelRequestCallback, token, MENU)));
-            return getEditTextMessageForRoute(message, buttons, messageText);
+            return getEditTextMessage(message, buttons, messageText);
         }
 
 
@@ -57,6 +57,7 @@ public class CallbackUtil {
             return EditMessageText.builder()
                     .text(textMessage)
                     .messageId(callbackQuery.getMessage().getMessageId())
+                    .parseMode(HTML)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
                             .build())
@@ -208,6 +209,7 @@ public class CallbackUtil {
                     firstDate, CORRECT_MARKER, token);
             return EditMessageText.builder()
                     .text(text)
+                    .parseMode(HTML)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -224,6 +226,7 @@ public class CallbackUtil {
                     firstDate, CORRECT_MARKER, secondDate, CORRECT_MARKER, token);
             return EditMessageText.builder()
                     .text(textMessage)
+                    .parseMode(HTML)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -238,6 +241,7 @@ public class CallbackUtil {
             List<List<InlineKeyboardButton>> buttons = createCalendar(date, callback, cancelRequestCallback, token);
             return EditMessageText.builder()
                     .text(textMessage)
+                    .parseMode(HTML)
                     .chatId(message.getChatId().toString())
                     .messageId(message.getMessageId())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -251,6 +255,7 @@ public class CallbackUtil {
             LocalDate date = LocalDate.now();
             return EditMessageText.builder()
                     .text(textMessage)
+                    .parseMode(HTML)
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -265,6 +270,7 @@ public class CallbackUtil {
 
             return EditMessageText.builder()
                     .text(textMessage)
+                    .parseMode(HTML)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -280,6 +286,7 @@ public class CallbackUtil {
             LocalDate date = LocalDate.now();
             return EditMessageText.builder()
                     .text(String.format(text, date.getMonth(), date.getYear()))
+                    .parseMode(HTML)
                     .messageId(callbackQuery.getMessage().getMessageId())
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .replyMarkup(InlineKeyboardMarkup.builder()
@@ -509,7 +516,7 @@ public class CallbackUtil {
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, Integer callback, String token) {
             return InlineKeyboardButton.builder()
-                    .text(String.format(DATE_FORMAT,getCutValue(localDate.getDayOfWeek()), localDate.getDayOfMonth(), getCutValue(localDate.getMonth())))
+                    .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()), getCutValue(localDate.getDayOfWeek())))
                     .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                     .build();
         }
@@ -517,11 +524,11 @@ public class CallbackUtil {
         private static InlineKeyboardButton createDateButton
                 (LocalDate localDate, LocalDate chosenDate, Integer callback, String mark, String token) {
             return chosenDate.equals(localDate) ? InlineKeyboardButton.builder()
-                    .text(String.format(CANCEL_DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()),mark))
+                    .text(String.format(CANCEL_DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()), mark))
                     .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
                     .build() :
                     InlineKeyboardButton.builder()
-                            .text(String.format(DATE_FORMAT,getCutValue(localDate.getDayOfWeek()), localDate.getDayOfMonth(), getCutValue(localDate.getMonth())))
+                            .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()), getCutValue(localDate.getDayOfWeek())))
                             .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                             .build();
         }
@@ -531,12 +538,12 @@ public class CallbackUtil {
                  LocalDate invalidDate, String invalidMark, String token) {
             if (chosenDate.equals(localDate) || invalidDate.equals(localDate)) {
                 return InlineKeyboardButton.builder()
-                        .text(String.format(CANCEL_DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()),mark))
+                        .text(String.format(CANCEL_DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()), mark))
                         .callbackData(getCancelCallback(callback) + SPLITTER + token + SPLITTER + localDate)
                         .build();
             } else {
                 return InlineKeyboardButton.builder()
-                        .text(String.format(DATE_FORMAT,getCutValue(localDate.getDayOfWeek()),localDate.getDayOfMonth(), getCutValue(localDate.getMonth())))
+                        .text(String.format(DATE_FORMAT, localDate.getDayOfMonth(), getCutValue(localDate.getMonth()), getCutValue(localDate.getDayOfWeek())))
                         .callbackData(callback + SPLITTER + token + SPLITTER + localDate)
                         .build();
             }
@@ -566,12 +573,20 @@ public class CallbackUtil {
             }
         }
 
-        public static String getCutValue(Month value){
-            return value.toString().substring(0,3);
+        public static String getCutValue(Month value) {
+            return value.toString().charAt(0) + value.toString().substring(1, 3).toLowerCase(Locale.ROOT);
         }
-        public static String getCutValue(DayOfWeek value){
-            return value.toString().substring(0,3);
+
+        public static String getCutValue(DayOfWeek value) {
+            switch (value){
+                case SUNDAY:
+                case SATURDAY:
+                    return value.toString().substring(0,3);
+                default:
+                    return value.toString().charAt(0) + value.toString().substring(1, 3).toLowerCase(Locale.ROOT);
+            }
         }
+
         public static String getDatesInf(LocalDate firstDate, LocalDate secondDate) {
             if (firstDate == null) {
                 return NO_CHOSEN_DATE;
@@ -581,9 +596,11 @@ public class CallbackUtil {
                 return String.format(CHOSEN_DATES, firstDate, secondDate);
             }
         }
+
         public static String getDatesInf(LocalDate firstDate) {
-                return String.format(CHOSEN_DATE, firstDate);
+            return String.format(CHOSEN_DATE, firstDate);
         }
+
         public static String getDatesInf() {
             return NO_CHOSEN_DATE;
         }
@@ -601,11 +618,12 @@ public class CallbackUtil {
         return dataCallback.split(SPLITTER)[1];
     }
 
-    private static EditMessageText getEditTextMessageForRoute(Message message, List<List<InlineKeyboardButton>> buttons, String messageText) {
+    private static EditMessageText getEditTextMessage(Message message, List<List<InlineKeyboardButton>> buttons, String messageText) {
         return EditMessageText.builder()
                 .text(messageText)
                 .chatId(message.getChatId().toString())
                 .messageId(message.getMessageId())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup
                         .builder()
                         .keyboard(buttons)
@@ -619,6 +637,7 @@ public class CallbackUtil {
         return EditMessageText.builder()
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .chatId(callbackQuery.getMessage().getChatId().toString())
+                .parseMode(HTML)
                 .text(message)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
@@ -632,6 +651,7 @@ public class CallbackUtil {
         return EditMessageText.builder()
                 .messageId(callbackQuery.getMessage().getMessageId())
                 .chatId(callbackQuery.getMessage().getChatId().toString())
+                .parseMode(HTML)
                 .text(message)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(buttons)
@@ -648,7 +668,7 @@ public class CallbackUtil {
                 getCancelButton(cancelCallback, token, MENU),
                 getContinueButton(checkCallback, token, SAVE)));
 
-        return getEditTextMessageForRoute(callbackQuery.getMessage(), buttons,
+        return getEditTextMessage(callbackQuery.getMessage(), buttons,
                 String.format(ASK_FOR_DESIRE_TO_SAVE, textMessage));
     }
 
@@ -660,6 +680,7 @@ public class CallbackUtil {
         return SendMessage.builder()
                 .text(HAVE_NO_USERNAME)
                 .chatId(message.getChatId().toString())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboardRow(List.of(InlineKeyboardButton.builder()
                                 .text(USERNAME_IS_ADDED)
@@ -721,7 +742,7 @@ public class CallbackUtil {
                         getCurrentSuitableActivities(driverItem.getSuitableActivities().stream()
                                 .map(ActivityType::getName)
                                 .collect(Collectors.toList())),
-                        getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()),driverItem.getDescription(),driverItem.getUserEntity().getUserName()) :
+                        getDatesInf(driverItem.getFirstDate(), driverItem.getSecondDate()), driverItem.getDescription(), driverItem.getUserEntity().getUserName()) :
                 String.format(OFFERS_FOR_REQUESTS_PATTERN_WITHOUT_DESC_DRIVER_ITEM, getCorrectName(driverItem.getUserEntity().getFirstName()),
                         getCorrectName(driverItem.getUserEntity().getLastName()), Activity.DRIVER.getTextMessage(),
                         getCurrentRouteFromCities(driverItem.getCities()),
@@ -754,6 +775,7 @@ public class CallbackUtil {
         return EditMessageText.builder()
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
+                .parseMode(HTML)
                 .text(messageText)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(getChangeOfferButtons(request, token))
@@ -826,6 +848,7 @@ public class CallbackUtil {
         return SendMessage.builder()
                 .text(getCompletedMessageAnswerWithDriverItems(driverItems, request, messageText))
                 .chatId(message.getChatId().toString())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
@@ -842,6 +865,7 @@ public class CallbackUtil {
         return SendMessage.builder()
                 .text(getCompletedMessageAnswerWithTransferItems(transferItems, request, messageText))
                 .chatId(message.getChatId().toString())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
@@ -860,6 +884,7 @@ public class CallbackUtil {
                 .text(getCompletedMessageAnswerWithTransferItems(transferItems, request, messageText))
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
@@ -878,6 +903,7 @@ public class CallbackUtil {
                 .text(getCompletedMessageAnswerWithDriverItems(driverItems, request, messageText))
                 .chatId(callbackQuery.getMessage().getChatId().toString())
                 .messageId(callbackQuery.getMessage().getMessageId())
+                .parseMode(HTML)
                 .replyMarkup(InlineKeyboardMarkup.builder()
                         .keyboard(List.of(List.of(
                                 InlineKeyboardButton.builder()
@@ -923,6 +949,7 @@ public class CallbackUtil {
             return EditMessageText.builder()
                     .chatId(message.getChatId().toString())
                     .messageId(message.getMessageId())
+                    .parseMode(HTML)
                     .text(textMessage)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
@@ -946,6 +973,7 @@ public class CallbackUtil {
                     .chatId(message.getChatId().toString())
                     .messageId(message.getMessageId())
                     .text(textMessage)
+                    .parseMode(HTML)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(buttons)
                             .build())

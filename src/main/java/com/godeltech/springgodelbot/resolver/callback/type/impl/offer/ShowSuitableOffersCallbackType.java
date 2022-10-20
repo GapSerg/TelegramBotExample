@@ -20,7 +20,7 @@ import java.util.List;
 
 import static com.godeltech.springgodelbot.resolver.callback.Callbacks.CHANGE_OFFER;
 import static com.godeltech.springgodelbot.util.CallbackUtil.*;
-import static com.godeltech.springgodelbot.util.ConstantUtil.SPLITTER;
+import static com.godeltech.springgodelbot.util.ConstantUtil.*;
 
 @Component
 @RequiredArgsConstructor
@@ -44,11 +44,12 @@ public class ShowSuitableOffersCallbackType implements CallbackType {
             return EditMessageText.builder()
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .messageId(callbackQuery.getMessage().getMessageId())
-                    .text(getCompletedMessageAnswerWithTransferItems(requests, changeOfferRequest, ""))
+                    .text(getCompletedMessageAnswerWithTransferItems(requests, changeOfferRequest, EMPTY))
+                    .parseMode(HTML)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(List.of(List.of(
                                     InlineKeyboardButton.builder()
-                                            .text("Back")
+                                            .text(BACK)
                                             .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token+SPLITTER+changeOfferRequest.getOfferId())
                                             .build()
                             )))
@@ -59,11 +60,12 @@ public class ShowSuitableOffersCallbackType implements CallbackType {
             return EditMessageText.builder()
                     .chatId(callbackQuery.getMessage().getChatId().toString())
                     .messageId(callbackQuery.getMessage().getMessageId())
-                    .text(getCompletedMessageAnswerWithDriverItems(requests, changeOfferRequest, ""))
+                    .text(getCompletedMessageAnswerWithDriverItems(requests, changeOfferRequest, EMPTY))
+                    .parseMode(HTML)
                     .replyMarkup(InlineKeyboardMarkup.builder()
                             .keyboard(List.of(List.of(
                                     InlineKeyboardButton.builder()
-                                            .text("Back")
+                                            .text(BACK)
                                             .callbackData(CHANGE_OFFER.ordinal() + SPLITTER + token+SPLITTER+changeOfferRequest.getOfferId())
                                             .build()
                             )))

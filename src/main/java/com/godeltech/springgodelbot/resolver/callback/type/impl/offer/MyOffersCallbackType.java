@@ -52,6 +52,7 @@ public class MyOffersCallbackType implements CallbackType {
                         .chatId(callbackQuery.getMessage().getChatId().toString())
                         .messageId(callbackQuery.getMessage().getMessageId())
                         .text(No_OFFERS)
+                        .parseMode(HTML)
                         .replyMarkup(InlineKeyboardMarkup.builder()
                                 .keyboard(List.of(List.of(InlineKeyboardButton
                                         .builder()

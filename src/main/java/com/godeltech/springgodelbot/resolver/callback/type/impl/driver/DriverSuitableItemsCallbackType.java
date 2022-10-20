@@ -38,8 +38,6 @@ public class DriverSuitableItemsCallbackType implements CallbackType {
                 DRIVER_SUITABLE_ITEM, token, activity, callbackQuery.getFrom().getUserName());
         Request request = requestService.getRequest(callbackQuery.getMessage(), token, callbackQuery.getFrom());
         request.getSuitableActivities().add(activity);
-        String.format(CHOOSE_THE_SUITABLE_ACTIVITIES, request.getActivity().getTextMessage()
-                , getCurrentRoute(request.getCities()));
         String textMessage = String.format(CHOSE_ONE_MORE_SUITABLE_ACTIVITY,request.getActivity().getTextMessage(),
                 getCurrentRoute(request.getCities()),getCurrentSuitableActivities(request.getSuitableActivities()));
         request = requestService.updateRequest(request, callbackQuery.getMessage(), callbackQuery.getFrom());

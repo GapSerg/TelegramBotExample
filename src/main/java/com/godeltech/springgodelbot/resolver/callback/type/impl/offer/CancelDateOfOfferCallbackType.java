@@ -45,7 +45,6 @@ public class CancelDateOfOfferCallbackType implements CallbackType {
     private BotApiMethod getEditMessageWithCanceledSecondDate(CallbackQuery callbackQuery, Request changeOfferRequest) {
         changeOfferRequest.setSecondDate(null);
         changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
-        String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER, changeOfferRequest.getFirstDate());
         return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
                 getOffersView(changeOfferRequest), CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                 changeOfferRequest.getToken().getId());
@@ -57,13 +56,11 @@ public class CancelDateOfOfferCallbackType implements CallbackType {
             changeOfferRequest.setFirstDate(changeOfferRequest.getSecondDate());
             changeOfferRequest.setSecondDate(null);
             changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
-            String textMessage = String.format(CHOSEN_FIRST_DATE_OF_OFFER, changeOfferRequest.getFirstDate());
             return createEditMessageForSecondDate(callbackQuery, changeOfferRequest.getFirstDate(),
                     getOffersView(changeOfferRequest), CHANGE_SECOND_DATE_OF_OFFER.ordinal(), RETURN_TO_CHANGE_OF_OFFER.ordinal(),
                     changeOfferRequest.getToken().getId());
         }
         changeOfferRequest.setFirstDate(null);
-        String textMessage = "Chose the date";
         changeOfferRequest = requestService.updateRequest(changeOfferRequest, callbackQuery.getMessage(), callbackQuery.getFrom());
         return createEditMessageTextForFirstDate(callbackQuery, CHANGE_FIRST_DATE_OF_OFFER.ordinal(),
                 RETURN_TO_CHANGE_OF_OFFER.ordinal(), getOffersView(changeOfferRequest), canceledDate, changeOfferRequest.getToken().getId());
