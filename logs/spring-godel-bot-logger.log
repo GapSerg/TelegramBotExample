@@ -3767,3 +3767,8 @@
 2022-10-21 12:22:20,306 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Delete non usable expired tokens
 2022-10-21 12:22:20,335 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Remove expired token
 2022-10-21 12:22:20,341 INFO com.godeltech.springgodelbot.service.impl.TokenServiceImpl [scheduling-1] Delete tokens : []
+2022-10-21 12:42:13,489 INFO com.godeltech.springgodelbot.scheduler.impl.PingTaskServiceImpl [scheduling-1] Ping tudasudabot.herokuapp.com, OK: response code 200
+2022-10-21 13:02:13,457 INFO com.godeltech.springgodelbot.scheduler.impl.PingTaskServiceImpl [scheduling-1] Ping tudasudabot.herokuapp.com, OK: response code 200
+2022-10-21 13:12:12,972 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-21 13:12:12,972 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-21 13:12:12,985 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

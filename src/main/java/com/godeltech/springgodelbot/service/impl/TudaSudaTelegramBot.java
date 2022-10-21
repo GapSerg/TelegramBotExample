@@ -3,6 +3,7 @@ package com.godeltech.springgodelbot.service.impl;
 import com.godeltech.springgodelbot.exception.MembershipException;
 import com.godeltech.springgodelbot.exception.MessageFromGroupException;
 import com.godeltech.springgodelbot.exception.UnknownCommandException;
+import com.godeltech.springgodelbot.exception.DeleteMessageException;
 import com.godeltech.springgodelbot.model.entity.Token;
 import com.godeltech.springgodelbot.service.CallbackResolverService;
 import com.godeltech.springgodelbot.service.MessageResolverService;
@@ -24,7 +25,6 @@ import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberLeft;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -135,7 +135,7 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
                     .messageId(message)
                     .build());
         } catch (TelegramApiException e) {
-            log.error("Can't delete message with message Id : {}",message);
+            throw new DeleteMessageException(chatId,message);
         }
     }
 

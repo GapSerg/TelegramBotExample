@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 
@@ -30,6 +31,19 @@ public class BotHandler {
 
     private final TudaSudaTelegramBot tudaSudaTelegramBot;
     private final TokenService tokenService;
+
+    @ExceptionHandler(value = DeleteMessageException.class)
+    public void handleDeleteMessageException(DeleteMessageException e) {
+        try {
+            tudaSudaTelegramBot.execute(EditMessageText.builder()
+                    .text("Message deleted")
+                    .chatId(e.getChatId().toString())
+                    .messageId(e.getMessageId())
+                    .build());
+        } catch (TelegramApiException ex) {
+            log.error("Can't correct and delete message");
+        }
+    }
 
     @ExceptionHandler(value = RequestNotFoundException.class)
     @SneakyThrows
@@ -99,7 +113,7 @@ public class BotHandler {
     }
 
     @ExceptionHandler(value = MessageFromGroupException.class)
-    public void handleMessageFromGroupException(MessageFromGroupException message){
+    public void handleMessageFromGroupException(MessageFromGroupException message) {
 //        Do nothing
     }
 
