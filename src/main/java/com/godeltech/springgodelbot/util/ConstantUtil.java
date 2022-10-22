@@ -38,9 +38,9 @@ public class ConstantUtil {
     public static final String CHOSEN_FIRST_DATE_OF_OFFER = "Chosen date is : %s\n You also can choose a second date";
     public static final String CHOOSE_THE_SUITABLE_ACTIVITIES = "Role : %s \nSelected route : %s \n<b>Please choose the activities you are ready to take</b>\n";
     public static final String CHOSE_ONE_MORE_SUITABLE_ACTIVITY = "Role : %s \nSelected route : %s \nYou can take : %s \n<b>Please choose the activities you are ready to take</b>\nIf you press the reserved button, we'll cancel it";
-    public static final String WRITE_ADD_DESCRIPTION_FOR_PASSENGER = "<b>Post the description or save the request without description</b>";
+    public static final String WRITE_ADD_DESCRIPTION_FOR_PASSENGER = "<b>Write additional description or save the request without description</b>";
     public static final String CHOOSE_THE_ROLE = "<b>Choose the role you are interested in</b>";
-    public static final String WRITE_ADD_DESCRIPTION_FOR_PARCEL = "<b>Post the details of a parcel</b>";
+    public static final String WRITE_ADD_DESCRIPTION_FOR_PARCEL = "<b>Please write additional details about the parcel and press 'Enter' for saving</b>";
     public static final String WRITE_ADD_DESCRIPTION_FOR_DRIVER = "If you take a parcel, please specify the size of the parcel, that you can take\nIf you take passengers, please specify the number of seats, that you can offer.\n<b>Post the description or save the trip without description</b>";
     public static final String SUCCESSFUL_REQUEST_SAVING = "We successfully saved your request\uD83D\uDC4D.\n";
     public static final String OFFER_WAS_DELETED = "The offer was deleted\uD83D\uDC4D";
