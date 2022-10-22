@@ -81,7 +81,7 @@ public class BotHandler {
     public void handleResourceNotFoundException(ResourceNotFoundException exception) {
         log.error(exception.getMessage());
         Token createdToken = tokenService.createToken(exception.getUser().getId(), exception.getBotMessage().getMessageId(), exception.getBotMessage().getChatId());
-        tudaSudaTelegramBot.deleteMessage(exception.getBotMessage().getChatId(), exception.getBotMessage().getMessageId());
+        tudaSudaTelegramBot.deleteMessageForHandler(exception.getBotMessage().getChatId(), exception.getBotMessage().getMessageId());
         tudaSudaTelegramBot.execute(getStartMenu(exception.getBotMessage().getChatId(),
                 "There is no such type of request, please try again", createdToken.getId()));
     }

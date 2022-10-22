@@ -138,7 +138,16 @@ public class TudaSudaTelegramBot extends SpringWebhookBot {
             throw new DeleteMessageException(chatId,message);
         }
     }
-
+    public void deleteMessageForHandler(Long chatId, Integer message) {
+        try {
+            execute(DeleteMessage.builder()
+                    .chatId(chatId.toString())
+                    .messageId(message)
+                    .build());
+        } catch (TelegramApiException e) {
+            log.error("Can't delete message");
+        }
+    }
     public void deleteExpiredTokens(LocalDateTime date) {
         tokenService.deleteNonUsableExpiredTokens(date);
         List<Token> tokens = tokenService.getUsableExpiredTokens(date);
