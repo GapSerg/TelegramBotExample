@@ -16,6 +16,11 @@ public class PingTaskServiceImpl implements PingTaskService {
     @Value("${pingtask.url}")
     private String urlForPing;
 
+    @Override
+    public void pingMe() {
+//        Do nothing for better moments =)))
+    }
+
 //    @Scheduled(fixedRateString = "${pingtask.period}")
 //    @Override
 //    public void pingMe() {
