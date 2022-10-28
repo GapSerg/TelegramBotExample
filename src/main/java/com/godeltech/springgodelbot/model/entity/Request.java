@@ -41,8 +41,10 @@ public abstract class Request {
     @Column(columnDefinition = "text[]")
     @Type(type = "postgreSqlListType")
     private List<String> cities;
+
     @Column
     private LocalDate firstDate;
+
     @Column
     private LocalDate secondDate;
     @Column
